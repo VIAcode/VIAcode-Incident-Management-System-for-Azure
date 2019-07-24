@@ -1,0 +1,119 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "type": "string"
+    },
+    "namePrefix": {
+      "type": "string"
+    },
+    "serverfarmName": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "siteName": "[concat(parameters('namePrefix'), '-', uniqueString(resourceGroup().id))]",
+    "dockerContainer": "DOCKER|viacode/itsm-z:latest",
+    "publishingUsername": "[concat('$', parameters('namePrefix'), '-', take(uniqueString(resourceGroup().id),5))]",
+    "siteApiVersion": "2018-11-01",
+    "serverFarmApiVersion": "2018-02-01"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "[variables('serverFarmApiVersion')]",
+      "name": "[parameters('serverfarmName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "B2",
+        "tier": "Basic",
+        "size": "B2",
+        "family": "B",
+        "capacity": 1
+      },
+      "kind": "linux",
+      "properties": {
+        "name": "[parameters('serverfarmName')]",
+        "perSiteScaling": false,
+        "reserved": true,
+        "targetWorkerCount": 0,
+        "targetWorkerSizeId": 0
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "[variables('siteApiVersion')]",
+      "name": "[variables('siteName')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarmName'))]"
+      ],
+      "kind": "app,linux,container",
+      "properties": {
+        "enabled": true,
+        "siteConfig": {
+          "appSettings": [
+            {
+              "name": "DB_PERSISTENTVOL_TYPE",
+              "value": "AppService",
+              "slotSetting": false
+            },
+            {
+              "name": "ELASTICSEARCH_MEMORY",
+              "value": "400",
+              "slotSetting": false
+            },
+            {
+              "name": "WEBSITES_CONTAINER_START_TIME_LIMIT",
+              "value": "600",
+              "slotSetting": false
+            },
+            {
+              "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
+              "value": "true",
+              "slotSetting": false
+            },
+            {
+              "name": "WEBSITES_PORT",
+              "value": "80",
+              "slotSetting": false
+            }
+          ]
+        },
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarmName'))]",
+        "reserved": true,
+        "scmSiteAlsoStopped": false,
+        "clientAffinityEnabled": true,
+        "clientCertEnabled": false,
+        "hostNamesDisabled": false,
+        "containerSize": 0,
+        "dailyMemoryTimeQuota": 0,
+        "httpsOnly": false
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites/config",
+      "apiVersion": "[variables('siteApiVersion')]",
+      "name": "[concat(variables('siteName'), '/web')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', variables('siteName'))]"
+      ],
+      "properties": {
+        "linuxFxVersion": "[variables('dockerContainer')]",
+        "publishingUsername": "[variables('publishingUsername')]",
+        "loadBalancing": "LeastRequests",
+        "http20Enabled": true,
+        "minTlsVersion": "1.2",
+        "ftpsState": "AllAllowed"
+      }
+    }
+  ],
+  "outputs": {
+    "zammadUrl": {
+      "type": "string",
+      "value": "[concat('https://', reference(resourceId('Microsoft.Web/sites', variables('siteName')), variables('serverFarmApiVersion')).defaultHostName)]"
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {},
+  "variables": {},
+  "resources": [
+    {
+      "name": "*****",
+      "type": "Microsoft.Insights/ActionGroups",
+      "apiVersion": "2019-03-01",
+      "location": "global",
+      "tags": {},
+      "properties": {
+        "groupShortName": "*****",
+        "enabled": true,
+        "webhookReceivers": [
+          {
+            "name": "*****",
+            "serviceUri": "**FUNCTION ENDPOINT**",
+            "useCommonAlertSchema": true
+          }
+        ]
+      }
+    },
+    {
+      "location": "global",
+      "type": "Microsoft.AlertsManagement/actionRules",
+      "name": "*****",
+      "apiVersion": "2019-05-05-preview",
+      "properties": {
+        "status": "Enabled",
+        "type": "ActionGroup",
+        "description": "*****",
+        "actionGroupId": "**FULL ACTION GROUP ID: /subscriptions/0c39ec7b-14d7-427f-af50-59aab0c0f6fc/resourcegroups/zammad-72212/providers/microsoft.insights/actiongroups/DP_ActionGroup3**"
+      }
+    }
+  ],
+  "outputs": {}
+}
