@@ -52,7 +52,7 @@
       "Description": "Issue: Managing the Azure infrastructure by yourself is a time-consuming process that is requiring you to continuously invest most of your time in the investigation of the root-causes, tuning the workload size, managing the updates and other activities. \n\nRecommendation: Activate {0} offer via the Azure Marketplace or contact the VIAcode MSP Experts team to delegate management of this subscription to our team."
     },
     "viaCodeManagedServiceLink": "[VIAcode Managed Service] (https://azuremarketplace.microsoft.com/en-us/marketplace/apps/viacode_consulting-1089577.viacodems?tab=Overview)",
-    "viaCodeCloudAssessmentLink": "<VIAcode Cloud Assessment link>",
+    "viaCodeCloudAssessmentLink": "[VIAcode Cloud Assessment] (https://azuremarketplace.microsoft.com/en-us/marketplace/consulting-services/viacode_consulting-1089577.viacode-free-assessment-preview?tab=Overview&flightCodes=viacode)",
     "linkedTemplates": {
       "actions": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/actions.json', parameters('_artifactsLocationSasToken')))]",
       "connector": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/connector.json', parameters('_artifactsLocationSasToken')))]",
