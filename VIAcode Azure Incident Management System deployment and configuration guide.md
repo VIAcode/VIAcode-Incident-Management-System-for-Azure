@@ -2,7 +2,7 @@
 <!-- TOC -->
 - [Deployment of VIAcode Azure Incident Management System](#deployment-of-viacode-azure-incident-management-system)
   - [Get source code](#get-source-code)
-  - [Build ITSMConnector.sln](#build-itsmconnector.sln)
+  - [Build ITSMConnector](#build-itsmconnector)
   - [Pack Azure Function](#pack-azure-function)
   - [Prepare package](#prepare-package)
   - [Deploy Managed Application Definition](#deploy-managed-application-definition)
@@ -12,7 +12,7 @@
   - [Settings](#settings)
   - [Azure AD Integration](#azure-ad-integration)
     - [Purpose of an app registration](#purpose-of-an-app-registration)
-  - [Review + create](#review-+create)
+  - [Review and create](#review-and-create)
   - [Redirect URI for Azure AD Integration](#redirect-uri-for-azure-ad-integration)
   - [First Sign in](#first-sign-in)
 
@@ -26,10 +26,11 @@
 ## Get source code
 Download or clone viacode-incident-management.
 
-## Build ITSMConnector.sln
+## Build ITSMConnector
 You have to build ITSMConnector.sln to get deployable Azure Function.
-To do it you can either organize a build `in Azure DevOps or build it locally.
+To do it you can either organize a build in Azure DevOps or build it locally.
 
+![Build ITSMConnector](./media/Build&#32;ITSMConnector.png)
 
 For more information regarding Azure Functions please use [this reference](https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-your-first-function-visual-studio).
  
@@ -41,8 +42,6 @@ Use `Compress-Archive` PowerShell command to pack built azure function.
 
 ## Prepare package
 Pack "linkedTemplates" folder, "CreateAdminAndEnableAuthViaOffice365Runbook.ps1", "createUiDefinition.json", "mainTemplate.json", "viewDefinition.json" and zammadconnector.zip into "itsm-z-free.zip" package.
-
-
 
 ## Deploy Managed Application Definition
 - Upload the package into an Azure blob or another accessible location
@@ -86,14 +85,14 @@ New-AzManagedApplicationDefinition `
 When you have Managed App Definition is installed run it to create VIAcode Azure Management System
 
 ## Basics 
-![image.png](/.attachments/image-7df77a1f-5af0-4c6e-8373-776daf572323.png)
+![Basics](./media/Basics.png)
 - Choose a subscription to deploy the management application
 - Create a new Resource Group
 - Select a location
 - Press "Next : Settings >" button
 
 ## Settings 
-![image.png](/.attachments/image-a34ea349-dc49-4485-bbe7-ceafa5ba928c.png) 
+![Settings](./media/Settings.png) 
 - Set a nameprefix for the resources
 - Specify email address for VIAcode Azure Incident Management System administrator
 - Set password
@@ -102,7 +101,7 @@ When you have Managed App Definition is installed run it to create VIAcode Azure
 ## Azure AD Integration
 To enable Azure AD Integration you have to specify “Azure AD Application Registration ID" and "Secret”. To create a new App registration please look at the [Steps to create a new App registration in Azure AD](#steps-to-create-a-new-app-registration-in-azure-ad).
 Select "Disabled" if you do not need Azure Active Directory integration.
-![image.png](/.attachments/image-787ef499-0dbe-4018-af1c-9aaa875cf0db.png)
+![Azure AD Integration](./media/Azure&#32;AD&#32;Integration.png)
 - Either Disable Azure AD integration or Enable
 - Set "Azure AD Application Registration ID" 
 - Set "Secret"
@@ -114,8 +113,8 @@ Using Azure App, we can generate the token to authenticate the application.
 When Azure App is created we can get the "Application (client) ID" and "Secret".
 For more information read [the following.](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app)
 
-## Review + create
-![image.png](/.attachments/image-4781223a-e0dc-4107-99b6-d6d26ac015d7.png)
+## Review and create
+![Review + create](./media/Review&#32;+&#32;create.png)
 - Agree to the terms and conditions
 - Press "Create" button
 
@@ -127,7 +126,7 @@ In the left-hand navigation pane, select the Azure Active Directory service, and
 
 **Step 2**
 Click on Redirect URIs link.
-![image.png](/.attachments/image-d8565158-15dc-4c62-91af-898a89763b74.png)
+![Redirect URIs link](./media/Click&#32;on&#32;Redirect&#32;URIs&#32;link.png)
 
 **Step 3**
 
@@ -135,15 +134,15 @@ Configure Redirect URI
 - TYPE - Web
 - REDIRECT URI - https://[App Service Address]/auth/microsoft_office365/callback
 Note: The [App Service Address] can be copied from "Parameters and Outputs" of the installed managed application.
-![image.png](/.attachments/image-0853b95d-081a-4259-acb3-50237aff846a.png)
+![Configure Redirect URI](/.attachments/Configure&#32;Redirect&#32;URI.png)
 Final string looks like this "https://viaaims-milyddjpnf8sw.azurewebsites.net/auth/microsoft_office365/callback"
 - Save
 
 ## First Sign in
-![image.png](/.attachments/image-67348df5-38ff-4ed1-9824-9a62430c0668.png)
+![First Sign in](./media/First&#32;Sign&#32;in.png)
 Open VIAcode Incident Management System dashboard and click on the link to get to the system.
 
-![image.png](/.attachments/image-8fa9cc6a-6145-44e2-afe4-151bebc4f047.png)
+![Sign in using credentials](./media/Sign&#32;in&#32;using&#32;credentials.png)
 Sign in using credentials you entered for VIAcode Azure Incident Management System administrator.
 
 #Additional information
@@ -173,12 +172,12 @@ When the Add a client secret page appears, specify Description and Expiration pe
 **Step 6**
 Copy the secret to clipboard. 
 Use it as "Secret" in "Create VIAcode Incident management System" wizard.
-![1.png](/.attachments/1-c097016b-ab26-4be2-a842-34409890b4dc.png)
+![Copy Secret](./media/Create&#32;VIAcode&#32;Incident&#32;management&#32;System.png)
 
 **Step 7**
 Navigate to the overview of the app registration and copy Application (client) ID.  
 Use it as "Azure AD Application Registration ID" in "Create VIAcode Incident management System" wizard.
-![2.png](/.attachments/2-31dbd4d9-be59-48e0-9da3-b3c6c279b649.png)
+![copy Application (client) ID](./media/copy&#32;Application&#32;(client)&#32;ID.png)
 
 ## Email configuration
 To configure email notification please instructions on [Zammad docs](https://admin-docs.zammad.org/en/latest/channels-email.html)
