@@ -4,7 +4,7 @@
   "parameters": {
     "name": {
       "type": "string",
-      "defaultValue": "VIAcodeAzureIncidentManagementSystemDeployment",
+      "defaultValue": "VIAcodeIncidentManagementSystem",
       "metadata": {
         "description": "Provide a name for the managed application"
       }
