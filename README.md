@@ -1,9 +1,9 @@
 # viacode-incident-management
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FmopeLantebyx%2Fviacode-incident-management%2Fdev%2Fazuredeploy.json" target="_blank">
-<img src="http://azuredeploy.net/deploybutton.png"/>
+<img src="https://azuredeploy.net/deploybutton.png"/>
 </a>
 <a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2FmopeLantebyx%2Fviacode-incident-management%2Fdev%2Fazuredeploy.json" target="_blank">
-<img src="http://azuredeploy.net/visualizebutton.png"/>
+<img src="https://github.com/Azure/azure-quickstart-templates/blob/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.png"/>
 </a>
 
 The VIAcode Azure Incident Management System provides a free full-featured incident management solution for Azure users.
