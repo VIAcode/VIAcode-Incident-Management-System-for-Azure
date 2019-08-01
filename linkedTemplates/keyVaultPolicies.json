@@ -1,0 +1,42 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "connectorMsi": {
+      "type": "securestring",
+      "metadata": {
+        "description": ""
+      }
+    },
+    "kvName": {
+      "type": "string",
+      "metadata": {
+        "description": ""
+      }
+    }
+  },
+  "variables": {
+    "keyVaultApiVersion": "2018-02-14"
+  },
+  "resources": [
+    {
+      "apiVersion": "[variables('keyVaultApiVersion')]",
+      "type": "Microsoft.KeyVault/vaults/accessPolicies",
+      "name": "[concat(parameters('kvName'),'/add')]",
+      "properties": {
+        "accessPolicies": [
+          {
+            "tenantId": "[subscription().tenantId]",
+            "objectId": "[parameters('connectorMsi')]",
+            "permissions": {
+              "secrets": [
+                "Get"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "outputs": {}
+}

@@ -1,0 +1,82 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "type": "string",
+      "defaultValue": "VIAcodeIncidentManagementSystem",
+      "metadata": {
+        "description": "Provide a name for the managed application"
+      }
+    },
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "Specify the Azure region to place the application definition"
+      }
+    },
+    "lockLevel": {
+      "type": "string",
+      "allowedValues": [
+        "ReadOnly",
+        "CanNotDelete"
+      ],
+      "defaultValue": "ReadOnly",
+      "metadata": {
+        "description": "Specify the resource lock being used for the managed application"
+      }
+    },
+    "description": {
+      "type": "string",
+      "defaultValue": "Azure managed application for Azure Infrastructure Incident Management provided by VIAcode",
+      "metadata": {
+        "description": "Provide a brief description of the managed application"
+      }
+    },
+    "displayName": {
+      "type": "string",
+      "defaultValue": "VIAcode Azure Incident Management System",
+      "metadata": {
+        "description": "Display name for the managed application"
+      }
+    }
+  },
+  "variables": {
+    "packageFileUri": "[uri(deployment().properties.templateLink.uri, 'itsm-z-free.zip')]",
+    "authorizations": [
+      {
+        "principalId": "b82b6153-1611-4d0c-bbdb-006363854565",
+        "roleDefinitionId": "8e3af657-a8ff-443c-a75c-2fe8c4bcb635"
+      }
+    ]
+  },
+  "resources": [
+    {
+      "apiVersion": "2017-09-01",
+      "name": "[parameters('name')]",
+      "location": "[parameters('location')]",
+      "type": "Microsoft.Solutions/applicationDefinitions",
+      "properties": {
+        "lockLevel": "[parameters('lockLevel')]",
+        "authorizations": "[array(variables('authorizations'))]",
+        "description": "[parameters('description')]",
+        "displayName": "[parameters('displayName')]",
+        "packageFileUri": "[variables('packageFileUri')]"
+      }
+    }
+  ],
+  "outputs": {
+    "managedApplicationName": {
+      "type": "string",
+      "value": "[parameters('name')]"
+    },
+    "lockLevel": {
+      "type": "string",
+      "value": "[parameters('locklevel')]"
+    },
+    "packageFileUri": {
+      "type": "string",
+      "value": "[variables('packageFileUri')]"
+    }
+  }
+}
