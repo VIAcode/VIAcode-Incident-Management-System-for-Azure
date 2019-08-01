@@ -37,7 +37,7 @@
               "required": true,
               "regex": "^[-\\w\\._\\(\\)]{1,90}$",
               "validationMessage": "Must be 1-90 characters; Alphanumeric, underscore, parentheses, hyphen, period (except at end), and some Unicode characters allowed"
-            },
+            }
           },
           {
             "name": "namePrefix",
