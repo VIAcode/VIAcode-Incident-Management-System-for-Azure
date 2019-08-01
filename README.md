@@ -6,39 +6,25 @@
 <img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.png"/>
 </a>
 
-The VIAcode Azure Incident Management System provides a free full-featured incident management solution for Azure users.
-
+VIAcode Azure Incident Management System
 
 `Tags: VIAcode, Azure Managed application, Incident Management, Docker`
 
 ## Solution overview and deployed resources
 
-This is an overview of the solution
+The VIAcode Azure Incident Management System provides a free full-featured incident management solution for Azure users.
 
 The following resources are deployed as part of the solution
 
-+ **Azure Container Registry**: Docker image registry
++ **Linux App Service**: Incident Management App Service
++ **Automation Account**: setup authorization runbook
++ **KeyVault**: Storage for IMS admin credentials
++ **Dashboard**: Dashboard
++ **Action Group**: Trigger for IMS connector
++ **Alert Rules**: Default set of monitoring alerts
++ **Azure function**: IMS connector
 
-## Deployment steps
+## Deployment
 
-You can click the "deploy to Azure" button at the beginning of this document or follow the instructions for command line deployment using the scripts in the root of this repo.
-
-
-To deploy this template using the scripts from the root of this repo:
-
-```PowerShell
-.\Deploy-AzureResourceGroup.ps1 -ResourceGroupLocation 'eastus' -ArtifactsStagingDirectory '101-container-registry'
-```
-```bash
-azure-group-deploy.sh -a '101-container-registry' -l eastus -u
-```
-
-## Usage
-
-## Login to your registry
-
-Follow [this documentation](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-authentication) for authenticate your docker client to your container registry.
-
-#### Push images to your registry
-
-For pushing docker images on your registry, follow [this documentation](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-docker-cli)
++ Click the "Deploy to Azure" button at the beginning of this document to deploy Azure Managed App Definition to azure portal and then start the Deploy from definition on portal.
++ Or follow [this documentation](https://github.com/VIAcode/viacode-incident-management/blob/master/VIAcode%20Azure%20Incident%20Management%20System%20deployment%20and%20configuration%20guide.md) to build the solution from source code and deploy manually
