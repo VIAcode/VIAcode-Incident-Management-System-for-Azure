@@ -7,7 +7,7 @@
     ],
     "steps": [
       {
-        "name": "accountSettings",
+        "name": "applicationSettings",
         "label": "Settings",
         "subLabel": {
           "preValidation": "Provide VIAcode Incident Management parameters",
@@ -16,7 +16,7 @@
         "bladeTitle": "Settings",
         "elements": [
           {
-            "name": "aplicationName",
+            "name": "applicationName",
             "type": "Microsoft.Common.TextBox",
             "label": "Managed application Name",
             "toolTip": "Managed application instance name",
@@ -146,12 +146,12 @@
     ],
     "outputs": {
       "location": "[location()]",
-      "userName": "[steps('accountSettings').userName]",
-      "password": "[steps('accountSettings').password]",
-      "namePrefix": "[steps('accountSettings').namePrefix]",
-      "aadAppRegistrationName": "[coalesce(steps('adIntegration').aadAppRegistrationName, '')]",
-      "applicationResourceName": "[steps('applicationSettings').aplicationName]",
+      "userName": "[steps('applicationSettings').userName]",
+      "password": "[steps('applicationSettings').password]",
+      "namePrefix": "[steps('applicationSettings').namePrefix]",
+      "applicationResourceName": "[steps('applicationSettings').applicationName]",
       "managedResourceGroupId": "[steps('applicationSettings').managedResourceGroupName]",
+      "aadAppRegistrationName": "[coalesce(steps('adIntegration').aadAppRegistrationName, '')]",
       "appRegistrationSecret": "[coalesce(steps('adIntegration').appRegistrationSecret, '')]"
     }
   }
