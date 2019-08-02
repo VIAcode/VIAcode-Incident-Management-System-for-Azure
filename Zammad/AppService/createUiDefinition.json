@@ -20,6 +20,7 @@
             "type": "Microsoft.Common.TextBox",
             "label": "Managed application Name",
             "toolTip": "Managed application instance name",
+            "defaultValue": "VIAcodeIncidentManagementSystem",
             "visible": true,
             "constraints": {
               "required": true,
@@ -31,10 +32,11 @@
             "name": "managedResourceGroupName",
             "type": "Microsoft.Common.TextBox",
             "label": "Managed Resource Group Name",
-            "toolTip": "Resource group name that will be created for Managed application deployment",
+            "toolTip": "Provide existing empty Resource Group Name under current subscrition that will be used for Managed application deployment",
+            "defaultValue": "",
             "visible": true,
             "constraints": {
-              "required": true,
+              "required": false,
               "regex": "^[-\\w\\._\\(\\)]{1,90}$",
               "validationMessage": "Must be 1-90 characters; Alphanumeric, underscore, parentheses, hyphen, period (except at end), and some Unicode characters allowed"
             }
@@ -150,7 +152,7 @@
       "password": "[steps('applicationSettings').password]",
       "namePrefix": "[steps('applicationSettings').namePrefix]",
       "applicationResourceName": "[steps('applicationSettings').applicationName]",
-      "managedResourceGroupId": "[steps('applicationSettings').managedResourceGroupName]",
+      "managedResourceGroupId": "[concat(subscription().id,'/resourceGroups/',steps('applicationSettings').managedResourceGroupName)]",
       "aadAppRegistrationName": "[coalesce(steps('adIntegration').aadAppRegistrationName, '')]",
       "appRegistrationSecret": "[coalesce(steps('adIntegration').appRegistrationSecret, '')]"
     }
