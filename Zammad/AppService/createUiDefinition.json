@@ -29,19 +29,6 @@
             }
           },
           {
-            "name": "managedResourceGroupName",
-            "type": "Microsoft.Common.TextBox",
-            "label": "Managed Resource Group Name",
-            "toolTip": "Provide existing empty Resource Group Name under current subscrition that will be used for Managed application deployment",
-            "defaultValue": "",
-            "visible": true,
-            "constraints": {
-              "required": false,
-              "regex": "^[-\\w\\._\\(\\)]{1,90}$",
-              "validationMessage": "Must be 1-90 characters; Alphanumeric, underscore, parentheses, hyphen, period (except at end), and some Unicode characters allowed"
-            }
-          },
-          {
             "name": "namePrefix",
             "type": "Microsoft.Common.TextBox",
             "label": "Name Prefix",
@@ -152,7 +139,6 @@
       "password": "[steps('applicationSettings').password]",
       "namePrefix": "[steps('applicationSettings').namePrefix]",
       "applicationResourceName": "[steps('applicationSettings').applicationName]",
-      "managedResourceGroupId": "[concat(subscription().id,'/resourceGroups/',steps('applicationSettings').managedResourceGroupName)]",
       "aadAppRegistrationName": "[coalesce(steps('adIntegration').aadAppRegistrationName, '')]",
       "appRegistrationSecret": "[coalesce(steps('adIntegration').appRegistrationSecret, '')]"
     }
