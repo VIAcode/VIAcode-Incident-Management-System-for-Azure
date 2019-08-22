@@ -1,0 +1,118 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/viewdefinition/0.0.1-preview/ViewDefinition.json#",
+  "views": [
+    {
+      "kind": "Overview",
+      "properties": {
+        "header": "VIAcode Incident Management",
+        "description": "",
+        "commands": [
+          {
+            "displayName": "Create Incident",
+            "icon": "Add",
+            "path": "createIncident",
+            "createUIDefinition": {
+              "parameters": {
+                "steps": [
+                  {
+                    "name": "ticket",
+                    "label": "Ticket parameters",
+                    "subLabel": {
+                      "preValidation": "Enter ticket fields",
+                      "postValidation": "Done"
+                    },
+                    "bladeTitle": "Ticket parameters",
+                    "bladeSubtitle": "Enter ticket fields",
+                    "elements": [
+                      {
+                        "name": "title",
+                        "label": "Title",
+                        "type": "Microsoft.Common.TextBox",
+                        "defaultValue": "",
+                        "toolTip": "Type ticket title",
+                        "constraints": {
+                          "required": true
+                        }
+
+                      },
+                      {
+                        "name": "body",
+                        "label": "Body",
+                        "type": "Microsoft.Common.TextBox",
+                        "defaultValue": "",
+                        "toolTip": "Type ticket body",
+                        "constraints": {
+                          "required": true
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "outputs": {
+                  "title": "[steps('ticket').title]",
+                  "body": "[steps('ticket').body]"
+                }
+              }
+            }
+          },
+          {
+            "displayName": "Renew AAD Integration",
+            "icon": "Refresh",
+            "path": "renewADIntegration",
+            "createUIDefinition": {
+              "parameters": {
+                "steps": [
+                  {
+                    "name": "appReg",
+                    "label": "Application Registration Parameters",
+                    "subLabel": {
+                      "preValidation": "Enter Application Registration ID and Secret",
+                      "postValidation": "Done"
+                    },
+                    "bladeTitle": "Application Registration Parameters",
+                    "bladeSubtitle": "Enter Application Registration ID and Secret",
+                    "elements": [
+                      {
+                        "name": "id",
+                        "label": "Id",
+                        "type": "Microsoft.Common.TextBox",
+                        "defaultValue": "",
+                        "toolTip": "Type Application Registration Id",
+                        "constraints": {
+                          "required": true
+                        }
+
+                      },
+                      {
+                        "name": "secret",
+                        "type": "Microsoft.Common.PasswordBox",
+                        "label": {
+                          "password": "Secret",
+                          "confirmPassword": "Confirm secret"
+                        },
+                        "toolTip": "Type Application Registration Secret",
+                        "constraints": {
+                          "required": true,
+                          "regex": "",
+                          "validationMessage": ""
+                        },
+                        "options": {
+                          "hideConfirmation": true
+                        },
+                        "visible": true
+                      }
+                    ]
+                  }
+                ],
+                "outputs": {
+                  "id": "[steps('appReg').id]",
+                  "secret": "[steps('appReg').secret]"
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

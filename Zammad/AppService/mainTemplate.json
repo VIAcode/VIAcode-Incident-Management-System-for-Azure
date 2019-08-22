@@ -1,0 +1,138 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "type": "string"
+    },
+    "namePrefix": {
+      "type": "string",
+      "maxLength": 24,
+      "metadata": {
+        "description": "Naming prefix for each new resource created. 8-char max, lowercase alphanumeric"
+      },
+      "defaultValue": ""
+    },
+    "userName": {
+      "type": "string",
+      "defaultValue": ""
+    },
+    "password": {
+      "type": "securestring",
+      "defaultValue": ""
+    },
+    "aadAppRegistrationName": {
+      "type": "string",
+      "defaultValue": ""
+    },
+    "appRegistrationSecret": {
+      "type": "securestring",
+      "defaultValue": ""
+    },
+    "_artifactsLocation": {
+      "type": "string",
+      "metadata": {
+        "description": "The base URI where artifacts required by this template are located including a trailing '/'"
+      },
+      "defaultValue": "[deployment().properties.templateLink.uri]"
+    },
+    "_artifactsLocationSasToken": {
+      "type": "securestring",
+      "metadata": {
+        "description": "The sasToken required to access _artifactsLocation.  When the template is deployed using the accompanying scripts, a sasToken will be automatically generated. Use the defaultValue if the staging location is not secured."
+      },
+      "defaultValue": ""
+    }
+  },
+  "variables": {
+    "deploymentApi": "2018-02-01",
+    "linkedTemplates": {
+      "actions": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/actions.json', parameters('_artifactsLocationSasToken')))]",
+      "zammadWhole": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/zammadWhole.json', parameters('_artifactsLocationSasToken')))]"
+    }
+  },
+  "resources": [
+    {
+      "apiVersion": "[variables('deploymentApi')]",
+      "name": "pid-a6eb1592-4217-5ddd-aa58-683a38abd54d",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": []
+        }
+      }
+    },
+    {
+      "apiVersion": "[variables('deploymentApi')]",
+      "name": "deployZammadWhole",
+      "type": "Microsoft.Resources/deployments",
+      "condition": "[not(empty(parameters('namePrefix')))]",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('linkedTemplates').zammadWhole]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "namePrefix": {
+            "value": "[parameters('namePrefix')]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "userName": {
+            "value": "[parameters('userName')]"
+          },
+          "password": {
+            "value": "[parameters('password')]"
+          },
+          "aadAppRegistrationName": {
+            "value": "[parameters('aadAppRegistrationName')]"
+          },
+          "appRegistrationSecret": {
+            "value": "[parameters('appRegistrationSecret')]"
+          },
+          "_artifactsLocation": {
+            "value": "[parameters('_artifactsLocation')]"
+          },
+          "_artifactsLocationSasToken": {
+            "value": "[parameters('_artifactsLocationSasToken')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "[variables('deploymentApi')]",
+      "name": "deployActions",
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'deployZammadWhole')]"
+      ],
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('linkedTemplates').actions]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "connectorName": {
+            "value": "[reference('deployZammadWhole', variables('deploymentApi')).outputs.connectorName.value]"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "portalUrl": {
+      "type": "string",
+      "value": "[if(not(empty(parameters('namePrefix'))), reference('deployZammadWhole', variables('deploymentApi')).outputs.portalUrl.value, '')]"
+    },
+    "connectorName": {
+      "type": "string",
+      "value": "[if(not(empty(parameters('namePrefix'))), reference('deployZammadWhole', variables('deploymentApi')).outputs.connectorName.value, '')]"
+    }
+  }
+}

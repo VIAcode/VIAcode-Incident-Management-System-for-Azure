@@ -1,0 +1,297 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "type": "string"
+    },
+    "namePrefix": {
+      "type": "string",
+      "maxLength": 24,
+      "metadata": {
+        "description": "Naming prefix for each new resource created. 8-char max, lowercase alphanumeric"
+      }
+    },
+    "userName": {
+      "type": "string"
+    },
+    "password": {
+      "type": "securestring"
+    },
+    "aadAppRegistrationName": {
+      "type": "string"
+    },
+    "appRegistrationSecret": {
+      "type": "securestring"
+    },
+    "_artifactsLocation": {
+      "type": "string",
+      "metadata": {
+        "description": "The base URI where artifacts required by this template are located including a trailing '/'"
+      },
+      "defaultValue": "[deployment().properties.templateLink.uri]"
+    },
+    "_artifactsLocationSasToken": {
+      "type": "securestring",
+      "metadata": {
+        "description": "The sasToken required to access _artifactsLocation.  When the template is deployed using the accompanying scripts, a sasToken will be automatically generated. Use the defaultValue if the staging location is not secured."
+      },
+      "defaultValue": ""
+    }
+  },
+  "variables": {
+    "deploymentApi": "2018-02-01",
+    "siteName": "[concat(parameters('namePrefix'), '-', uniqueString(resourceGroup().id))]",
+    "serverfarmName": "[concat(parameters('namePrefix'), '-', uniqueString(resourceGroup().id))]",
+    "kvName": "[concat(parameters('namePrefix'), 'kv-', uniqueString(resourceGroup().id))]",
+    "connectorFilesPath": "[uri(parameters('_artifactsLocation'), concat('zammadconnector.zip', parameters('_artifactsLocationSasToken')))]",
+    "scriptUri": "[uri(parameters('_artifactsLocation'), concat('CreateAdminAndEnableAuthViaOffice365Runbook.ps1', parameters('_artifactsLocationSasToken')))]",
+    "unmanagedSubscriptionAlertRule": {
+      "Name": "Subscription is unmanaged",
+      "Description": "Issue: Managing the Azure infrastructure by yourself is a time-consuming process that is requiring you to continuously invest most of your time in the investigation of the root-causes, tuning the workload size, managing the updates and other activities. \n\nRecommendation: Activate {0} offer via the Azure Marketplace or contact the VIAcode MSP Experts team to delegate management of this subscription to our team."
+    },
+    "serviceHealthAlertRule": {
+      "Name": "Microsoft Azure infrastructure failure!",
+      "Description": "Issue: Microsoft Azure infrastructure is experiencing an issue that may affect your services. \nRecommendation: Sign up for a free {0} to get recommendations for providing business continuity and protect your infrastructure from the major cloud platform failures."
+    },
+    "viaCodeManagedServiceLink": "[VIAcode Managed Service] (https://azuremarketplace.microsoft.com/en-us/marketplace/apps/viacode_consulting-1089577.viacodems?tab=Overview)",
+    "viaCodeCloudAssessmentLink": "[VIAcode Cloud Assessment] (https://azuremarketplace.microsoft.com/en-us/marketplace/consulting-services/viacode_consulting-1089577.viacode-free-assessment-preview?tab=Overview&flightCodes=viacode)",
+    "linkedTemplates": {
+      "connector": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/connector.json', parameters('_artifactsLocationSasToken')))]",
+      "keyVault": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/keyVault.json', parameters('_artifactsLocationSasToken')))]",
+      "keyVaultPolicies": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/keyVaultPolicies.json', parameters('_artifactsLocationSasToken')))]",
+      "zammad": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/zammad.json', parameters('_artifactsLocationSasToken')))]",
+      "alerts": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/alerts.json', parameters('_artifactsLocationSasToken')))]",
+      "zammadSetup": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/zammadSetup.json', parameters('_artifactsLocationSasToken')))]",
+      "dashboard": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/dashboard.json', parameters('_artifactsLocationSasToken')))]"
+    }
+  },
+  "resources": [
+    {
+      "apiVersion": "[variables('deploymentApi')]",
+      "name": "deployZammad",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('linkedTemplates').zammad]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "namePrefix": {
+            "value": "[parameters('namePrefix')]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "serverfarmName": {
+            "value": "[variables('serverfarmName')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "[variables('deploymentApi')]",
+      "name": "setupZammad",
+      "type": "Microsoft.Resources/deployments",
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'deployZammad')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('linkedTemplates').zammadSetup]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "namePrefix": {
+            "value": "[parameters('namePrefix')]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "siteName": {
+            "value": "[reference('deployZammad', variables('deploymentApi')).outputs.zammadUrl.value]"
+          },
+          "azureApplicationId": {
+            "value": "[parameters('aadAppRegistrationName')]"
+          },
+          "azureApplicationSecretKey": {
+            "value": "[parameters('appRegistrationSecret')]"
+          },
+          "zammadAdminUserName": {
+            "value": "[parameters('userName')]"
+          },
+          "zammadAdminPassword": {
+            "value": "[parameters('password')]"
+          },
+          "scriptUri": {
+            "value": "[variables('scriptUri')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "[variables('deploymentApi')]",
+      "name": "deployConnector",
+      "type": "Microsoft.Resources/deployments",
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'deployZammad')]",
+        "[resourceId('Microsoft.Resources/deployments', 'deployKeyVault')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('linkedTemplates').connector]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "connectorFilesPath": {
+            "value": "[variables('connectorFilesPath')]"
+          },
+          "keyVaultUri": {
+            "value": "[reference('deployKeyVault', variables('deploymentApi')).outputs.vaultUri.value]"
+          },
+          "zammadUrl": {
+            "value": "[reference('deployZammad', variables('deploymentApi')).outputs.zammadUrl.value]"
+          },
+          "namePrefix": {
+            "value": "[parameters('namePrefix')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "[variables('deploymentApi')]",
+      "name": "deployKeyVault",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('linkedTemplates').keyVault]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "kvName": {
+            "value": "[variables('kvName')]"
+          },
+          "zammadUserName": {
+            "value": "[parameters('userName')]"
+          },
+          "zammadPassword": {
+            "value": "[parameters('password')]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "[variables('deploymentApi')]",
+      "name": "deployKeyVaultPolicies",
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'deployKeyVault')]",
+        "[resourceId('Microsoft.Resources/deployments', 'deployConnector')]"
+      ],
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('linkedTemplates').keyVaultPolicies]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "apiMsis": {
+            "value": [
+              "[reference('deployConnector', variables('deploymentApi')).outputs.principalId.value]"
+            ]
+          },
+          "kvName": {
+            "value": "[variables('kvName')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "[variables('deploymentApi')]",
+      "name": "deployAlerts",
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'deployConnector')]"
+      ],
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('linkedTemplates').alerts]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "appInsightsName": {
+            "value": "[reference('deployConnector', variables('deploymentApi')).outputs.connectorAIName.value]"
+          },
+          "appInsightsRG": {
+            "value": "[resourceGroup().name]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "unmanagedSubscriptionAlertRuleName": {
+            "value": "[variables('unmanagedSubscriptionAlertRule').Name]"
+          },
+          "unmanagedSubscriptionAlertRuleDescription": {
+            "value": "[variables('unmanagedSubscriptionAlertRule').Description]"
+          },
+          "viaCodeManagedServiceLink": {
+            "value": "[variables('viaCodeManagedServiceLink')]"
+          },
+          "serviceHealthAlertRuleName": {
+            "value": "[variables('serviceHealthAlertRule').Name]"
+          },
+          "serviceHealthAlertRuleDescription": {
+            "value": "[variables('serviceHealthAlertRule').Description]"
+          },
+          "viaCodeCloudAssessmentLink": {
+            "value": "[variables('viaCodeCloudAssessmentLink')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "[variables('deploymentApi')]",
+      "name": "deployDashboard",
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'deployZammad')]"
+      ],
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('linkedTemplates').dashboard]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "zammadUrl": {
+            "value": "[reference('deployZammad', variables('deploymentApi')).outputs.zammadUrl.value]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "portalUrl": {
+      "type": "string",
+      "value": "[reference('deployZammad', variables('deploymentApi')).outputs.zammadUrl.value]"
+    },
+    "connectorName": {
+      "type": "string",
+      "value": "[reference('deployConnector', variables('deploymentApi')).outputs.appName.value]"
+    }
+  }
+}

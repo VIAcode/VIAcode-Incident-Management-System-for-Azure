@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.539
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ITSMConnector", "ITSMConnector\ITSMConnector.csproj", "{1C7153B7-0071-4965-B55F-CE1DF68289B0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1C7153B7-0071-4965-B55F-CE1DF68289B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C7153B7-0071-4965-B55F-CE1DF68289B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C7153B7-0071-4965-B55F-CE1DF68289B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C7153B7-0071-4965-B55F-CE1DF68289B0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {18B7B4DB-C0AD-4C55-B292-7C7CD6FA3B37}
+	EndGlobalSection
+EndGlobal
