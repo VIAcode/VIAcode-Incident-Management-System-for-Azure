@@ -4,60 +4,17 @@
     {
       "kind": "Overview",
       "properties": {
-        "header": "VIAcode Incident Management",
+        "header": "VIAcode Incident Management System for Azure",
         "description": "",
         "commands": [
           {
-            "displayName": "Create Incident",
-            "icon": "Add",
-            "path": "createIncident",
-            "createUIDefinition": {
-              "parameters": {
-                "steps": [
-                  {
-                    "name": "ticket",
-                    "label": "Ticket parameters",
-                    "subLabel": {
-                      "preValidation": "Enter ticket fields",
-                      "postValidation": "Done"
-                    },
-                    "bladeTitle": "Ticket parameters",
-                    "bladeSubtitle": "Enter ticket fields",
-                    "elements": [
-                      {
-                        "name": "title",
-                        "label": "Title",
-                        "type": "Microsoft.Common.TextBox",
-                        "defaultValue": "",
-                        "toolTip": "Type ticket title",
-                        "constraints": {
-                          "required": true
-                        }
-
-                      },
-                      {
-                        "name": "body",
-                        "label": "Body",
-                        "type": "Microsoft.Common.TextBox",
-                        "defaultValue": "",
-                        "toolTip": "Type ticket body",
-                        "constraints": {
-                          "required": true
-                        }
-                      }
-                    ]
-                  }
-                ],
-                "outputs": {
-                  "title": "[steps('ticket').title]",
-                  "body": "[steps('ticket').body]"
-                }
-              }
-            }
+           "displayName": "Restart VIMS",
+            "icon": "Refresh",
+            "path": "restartVIMS"
           },
           {
             "displayName": "Renew AAD Integration",
-            "icon": "Refresh",
+            "icon": "Link",
             "path": "renewADIntegration",
             "createUIDefinition": {
               "parameters": {
@@ -113,6 +70,105 @@
           }
         ]
       }
+    },
+    {
+        "kind": "Metrics",
+        "properties": {
+            "displayName": "Metrics",
+            "version": "1.0.0",
+            "charts": [
+                {
+                    "displayName": "Storage availability",
+                    "chartType": "Line",
+                    "metrics": [
+                        {
+                            "name": "Availability",
+                            "aggregationType": "avg",
+                            "resourceType": "Microsoft.Storage/storageAccounts",
+                            "namespace": "Microsoft.Storage/storageAccounts"
+                        }
+                    ]
+                },
+                {
+                  "displayName": "Storage capacity",
+                  "chartType": "Line",
+                  "metrics": [
+                    {
+                      "name": "UsedCapacity",
+                      "aggregationType": "avg",
+                      "resourceType": "Microsoft.Storage/storageAccounts",
+                      "namespace": "Microsoft.Storage/storageAccounts"
+                    }
+                  ]
+                },
+                {
+                  "displayName": "VIMS service status",
+                  "chartType": "Area",
+                  "metrics": [
+                    {
+                      "name": "CpuPercentage",
+                      "aggregationType": "avg",
+                      "resourceType": "Microsoft.Web/serverfarms",
+                      "namespace": "Microsoft.Web/serverfarms"
+                    },
+                    {
+                      "name": "MemoryPercentage",
+                      "aggregationType": "avg",
+                      "resourceType": "Microsoft.Web/serverfarms",
+                      "namespace": "Microsoft.Web/serverfarms"
+                    },
+                    {
+                      "name": "TcpEstablished",
+                      "aggregationType": "avg",
+                      "resourceType": "Microsoft.Web/serverfarms",
+                      "namespace": "Microsoft.Web/serverfarms"
+                    },
+                    {
+                      "name": "TcpTimeWait",
+                      "aggregationType": "avg",
+                      "resourceType": "Microsoft.Web/serverfarms",
+                      "namespace": "Microsoft.Web/serverfarms"
+                    },
+                    {
+                      "name": "Requests",
+                      "aggregationType": "avg",
+                      "resourceType": "Microsoft.Web/sites",
+                      "namespace": "Microsoft.Web/sites"
+                    },
+                    {
+                      "name": "AverageResponseTime",
+                      "aggregationType": "avg",
+                      "resourceType": "Microsoft.Web/sites",
+                      "namespace": "Microsoft.Web/sites"
+                    },
+                    {
+                      "name": "AppConnections",
+                      "aggregationType": "avg",
+                      "resourceType": "Microsoft.Web/sites",
+                      "namespace": "Microsoft.Web/sites"
+                    }
+                  ]
+                },
+                {
+                  "displayName": "Zammad statistics",
+                  "chartType": "Scatter",
+                  "metrics": [
+                    {
+                    "name": "Users",
+                    "aggregationType": "avg",
+                    "resourceType": "microsoft.insights/components",
+                    "namespace": "azure.applicationinsights"                    
+                  },
+                  {
+                    "name": "Tickets",
+                    "aggregationType": "avg",
+                    "resourceType": "microsoft.insights/components",
+                    "namespace": "azure.applicationinsights"                    
+                  }
+                ]
+                }
+            ]
+        }
     }
   ]
 }

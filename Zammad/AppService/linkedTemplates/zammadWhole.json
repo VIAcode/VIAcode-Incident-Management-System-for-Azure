@@ -40,11 +40,15 @@
     }
   },
   "variables": {
+    "SLAworkbooksDisplayName": "Zammad reports",
     "deploymentApi": "2018-02-01",
     "siteName": "[concat(parameters('namePrefix'), '-', uniqueString(resourceGroup().id))]",
     "serverfarmName": "[concat(parameters('namePrefix'), '-', uniqueString(resourceGroup().id))]",
     "kvName": "[concat(parameters('namePrefix'), 'kv-', uniqueString(resourceGroup().id))]",
+    "upsellTriggerFeedLogicAppName": "[concat(parameters('namePrefix'), 'la-', uniqueString(resourceGroup().id))]",
     "connectorFilesPath": "[uri(parameters('_artifactsLocation'), concat('zammadconnector.zip', parameters('_artifactsLocationSasToken')))]",
+    "slaReportsFilesPath": "[uri(parameters('_artifactsLocation'), concat('slareports.zip', parameters('_artifactsLocationSasToken')))]",
+    "providerFilesPath": "[uri(parameters('_artifactsLocation'), concat('Itsmapi.zip', parameters('_artifactsLocationSasToken')))]",
     "scriptUri": "[uri(parameters('_artifactsLocation'), concat('CreateAdminAndEnableAuthViaOffice365Runbook.ps1', parameters('_artifactsLocationSasToken')))]",
     "unmanagedSubscriptionAlertRule": {
       "Name": "Subscription is unmanaged",
@@ -63,7 +67,14 @@
       "zammad": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/zammad.json', parameters('_artifactsLocationSasToken')))]",
       "alerts": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/alerts.json', parameters('_artifactsLocationSasToken')))]",
       "zammadSetup": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/zammadSetup.json', parameters('_artifactsLocationSasToken')))]",
-      "dashboard": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/dashboard.json', parameters('_artifactsLocationSasToken')))]"
+      "resourceProvider": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/resourceProvider.json', parameters('_artifactsLocationSasToken')))]",
+      "resourceProviderApi": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/resourceProviderApi.json', parameters('_artifactsLocationSasToken')))]",
+      "dashboard": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/dashboard.json', parameters('_artifactsLocationSasToken')))]",
+      "slaWorkbooks": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/slaWorkbooks.json', parameters('_artifactsLocationSasToken')))]",
+      "slaReports": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/slaFunction.json', parameters('_artifactsLocationSasToken')))]",
+      "roleAssignment": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/roleAssignment.json', parameters('_artifactsLocationSasToken')))]",
+      "upsellTriggerFeedLogicApp": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/upsellTriggerFeedLogicApp.json', parameters('_artifactsLocationSasToken')))]",
+      "upsellTriggerFeedRoleAssignment": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/upsellTriggerFeedRoleAssignment.json', parameters('_artifactsLocationSasToken')))]"
     }
   },
   "resources": [
@@ -166,6 +177,108 @@
     },
     {
       "apiVersion": "[variables('deploymentApi')]",
+      "name": "deploySLAReportsFunction",
+      "type": "Microsoft.Resources/deployments",
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'deployConnector')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('linkedTemplates').slaReports]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "connectorAIName": {
+            "value": "[reference('deployConnector', variables('deploymentApi')).outputs.aIName.value]"
+          },
+          "connectorName": {
+            "value": "[reference('deployConnector', variables('deploymentApi')).outputs.appName.value]"
+          },
+          "serverfarmName": {
+            "value": "[reference('deployConnector', variables('deploymentApi')).outputs.serverfarmName.value]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "connectorFilesPath": {
+            "value": "[variables('slaReportsFilesPath')]"
+          },
+          "keyVaultUri": {
+            "value": "[reference('deployKeyVault', variables('deploymentApi')).outputs.vaultUri.value]"
+          },
+          "zammadUrl": {
+            "value": "[reference('deployZammad', variables('deploymentApi')).outputs.zammadUrl.value]"
+          },
+          "connectorStorageName": {
+            "value": "[reference('deployConnector', variables('deploymentApi')).outputs.storageName.value]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "[variables('deploymentApi')]",
+      "name": "deployProviderApi",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('linkedTemplates').resourceProviderApi]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "location": {
+            "value": "[reference('deployConnector', variables('deploymentApi')).outputs.region.value]"
+          },
+          "providerFilesPath": {
+            "value": "[variables('providerFilesPath')]"
+          },
+          "keyVaultUri": {
+            "value": "[reference('deployKeyVault', variables('deploymentApi')).outputs.vaultUri.value]"
+          },
+          "zammadUrl": {
+            "value": "[reference('deployZammad', variables('deploymentApi')).outputs.zammadUrl.value]"
+          },
+          "storageName": {
+            "value": "[reference('deployConnector', variables('deploymentApi')).outputs.storageName.value]"
+          },
+          "aIName": {
+            "value": "[reference('deployConnector', variables('deploymentApi')).outputs.aIName.value]"
+          },
+          "serverfarmName": {
+            "value": "[reference('deployConnector', variables('deploymentApi')).outputs.serverfarmName.value]"
+          },
+          "namePrefix": {
+            "value": "[parameters('namePrefix')]"
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-05-10",
+      "name": "deployRoleAssignment",
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'setupZammad')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('linkedTemplates').roleAssignment]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "principalId": {
+            "value": "[reference('deployProviderApi', variables('deploymentApi')).outputs.principalId.value]"
+          },
+          "siteName": {
+            "value": "[variables('siteName')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "[variables('deploymentApi')]",
       "name": "deployKeyVault",
       "type": "Microsoft.Resources/deployments",
       "properties": {
@@ -195,7 +308,8 @@
       "name": "deployKeyVaultPolicies",
       "dependsOn": [
         "[resourceId('Microsoft.Resources/deployments', 'deployKeyVault')]",
-        "[resourceId('Microsoft.Resources/deployments', 'deployConnector')]"
+        "[resourceId('Microsoft.Resources/deployments', 'deployConnector')]",
+        "[resourceId('Microsoft.Resources/deployments', 'deploySLAReportsFunction')]"
       ],
       "type": "Microsoft.Resources/deployments",
       "properties": {
@@ -207,7 +321,8 @@
         "parameters": {
           "apiMsis": {
             "value": [
-              "[reference('deployConnector', variables('deploymentApi')).outputs.principalId.value]"
+              "[reference('deployConnector', variables('deploymentApi')).outputs.principalId.value]",
+              "[reference('deploySLAReportsFunction', variables('deploymentApi')).outputs.principalId.value]"
             ]
           },
           "kvName": {
@@ -262,6 +377,32 @@
     },
     {
       "apiVersion": "[variables('deploymentApi')]",
+      "name": "deployResourceProvider",
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'deployProviderApi')]"
+      ],
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('linkedTemplates').resourceProvider]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "apiName": {
+            "value": "[reference('deployProviderApi', variables('deploymentApi')).outputs.appName.value]"
+          },
+          "webAppId": {
+            "value": "[concat(subscription().id, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Web/sites/', variables('siteName'))]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "[variables('deploymentApi')]",
       "name": "deployDashboard",
       "dependsOn": [
         "[resourceId('Microsoft.Resources/deployments', 'deployZammad')]"
@@ -276,6 +417,78 @@
         "parameters": {
           "zammadUrl": {
             "value": "[reference('deployZammad', variables('deploymentApi')).outputs.zammadUrl.value]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "[variables('deploymentApi')]",
+      "name": "deployUpsellTriggerFeedLogicApp",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('linkedTemplates').upsellTriggerFeedLogicApp]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "namePrefix": {
+            "value": "[parameters('namePrefix')]"
+          },
+          "workflows_feedupsell_name": {
+            "value": "[variables('upsellTriggerFeedLogicAppName')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "[variables('deploymentApi')]",
+      "name": "deployUpsellTriggerFeedRoleAssignment",
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'setupZammad')]"
+      ],
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('linkedTemplates').upsellTriggerFeedRoleAssignment]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "workflows_feedupsell_name": {
+            "value": "[variables('upsellTriggerFeedLogicAppName')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "[variables('deploymentApi')]",
+      "name": "deploySLAWorkbooks",
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'deployZammad')]"
+      ],
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('linkedTemplates').slaWorkbooks]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "appInsightName": {
+            "value": "[reference('deployConnector', variables('deploymentApi')).outputs.connectorAIName.value]"
+          },
+          "rgName": {
+            "value": "[resourceGroup().name]"
+          },
+          "displayName": {
+            "value": "[variables('SLAworkbooksDisplayName')]"
           },
           "location": {
             "value": "[parameters('location')]"

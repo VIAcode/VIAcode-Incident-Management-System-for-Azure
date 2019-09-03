@@ -37,7 +37,7 @@
       "properties": {
         "status": "Enabled",
         "type": "ActionGroup",
-        "description": "VIACode Incident Management Action Rule",
+        "description": "VIAcode Incident Management System for Azure Action Rule",
         "actionGroupId": "[resourceId('Microsoft.Insights/ActionGroups', variables('agName'))]"
       }
     },
@@ -68,7 +68,7 @@
           ]
         },
         "enabled": true,
-        "description": "VIACode Incident Management Service Health alert rule"
+        "description": "VIAcode Incident Management System for Azure Service Health Alert Rule"
       },
       "dependsOn": []
     }

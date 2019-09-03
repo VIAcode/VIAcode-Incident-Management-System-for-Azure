@@ -14,7 +14,7 @@
             "type": "Microsoft.Common.InfoBox",
             "visible": true,
             "options": {
-              "text": "VIAcode-Incident-Management-System",
+              "text": "VIAcode-Incident-Management-System-for-Azure",
               "icon": "Info"
             }
           }
@@ -27,7 +27,7 @@
         "name": "applicationSettings",
         "label": "Settings",
         "subLabel": {
-          "preValidation": "Provide VIAcode Incident Management parameters",
+          "preValidation": "Provide VIAcode Incident Management System for Azure parameters",
           "postValidation": "Done"
         },
         "bladeTitle": "Settings",
@@ -48,7 +48,7 @@
             "name": "userName",
             "type": "Microsoft.Common.TextBox",
             "label": "Email",
-            "toolTip": "VIAcode Incident Management administrator email",
+            "toolTip": "VIAcode Incident Management System for Azure administrator email",
             "constraints": {
               "required": true,
               "regex": "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$",
@@ -63,7 +63,7 @@
               "password": "Password",
               "confirmPassword": "Confirm password"
             },
-            "toolTip": "VIAcode Incident Management administrator password",
+            "toolTip": "VIAcode Incident Management System for Azure administrator password",
             "constraints": {
               "required": true,
               "regex": ".{3,}",
@@ -88,7 +88,7 @@
             "type": "Microsoft.Common.OptionsGroup",
             "label": "Azure AD Integration",
             "defaultValue": "Disabled",
-            "toolTip": "Enable or disable VIAcode Incident Management Azure AD integration",
+            "toolTip": "Enable or disable Azure AD integration for VIAcode Incident Management System for Azure",
             "constraints": {
               "allowedValues": [
                 {
@@ -108,7 +108,7 @@
             "name": "aadAppRegistrationName",
             "type": "Microsoft.Common.TextBox",
             "label": "Azure AD Application Registration ID",
-            "toolTip": "Application Registration ID that VIAcode Incident Management will use to integrate into Azure AD",
+            "toolTip": "Application Registration ID that VIAcode Incident Management System for Azure will use to integrate into Azure AD",
             "constraints": {
               "required": false,
               "regex": "^[a-z0-9A-Z]{8}-([a-z0-9A-Z]{4}-){3}[a-z0-9A-Z]{12}$",

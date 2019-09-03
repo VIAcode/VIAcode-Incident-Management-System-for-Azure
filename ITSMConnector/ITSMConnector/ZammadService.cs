@@ -96,7 +96,11 @@ namespace ITSMConnector
                 case MonitoringService.ApplicationInsights:
                     ticketArticle = CreateApplicationInsightsArticle(alert.Data.AlertContext);
                     break;
-                case MonitoringService.ActivityLog:
+                case MonitoringService.Administrative:
+                case MonitoringService.Autoscale:
+                case MonitoringService.Policy:
+                case MonitoringService.Recomendation:
+                case MonitoringService.Security:
                     ticketArticle = CreateActivityLogArticle(alert.Data.AlertContext);
                     break;
                 case MonitoringService.ServiceHealth:
@@ -233,12 +237,9 @@ namespace ITSMConnector
         private static TicketArticle CreateActivityLogArticle(AlertContext context) => new TicketArticle
         {
             Subject = context.OperationName,
-            Body = $"Authorization: \n" +
-                   $"Action: {context.Authorization.Action} \n" +
-                   $"Scope: {context.Authorization.Scope} \n\n" +
-                   $"Level: {context.Level} \n" +
+            Body = $"Level: {context.Level} \n" +
+                   $"Event Source: {context.EventSource} \n" +
                    $"Status: {context.Status} \n" +
-                   $"Caller: {context.Caller} \n" +
                    $"Event Time: {context.EventTimestamp.ToString(DateTimeFormat)}",
             Type = "note"
         };

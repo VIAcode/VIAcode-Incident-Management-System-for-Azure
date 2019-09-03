@@ -77,7 +77,19 @@ namespace ITSMConnector
                     MonitoringService = MonitoringService.ApplicationInsights;
                     break;
                 case "Activity Log - Administrative":
-                    MonitoringService = MonitoringService.ActivityLog;
+                    MonitoringService = MonitoringService.Administrative;
+                    break;
+                case "Activity Log - Autoscale":
+                    MonitoringService = MonitoringService.Autoscale;
+                    break;
+                case "Activity Log - Policy":
+                    MonitoringService = MonitoringService.Policy;
+                    break;
+                case "Activity Log - Recomendation":
+                    MonitoringService = MonitoringService.Recomendation;
+                    break;
+                case "Activity Log - Security":
+                    MonitoringService = MonitoringService.Security;
                     break;
                 case "ServiceHealth":
                     MonitoringService = MonitoringService.ServiceHealth;
@@ -355,7 +367,11 @@ namespace ITSMConnector
         Platform,
         LogAnalytics,
         ApplicationInsights,
-        ActivityLog,
+        Administrative,
+        Autoscale,
+        Policy,
+        Recomendation,
+        Security,
         ServiceHealth,
         ResourceHealth
     }

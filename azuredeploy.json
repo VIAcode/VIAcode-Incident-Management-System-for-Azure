@@ -35,7 +35,7 @@
     },
     "displayName": {
       "type": "string",
-      "defaultValue": "VIAcode Azure Incident Management System",
+      "defaultValue": "VIAcode Incident Management System for Azure",
       "metadata": {
         "description": "Display name for the managed application"
       }
