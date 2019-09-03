@@ -2,8 +2,8 @@
 
 The VIAcode Incident Management System for Azure is a robust incident management tool that fully integrates into an Azure environment helping to prioritize, simplify and streamline management of your Azure operations. [Read more](https://www.viacode.com/viacode-incident-management-system/)
 
-[![Deploy to Azure](https://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FVIAcode%2FVIAcode-Incident-Management-System-for-Azuret%develop%2Fazuredeploy.json)
-[![Visualize](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.png)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2FVIAcode%2FVIAcode-Incident-Management-System-for-Azure%develop%2FZammad%2FAppService%2FmainTemplate.json)
+[![Deploy to Azure](https://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FVIAcode%2FVIAcode-Incident-Management-System-for-Azure%2Fdevelop%2Fazuredeploy.json)
+[![Visualize](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.png)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2FVIAcode%2FVIAcode-Incident-Management-System-for-Azure%2Fdevelop%2FZammad%2FAppService%2FmainTemplate.json)
 
 `Tags: VIAcode, Azure Managed application, Incident Management, Docker`
 
