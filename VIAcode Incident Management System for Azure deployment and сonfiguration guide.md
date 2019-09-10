@@ -2,6 +2,7 @@
 <!-- TOC -->
 - [Before you begin](#before-you-begin)
   - [Deploy to Azure button](#deploy-to-azure-button)
+    - [Pricing](#pricing)
 
 - [Configuration of VIAcode Incident Management System for Azure](#Configuration-of-viacode-incident-management-system-for-azure)
   - [Basics](#basics)
@@ -32,7 +33,7 @@
 
 ## Before you begin
 
-Verify that your account user type is not Guest in chosen tentant.
+Verify that your account user type is not Guest in chosen tenant.
 
 - Sign in to the [Azure portal](https://portal.azure.com/).
 - Select "Azure Active Directory", select "Users".
@@ -55,6 +56,10 @@ Verify that your account user type is not Guest in chosen tentant.
 - Agree to terms and conditions.
 - Press "Purchase" button.
 
+### Pricing
+
+The total cost of running VIAcode Incident Management System on Azure is a combination of the selected software plan and cost of the Azure infrastructure on which you will be running it. The Azure infrastructure cost might vary with regards to the region, type of subscription and other discounts.
+
 ## Configuration of VIAcode Incident Management System for Azure
 
 When you have Managed App Definition installed run it to create VIAcode Incident Management System for Azure.
@@ -65,7 +70,8 @@ When you have Managed App Definition installed run it to create VIAcode Incident
 
 - Choose a subscription to deploy the management application.
 - Create a new Resource Group.
-- Select a location.
+- Select a region.
+- Provide a name for your application's managed resource group.
 - Press "Next : Settings >" button.
 
 ## Settings
@@ -143,20 +149,23 @@ In order to configure alert state synchronization please assign the VIAcode Inci
 - Click "Access control (IAM)."
 - "Add" > "Add role assignment."
 
-  - Role: Monitoring Contributor.
-  - Assign access to: Function App.
+  - Role: 'Monitoring Contributor'.
+  - Assign access to: 'Azure AD user, group, or service principal'.
   - Subscription: Your Subscription.
-  - Select: Function app for VIAcode Incident Management System for Azure
+  - Select: Function app name for VIAcode Incident Management System for Azure.*
   - "Save."
+
+ *(Function app name equals connectorName, can be copied from 'Parameters and Outputs' of the installed managed application)
+  ![Connector name](./media/connectorName.png)  
 
 You can also execute the following PS script:
 
 ```powershell
-New-AzRoleAssignment -ObjectId (Get-AzADServicePrincipal -SearchString '{APP_PREFIX}').Id -RoleDefinitionName 'Monitoring Contributor' -Scope '/subscriptions/{SUBSCRIPTION_ID}';
+New-AzRoleAssignment -ObjectId (Get-AzADServicePrincipal -SearchString '{CONNECTOR_NAME}').Id -RoleDefinitionName 'Monitoring Contributor' -Scope '/subscriptions/{SUBSCRIPTION_ID}';
 ```
 
-APP_PREFIX - the prefix you provided on the solution deployment.  
 SUBSCRIPTION_ID - ID of a monitored subscription.  
+CONNECTOR_NAME - The CONNECTOR_NAME can be copied from 'Parameters and Outputs' of the installed managed application.
 
 If you have multiple subscriptions, execute the script for each of them.
 
@@ -174,7 +183,51 @@ If you have multiple subscriptions, execute the script for each of them.
 
 When you Log in to VIAcode Incident Management System for Azure as administrator please configure email notification.
 
-Email configuration required for enabling following functionality:
+![Notification Sender](./media/Notification&#32;Sender.png)
+
+- Click "Cogwheel" in the lest bottom corner.
+- Click "Email" in Channels section.
+- Click "Settings".
+- Enter sender name and email in angle brackets in Notification Sender section like it is shown in the screenshot.
+- Click "Submit".
+
+![Email Notification](./media/Email&#32;Notification.png)
+
+- Click "Accounts".
+- Click "Edit" in Email Notification section.
+- Select "SMTP - configure your own outgoing SMTP settings" in Send Mails via.
+- Fill Host with `outlook.office365.com` for office 365 accounts.
+- Fill User with the account you will you use for email notification.
+- Fill Password.
+- Default port for SMTP is 587.
+- Click "Continue" button.
+
+![New email Accounts and Experts](./media/New&#32;email&#32;Accounts&#32;and&#32;Experts.png)
+
+- Click "New" button in Email Accounts section.
+- Fill Organization & Department Name.
+- Fill Email with the account you will you use for email notification.
+- Select "Users" in Destination Group.
+- Click "Experts" link.
+
+![Email Inbound](./media/Email&#32;Inbound.png)
+
+- Select "IMAP" Type.
+- Fill Host with `outlook.office365.com` for office 365 accounts.
+- Fill User with the account you will you use for email notification.
+- Fill Password.
+- Default port for IMAP is 993.
+- Click "Continue" button.
+
+![Email Outbound](./media/Email&#32;Outbound.png)
+
+- Check settings.
+- Default port for SMTP is 587.
+- Click "Continue" button.
+
+### Notes
+
+Email configuration is required for enabling following functionality:
 
 - Send system account notifications - signup, password reset, password change.
 - Register incoming emails as tickets (incoming mail).
@@ -182,22 +235,16 @@ Email configuration required for enabling following functionality:
 - Use triggers to inform clients about ticket creation, status changes.
 - Agent communication with clients by email (using built in web or regular mail client).
 
-For current email set up documentation see [e-mail](https://zammad-admin-documentation.readthedocs.io/en/latest/channels-email.html).
-
 It is important to note that after deployment, by default, email profiles are not created. Client has to set up email for VIAcode Incident Management System for Azure manually.
 
 In general, VIAcode Incident Management System for Azure best practice is to create new dedicated empty mail account in company mail system. VIAcode Incident Management System for Azure usually can auto-detect settings, so nothing apart email and password is required.
 
-For Office 365, use host: outlook.office365.com port 587.
-
-Protocols used in email communication by VIAcode Incident Management System for Azure are IMAPS and SMTPS.
-
-### Notes
-
 - Google blocks access to the email from non-google devices by default, so you have to adjust security settings.
 - Do not add your work email, VIAcode Incident Management System for Azure will register all emails there and send notification response to each.
 - Do not use shared mailbox in Office 365, VIAcode Incident Management System for Azure can not log into it.
-- Do not use mailbox that forward mails, VIAcode Incident Management System for Azure will unable to read his own test email.
+- Do not use mailbox that forwards mails, VIAcode Incident Management System for Azure will be unable to read its own test email.
+
+For current email set up documentation see [e-mail](https://zammad-admin-documentation.readthedocs.io/en/latest/channels-email.html).
 
 ## Technical details
 
@@ -275,7 +322,7 @@ Download or clone VIAcode-Incident-Management-System-for-Azure repository.
 
 VIAcode Incident Management System for Azure solution contains functions apps that should be built. You need Visual Studio 2017 version 15.4 or later with .Net Core SDK and Azure Development Tools for Visual Studio installed.
 
-Run the following script from VIAcode-Incident-Management-System-for-Azure project folder to get the package:
+Copy this script to new .ps1 file and Run from VIAcode-Incident-Management-System-for-Azure project folder to get the package:
 
 ```powershell
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -355,7 +402,7 @@ $appId = (Get-AzADServicePrincipal -ServicePrincipalName 'a0778614-7329-40be-a67
 
 #Get user ID
 New-AzManagedApplicationDefinition `
-  -Name "VIAcodeIncidentManagementSystem" `
+  -Name "VIAcode-Incident-Management-System-for-Azure" `
   -Location "Central US" `
   -ResourceGroupName "VIMS" `
   -LockLevel ReadOnly `

@@ -88,7 +88,7 @@
             "type": "Microsoft.Common.OptionsGroup",
             "label": "Azure AD Integration",
             "defaultValue": "Disabled",
-            "toolTip": "Enable or disable Azure AD integration for VIAcode Incident Management System for Azure",
+            "toolTip": "Enable or disable Azure AD integration for VIAcode Incident Management System for Azure",
             "constraints": {
               "allowedValues": [
                 {
