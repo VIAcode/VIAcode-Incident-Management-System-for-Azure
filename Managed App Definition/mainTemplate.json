@@ -1,0 +1,743 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "type": "string"
+    },
+    "namePrefix": {
+      "type": "string",
+      "maxLength": 24,
+      "metadata": {
+        "description": "Naming prefix for each new resource created. 8-char max, lowercase alphanumeric"
+      },
+      "defaultValue": ""
+    },
+    "userName": {
+      "type": "string",
+      "defaultValue": ""
+    },
+    "password": {
+      "type": "securestring",
+      "defaultValue": ""
+    },
+    "aadAppRegistrationName": {
+      "type": "string",
+      "defaultValue": ""
+    },
+    "appRegistrationSecret": {
+      "type": "securestring",
+      "defaultValue": ""
+    },
+    "_artifactsLocation": {
+      "type": "string",
+      "metadata": {
+        "description": "The base URI where artifacts required by this template are located including a trailing '/'"
+      },
+      "defaultValue": "[deployment().properties.templateLink.uri]"
+    },
+    "_artifactsLocationSasToken": {
+      "type": "securestring",
+      "metadata": {
+        "description": "The sasToken required to access _artifactsLocation.  When the template is deployed using the accompanying scripts, a sasToken will be automatically generated. Use the defaultValue if the staging location is not secured."
+      },
+      "defaultValue": ""
+    }
+  },
+  "variables": {
+    "deploymentApiVersion": "2018-02-01",
+    "connectorFilesPath": "[uri(parameters('_artifactsLocation'), concat('connector.zip', parameters('_artifactsLocationSasToken')))]",
+    "providerFilesPath": "[uri(parameters('_artifactsLocation'), concat('providerApi.zip', parameters('_artifactsLocationSasToken')))]",
+    "linkedTemplates": {
+      "functionAppInfra": {
+        "keyVault": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/functionAppInfra/keyVault.json', parameters('_artifactsLocationSasToken')))]",
+        "sharedResources": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/functionAppInfra/sharedResources.json', parameters('_artifactsLocationSasToken')))]"
+      },
+      "itsmApp": {
+        "CreateAdminAndEnableAuthViaOffice365Runbook": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/itsmApp/CreateAdminAndEnableAuthViaOffice365Runbook.ps1', parameters('_artifactsLocationSasToken')))]",
+        "vimsApp": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/itsmApp/vimsApp.json', parameters('_artifactsLocationSasToken')))]",
+        "vimsSetup": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/itsmApp/vimsSetup.json', parameters('_artifactsLocationSasToken')))]"
+      },
+      "itsmConnector": {
+        "actions": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/itsmConnector/actions.json', parameters('_artifactsLocationSasToken')))]",
+        "connector": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/itsmConnector/connector.json', parameters('_artifactsLocationSasToken')))]"
+      },
+      "reports": {
+        "dashboard": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/reports/dashboard.json', parameters('_artifactsLocationSasToken')))]",
+        "slaWorkbooks": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/reports/slaWorkbooks.json', parameters('_artifactsLocationSasToken')))]"
+      },
+      "resourceProvider": {
+        "resourceProvider": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/resourceProvider/resourceProvider.json', parameters('_artifactsLocationSasToken')))]",
+        "resourceProviderApi": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/resourceProvider/resourceProviderApi.json', parameters('_artifactsLocationSasToken')))]"
+      },
+      "upsell": {
+        "alerts": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/upsell/alerts.json', parameters('_artifactsLocationSasToken')))]",
+        "upsellTriggerFeedLogicApp": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/upsell/upsellTriggerFeedLogicApp.json', parameters('_artifactsLocationSasToken')))]"
+      },
+      "bunch_functionAppInfra": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/bunch.functionAppInfra.json', parameters('_artifactsLocationSasToken')))]",
+      "bunch_itsmApp": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/bunch.itsmApp.json', parameters('_artifactsLocationSasToken')))]",
+      "bunch_itsmConnector": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/bunch.itsmConnector.json', parameters('_artifactsLocationSasToken')))]",
+      "bunch_reports": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/bunch.reports.json', parameters('_artifactsLocationSasToken')))]",
+      "bunch_resourceProvider": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/bunch.resourceProvider.json', parameters('_artifactsLocationSasToken')))]",
+      "bunch_upsell": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/bunch.upsell.json', parameters('_artifactsLocationSasToken')))]",
+      "keyVaultPolicies": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/keyVaultPolicies.json', parameters('_artifactsLocationSasToken')))]",
+      "roleAssignment": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/roleAssignment.json', parameters('_artifactsLocationSasToken')))]"
+    },
+    "regions": {
+      "centralus": {
+        "geo": "unitedstates",
+        "pairedRegions": [
+          "eastus2",
+          "eastus"
+        ]
+      },
+      "eastus2": {
+        "geo": "unitedstates",
+        "pairedRegions": [
+          "centralus",
+          "eastus"
+        ]
+      },
+      "eastus": {
+        "geo": "unitedstates",
+        "pairedRegions": [
+          "westus"
+        ]
+      },
+      "northcentralus": {
+        "geo": "unitedstates",
+        "pairedRegions": [
+          "southcentralus"
+        ]
+      },
+      "southcentralus": {
+        "geo": "unitedstates",
+        "pairedRegions": [
+          "northcentralus"
+        ]
+      },
+      "westus2": {
+        "geo": "unitedstates",
+        "pairedRegions": [
+          "westcentralus"
+        ]
+      },
+      "westcentralus": {
+        "geo": "unitedstates",
+        "pairedRegions": [
+          "westus2"
+        ]
+      },
+      "westus": {
+        "geo": "unitedstates",
+        "pairedRegions": [
+          "eastus"
+        ]
+      },
+      "canadacentral": {
+        "geo": "canada",
+        "pairedRegions": [
+          "canadaeast"
+        ]
+      },
+      "canadaeast": {
+        "geo": "canada",
+        "pairedRegions": [
+          "canadacentral"
+        ]
+      },
+      "brazilsouth": {
+        "geo": "brazil",
+        "pairedRegions": [
+          "southcentralus"
+        ]
+      },
+      "eastasia": {
+        "geo": "asiapacific",
+        "pairedRegions": [
+          "southeastasia"
+        ]
+      },
+      "southeastasia": {
+        "geo": "asiapacific",
+        "pairedRegions": [
+          "eastasia"
+        ]
+      },
+      "australiacentral": {
+        "geo": "australia",
+        "pairedRegions": [
+          "australiacentral2",
+          "australiaeast"
+        ]
+      },
+      "australiacentral2": {
+        "geo": "australia",
+        "pairedRegions": [
+          "australiacentral",
+          "australiaeast"
+        ]
+      },
+      "australiaeast": {
+        "geo": "australia",
+        "pairedRegions": [
+          "australiasoutheast"
+        ]
+      },
+      "australiasoutheast": {
+        "geo": "australia",
+        "pairedRegions": [
+          "australiaeast"
+        ]
+      },
+      "chinaeast": {
+        "geo": "china",
+        "pairedRegions": [
+          "chinanorth",
+          "chinaeast2"
+        ]
+      },
+      "chinanorth": {
+        "geo": "china",
+        "pairedRegions": [
+          "chinaeast",
+          "chinaeast2"
+        ]
+      },
+      "chinaeast2": {
+        "geo": "china",
+        "pairedRegions": [
+          "chinanorth2"
+        ]
+      },
+      "chinanorth2": {
+        "geo": "china",
+        "pairedRegions": [
+          "chinaeast2"
+        ]
+      },
+      "centralindia": {
+        "geo": "india",
+        "pairedRegions": [
+          "southindia"
+        ]
+      },
+      "southindia": {
+        "geo": "india",
+        "pairedRegions": [
+          "centralindia"
+        ]
+      },
+      "westindia": {
+        "geo": "india",
+        "pairedRegions": [
+          "southindia",
+          "centralindia"
+        ]
+      },
+      "japaneast": {
+        "geo": "japan",
+        "pairedRegions": [
+          "japanwest"
+        ]
+      },
+      "japanwest": {
+        "geo": "japan",
+        "pairedRegions": [
+          "japaneast"
+        ]
+      },
+      "koreacentral": {
+        "geo": "korea",
+        "pairedRegions": [
+          "koreasouth"
+        ]
+      },
+      "koreasouth": {
+        "geo": "korea",
+        "pairedRegions": [
+          "koreacentral"
+        ]
+      },
+      "northeurope": {
+        "geo": "europe",
+        "pairedRegions": [
+          "westeurope"
+        ]
+      },
+      "westeurope": {
+        "geo": "europe",
+        "pairedRegions": [
+          "northeurope"
+        ]
+      },
+      "francecentral": {
+        "geo": "france",
+        "pairedRegions": [
+          "francesouth"
+        ]
+      },
+      "francesouth": {
+        "geo": "france",
+        "pairedRegions": [
+          "francecentral"
+        ]
+      },
+      "uksouth": {
+        "geo": "unitedkingdom",
+        "pairedRegions": [
+          "ukwest"
+        ]
+      },
+      "ukwest": {
+        "geo": "unitedkingdom",
+        "pairedRegions": [
+          "uksouth"
+        ]
+      },
+      "germanycentral": {
+        "geo": "germany",
+        "pairedRegions": [
+          "germanynortheast"
+        ]
+      },
+      "germanynortheast": {
+        "geo": "germany",
+        "pairedRegions": [
+          "germanycentral"
+        ]
+      },
+      "germanywestcentral": {
+        "geo": "germany",
+        "pairedRegions": []
+      },
+      "germanynorth": {
+        "geo": "germany",
+        "pairedRegions": []
+      },
+      "switzerlandwest": {
+        "geo": "switzerland",
+        "pairedRegions": []
+      },
+      "switzerlandnorth": {
+        "geo": "switzerland",
+        "pairedRegions": []
+      },
+      "norwaywest": {
+        "geo": "norway",
+        "pairedRegions": []
+      },
+      "norwayeast": {
+        "geo": "norway",
+        "pairedRegions": []
+      },
+      "southafricanorth": {
+        "geo": "africa",
+        "pairedRegions": []
+      },
+      "southafricawest": {
+        "geo": "africa",
+        "pairedRegions": []
+      },
+      "uaenorth": {
+        "geo": "unitedarabemirates",
+        "pairedRegions": []
+      },
+      "uaecentral": {
+        "geo": "unitedarabemirates",
+        "pairedRegions": []
+      },
+      "usdodcentral": {
+        "geo": "azuregovernment",
+        "pairedRegions": [
+          "usdodeast",
+          "usgovvirginia"
+        ]
+      },
+      "usdodeast": {
+        "geo": "azuregovernment",
+        "pairedRegions": [
+          "usdodcentral",
+          "usgovvirginia"
+        ]
+      },
+      "usgovarizona": {
+        "geo": "azuregovernment",
+        "pairedRegions": [
+          "usgovtexas",
+          "usgovvirginia"
+        ]
+      },
+      "usgoviowa": {
+        "geo": "azuregovernment",
+        "pairedRegions": [
+          "usgovvirginia"
+        ]
+      },
+      "usgovtexas": {
+        "geo": "azuregovernment",
+        "pairedRegions": [
+          "usgovarizona",
+          "usgovvirginia"
+        ]
+      },
+      "usgovvirginia": {
+        "geo": "azuregovernment",
+        "pairedRegions": [
+          "usgovtexas"
+        ]
+      },
+      "ussecwest": {
+        "geo": "azuregovernment",
+        "pairedRegions": []
+      },
+      "usseceast": {
+        "geo": "azuregovernment",
+        "pairedRegions": []
+      }
+    },
+    "pairedLocation": "[first(variables('regions')[parameters('location')].pairedRegions)]"
+  },
+  "resources": [
+    //Tracking GUID
+    {
+      "apiVersion": "[variables('deploymentApiVersion')]",
+      "name": "pid-a6eb1592-4217-5ddd-aa58-683a38abd54d",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": []
+        }
+      }
+    },
+
+    //Function App Infrastructure
+    {
+      "apiVersion": "[variables('deploymentApiVersion')]",
+      "name": "deployFunctionAppInfra",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('linkedTemplates').bunch_functionAppInfra]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "namePrefix": {
+            "value": "[parameters('namePrefix')]"
+          },
+          "linkedTemplates": {
+            "value": "[variables('linkedTemplates')]"
+          },
+          "location": {
+            "value": "[variables('pairedLocation')]"
+          },
+          "vimsUserName": {
+            "value": "[parameters('userName')]"
+          },
+          "vimsPassword": {
+            "value": "[parameters('password')]"
+          }
+        }
+      }
+    },
+
+    //VIMS App
+    {
+      "apiVersion": "[variables('deploymentApiVersion')]",
+      "name": "deployItsmApp",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('linkedTemplates').bunch_itsmApp]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "namePrefix": {
+            "value": "[parameters('namePrefix')]"
+          },
+          "linkedTemplates": {
+            "value": "[variables('linkedTemplates')]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "vimsAdminUserName": {
+            "value": "[parameters('userName')]"
+          },
+          "vimsAdminPassword": {
+            "value": "[parameters('password')]"
+          },
+          "azureApplicationId": {
+            "value": "[parameters('aadAppRegistrationName')]"
+          },
+          "azureApplicationSecretKey": {
+            "value": "[parameters('appRegistrationSecret')]"
+          }
+        }
+      }
+    },
+
+    //Connector
+    {
+      "apiVersion": "[variables('deploymentApiVersion')]",
+      "name": "deployItsmConnector",
+      "type": "Microsoft.Resources/deployments",
+      "dependsOn": [
+        "deployFunctionAppInfra",
+        "deployItsmApp"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('linkedTemplates').bunch_itsmConnector]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "namePrefix": {
+            "value": "[parameters('namePrefix')]"
+          },
+          "linkedTemplates": {
+            "value": "[variables('linkedTemplates')]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "connectorFilesPath": {
+            "value": "[variables('connectorFilesPath')]"
+          },
+          "storageName": {
+            "value": "[reference('deployFunctionAppInfra', variables('deploymentApiVersion')).outputs.storageName.value]"
+          },
+          "aiName": {
+            "value": "[reference('deployFunctionAppInfra', variables('deploymentApiVersion')).outputs.aiName.value]"
+          },
+          "serverfarmName": {
+            "value": "[reference('deployFunctionAppInfra', variables('deploymentApiVersion')).outputs.serverfarmName.value]"
+          },
+          "keyVaultUri": {
+            "value": "[reference('deployFunctionAppInfra', variables('deploymentApiVersion')).outputs.vaultUri.value]"
+          },
+          "vimsUrl": {
+            "value": "[reference('deployItsmApp', variables('deploymentApiVersion')).outputs.vimsUrl.value]"
+          }
+        }
+      }
+    },
+
+    //Reports
+    {
+      "apiVersion": "[variables('deploymentApiVersion')]",
+      "name": "deployReports",
+      "type": "Microsoft.Resources/deployments",
+      "dependsOn": [
+        "deployFunctionAppInfra",
+        "deployItsmApp"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('linkedTemplates').bunch_reports]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "namePrefix": {
+            "value": "[parameters('namePrefix')]"
+          },
+          "linkedTemplates": {
+            "value": "[variables('linkedTemplates')]"
+          },
+          "location": {
+            "value": "[variables('pairedLocation')]"
+          },
+          "appInsightName": {
+            "value": "[reference('deployFunctionAppInfra', variables('deploymentApiVersion')).outputs.aiName.value]"
+          },
+          "vimsUrl": {
+            "value": "[reference('deployItsmApp', variables('deploymentApiVersion')).outputs.vimsUrl.value]"
+          }
+        }
+      }
+    },
+
+    //Resource Provider
+    {
+      "apiVersion": "[variables('deploymentApiVersion')]",
+      "name": "deployResourceProviderBunch",
+      "type": "Microsoft.Resources/deployments",
+      "dependsOn": [
+        "deployFunctionAppInfra",
+        "deployItsmApp"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('linkedTemplates').bunch_resourceProvider]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "namePrefix": {
+            "value": "[parameters('namePrefix')]"
+          },
+          "linkedTemplates": {
+            "value": "[variables('linkedTemplates')]"
+          },
+          "location": {
+            "value": "[variables('pairedLocation')]"
+          },
+          "providerFilesPath": {
+            "value": "[variables('providerFilesPath')]"
+          },
+          "keyVaultUri": {
+            "value": "[reference('deployFunctionAppInfra', variables('deploymentApiVersion')).outputs.vaultUri.value]"
+          },
+          "vimsUrl": {
+            "value": "[reference('deployItsmApp', variables('deploymentApiVersion')).outputs.vimsUrl.value]"
+          },
+          "vimsAppId": {
+            "value": "[reference('deployItsmApp', variables('deploymentApiVersion')).outputs.vimsUrl.value]"
+          },
+          "storageName": {
+            "value": "[reference('deployFunctionAppInfra', variables('deploymentApiVersion')).outputs.storageName.value]"
+          },
+          "aiName": {
+            "value": "[reference('deployFunctionAppInfra', variables('deploymentApiVersion')).outputs.aiName.value]"
+          },
+          "serverfarmName": {
+            "value": "[reference('deployFunctionAppInfra', variables('deploymentApiVersion')).outputs.serverfarmName.value]"
+          }
+        }
+      }
+    },
+
+    //Upsell
+    {
+      "apiVersion": "[variables('deploymentApiVersion')]",
+      "name": "deployUpsell",
+      "type": "Microsoft.Resources/deployments",
+      "dependsOn": [
+        "deployFunctionAppInfra"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('linkedTemplates').bunch_upsell]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "namePrefix": {
+            "value": "[parameters('namePrefix')]"
+          },
+          "linkedTemplates": {
+            "value": "[variables('linkedTemplates')]"
+          },
+          "location": {
+            "value": "[variables('pairedLocation')]"
+          },
+          "aiName": {
+            "value": "[reference('deployFunctionAppInfra', variables('deploymentApiVersion')).outputs.aiName.value]"
+          }
+        }
+      }
+    },
+
+    //KeyVault Policies
+    {
+      "apiVersion": "[variables('deploymentApiVersion')]",
+      "name": "deployKeyVaultPolicies",
+      "dependsOn": [
+        "deployFunctionAppInfra",
+        "deployItsmConnector",
+        "deployResourceProviderBunch"
+      ],
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('linkedTemplates').keyVaultPolicies]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "apiMsis": {
+            "value": [
+              "[reference('deployItsmConnector', variables('deploymentApiVersion')).outputs.principalId.value]",
+              "[reference('deployResourceProviderBunch', variables('deploymentApiVersion')).outputs.principalId.value]"
+            ]
+          },
+          "kvName": {
+            "value": "[reference('deployFunctionAppInfra', variables('deploymentApiVersion')).outputs.vaultName.value]"
+          }
+        }
+      }
+    },
+
+    //RoleAssignments
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "[variables('deploymentApiVersion')]",
+      "name": "deployConnectorRoleAssignment",
+      "dependsOn": [
+        "deployItsmApp",
+        "deployItsmConnector"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('linkedTemplates').roleAssignment]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "principalId": {
+            "value": "[reference('deployItsmConnector', variables('deploymentApiVersion')).outputs.principalId.value]"
+          },
+          "scopeId": {
+            "value": "[resourceGroup().id]"
+          },
+          "roleId": {
+            "value": "de139f84-1756-47ae-9be6-808fbbe84772"
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "[variables('deploymentApiVersion')]",
+      "name": "deployUpsellRoleAssignment",
+      "dependsOn": [
+        "deployUpsell"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('linkedTemplates').roleAssignment]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "principalId": {
+            "value": "[reference('deployUpsell', variables('deploymentApiVersion')).outputs.logicAppPrincipalId.value]"
+          },
+          "scopeId": {
+            "value": "[resourceGroup().id]"
+          },
+          "roleId": {
+            "value": "749f88d5-cbae-40b8-bcfc-e573ddc772fa"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "portalUrl": {
+      "type": "string",
+      "value": "[reference('deployItsmApp', variables('deploymentApiVersion')).outputs.vimsUrl.value]"
+    },
+    "connectorName": {
+      "type": "string",
+      "value": "[reference('deployItsmConnector', variables('deploymentApiVersion')).outputs.connectorName.value]"
+    }
+  }
+}

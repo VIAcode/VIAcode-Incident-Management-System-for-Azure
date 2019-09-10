@@ -85,8 +85,8 @@ namespace ITSMConnector
                 case "Activity Log - Policy":
                     MonitoringService = MonitoringService.Policy;
                     break;
-                case "Activity Log - Recomendation":
-                    MonitoringService = MonitoringService.Recomendation;
+                case "Activity Log - Recommendation":
+                    MonitoringService = MonitoringService.Recommendation;
                     break;
                 case "Activity Log - Security":
                     MonitoringService = MonitoringService.Security;
@@ -253,6 +253,36 @@ namespace ITSMConnector
         public string IsHIR;
         [DataMember(Name = "version")]
         public string Version;
+        [DataMember(Name = "oldInstancesCount")]
+        public string OldInstancesCount;
+        [DataMember(Name = "newInstancesCount")]
+        public string NewInstancesCount;
+        [DataMember(Name = "lastScaleActionTime")]
+        public string LastScaleActionTime;
+        [DataMember(Name = "isComplianceCheck")]
+        public string IsComplianceCheck;
+        [DataMember(Name = "resourceLocation")]
+        public string ResourceLocation;
+        [DataMember(Name = "threatStatus")]
+        public string ThreatStatus;
+        [DataMember(Name = "category")]
+        public string Category;
+        [DataMember(Name = "filePath")]
+        public string FilePath;
+        [DataMember(Name = "threatID")]
+        public string ThreatID;
+        [DataMember(Name = "protectionType")]
+        public string ProtectionType;
+        [DataMember(Name = "actionTaken")]
+        public string ActionTaken;
+        [DataMember(Name = "resourceType")]
+        public string ResourceType;
+        [DataMember(Name = "compromisedEntity")]
+        public string CompromisedEntity;
+        [DataMember(Name = "remediationSteps")]
+        public string RemediationSteps;
+        [DataMember(Name = "attackedResourceType")]
+        public string AttackedResourceType;
 
         [OnDeserialized]
         void OnDeserialized(StreamingContext context)
@@ -337,20 +367,13 @@ namespace ITSMConnector
     [DataContract(Name = "allOf")]
     public class AllOf
     {
-        [DataMember(Name = "metricName")]
-        public string MetricName;
-        [DataMember(Name = "metricNamespace")]
-        public string MetricNamespace;
-        [DataMember(Name = "operator")]
-        public string Operator;
-        [DataMember(Name = "threshold")]
-        public int Threshold;
-        [DataMember(Name = "timeAggregation")]
-        public string TimeAggregation;
-        [DataMember(Name = "dimensions")]
-        List<Dimensions> Dimensions;
-        [DataMember(Name = "metricValue")]
-        public decimal MetricValue;
+        [DataMember(Name = "metricName")] public string MetricName;
+        [DataMember(Name = "metricNamespace")] public string MetricNamespace;
+        [DataMember(Name = "operator")] public string Operator;
+        [DataMember(Name = "threshold")] public int Threshold;
+        [DataMember(Name = "timeAggregation")] public string TimeAggregation;
+        [DataMember(Name = "dimensions")] public List<Dimensions> Dimensions;
+        [DataMember(Name = "metricValue")] public decimal MetricValue;
     }
 
     [DataContract(Name = "dimensions")]
@@ -360,6 +383,8 @@ namespace ITSMConnector
         public string Name;
         [DataMember(Name = "value")]
         public string Value;
+
+        public override string ToString() => $"Name:{Name}[Value:{Value}]";
     }
 
     public enum MonitoringService
@@ -370,7 +395,7 @@ namespace ITSMConnector
         Administrative,
         Autoscale,
         Policy,
-        Recomendation,
+        Recommendation,
         Security,
         ServiceHealth,
         ResourceHealth

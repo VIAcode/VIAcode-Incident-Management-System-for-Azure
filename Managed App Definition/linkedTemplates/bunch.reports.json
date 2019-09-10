@@ -1,0 +1,77 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "namePrefix": {
+      "type": "string"
+    },
+    "linkedTemplates": {
+      "type": "object"
+    },
+    "location": {
+      "type": "string"
+    },
+    "appInsightName": {
+      "type": "string"
+    },
+    "vimsUrl": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "deploymentApiVersion": "2018-02-01",
+    "SLAworkbooksDisplayName": "VIMS reports"
+  },
+  "resources": [
+    {
+      "apiVersion": "[variables('deploymentApiVersion')]",
+      "name": "deploySLAWorkbooks",
+      "dependsOn": [],
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[parameters('linkedTemplates').reports.slaWorkbooks]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "appInsightName": {
+            "value": "[parameters('appInsightName')]"
+          },
+          "rgName": {
+            "value": "[resourceGroup().name]"
+          },
+          "displayName": {
+            "value": "[variables('SLAworkbooksDisplayName')]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "[variables('deploymentApiVersion')]",
+      "name": "deployDashboard",
+      "dependsOn": [],
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[parameters('linkedTemplates').reports.dashboard]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "vimsUrl": {
+            "value": "[parameters('vimsUrl')]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+  }
+}

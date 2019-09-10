@@ -1,0 +1,310 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "type": "string"
+    },
+    "namePrefix": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "workspaces_feedupsellla_name": "[concat(parameters('namePrefix'), '-ws-', uniqueString(resourceGroup().id))]",
+    "workflows_feedupsell_name": "[concat(parameters('namePrefix'), 'la-', uniqueString(resourceGroup().id))]",
+    "connections_azureloganalyticsdatacollector_name": "azureloganalyticsdatacollector",
+    "feed_read_url": "https://upsell-trigger-feed-event-manager20190902081017.azurewebsites.net/Home/FeedRead",
+    "workspaceApiVersion": "2015-11-01-preview",
+    "connectionApiVersion": "2016-06-01",
+    "workflowsApiVersion": "2017-07-01"
+  },
+  "resources": [
+    {
+      "type": "microsoft.operationalinsights/workspaces",
+      "apiVersion": "[variables('workspaceApiVersion')]",
+      "name": "[variables('workspaces_feedupsellla_name')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "source": "Azure",
+        "sku": {
+          "name": "pergb2018"
+        },
+        "retentionInDays": 30
+      }
+    },
+    {
+      "type": "Microsoft.Web/connections",
+      "apiVersion": "[variables('connectionApiVersion')]",
+      "name": "[variables('connections_azureloganalyticsdatacollector_name')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "displayName": "Send data to Log Analytics connection",
+        "parameterValues": {
+          "username": "[reference(resourceId('Microsoft.OperationalInsights/workspaces', variables('workspaces_feedupsellla_name')), '2015-11-01-preview').customerId]",
+          "password": "[listKeys(resourceId('Microsoft.OperationalInsights/workspaces', variables('workspaces_feedupsellla_name')), '2015-11-01-preview').primarySharedKey]"
+        },
+        "api": {
+          "id": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', parameters('location'), '/managedApis/', variables('connections_azureloganalyticsdatacollector_name'))]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Logic/workflows",
+      "apiVersion": "[variables('workflowsApiVersion')]",
+      "name": "[variables('workflows_feedupsell_name')]",
+      "location": "[parameters('location')]",
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/connections', variables('connections_azureloganalyticsdatacollector_name'))]"
+      ],
+      "properties": {
+        "state": "Enabled",
+        "definition": {
+          "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {
+            "$connections": {
+              "defaultValue": {},
+              "type": "Object"
+            }
+          },
+          "triggers": {
+            "Recurrence": {
+              "recurrence": {
+                "frequency": "Minute",
+                "interval": 4
+              },
+              "type": "Recurrence"
+            }
+          },
+          "actions": {
+            "Condition": {
+              "actions": {
+                "Condition_2": {
+                  "actions": {
+                    "HTTP_3": {
+                      "runAfter": {},
+                      "type": "Http",
+                      "inputs": {
+                        "authentication": {
+                          "type": "ManagedServiceIdentity"
+                        },
+                        "method": "DELETE",
+                        "uri": "[concat('https://management.azure.com/subscriptions/', subscription().subscriptionId, '/resourcegroups/', resourceGroup().name, '/providers/microsoft.insights/scheduledQueryRules/@{body(''HTTP_5'')?[''tables''][0]?[''rows''][0][0]}?api-version=2018-04-16')]"
+                      }
+                    }
+                  },
+                  "runAfter": {
+                    "HTTP_5": [
+                      "Succeeded",
+                      "Failed"
+                    ]
+                  },
+                  "expression": {
+                    "and": [
+                      {
+                        "equals": [
+                          "@empty(body('HTTP_5')?['tables']?[0]?['rows'])",
+                          false
+                        ]
+                      }
+                    ]
+                  },
+                  "type": "If"
+                },
+                "HTTP_2": {
+                  "runAfter": {
+                    "Condition_2": [
+                      "Succeeded"
+                    ]
+                  },
+                  "type": "Http",
+                  "inputs": {
+                    "authentication": {
+                      "type": "ManagedServiceIdentity"
+                    },
+                    "body": {
+                      "location": "eastus",
+                      "properties": {
+                        "action": {
+                          "aznsAction": {
+                            "actionGroup": []
+                          },
+                          "odata.type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction",
+                          "severity": "@{body('HTTP')['severity']}",
+                          "trigger": {
+                            "threshold": 0,
+                            "thresholdOperator": "GreaterThan"
+                          }
+                        },
+                        "description": "@{body('HTTP')['description']}",
+                        "enabled": "true",
+                        "lastUpdatedTime": "@{utcNow()}",
+                        "provisioningState": "Succeeded",
+                        "schedule": {
+                          "frequencyInMinutes": 5,
+                          "timeWindowInMinutes": 5
+                        },
+                        "source": {
+                          "dataSourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('workspaces_feedupsellla_name'))]",
+                          "query": "CustomEvent_CL",
+                          "queryType": "ResultCount"
+                        }
+                      },
+                      "tags": {
+                        "[concat('hidden-link:', resourceId('Microsoft.OperationalInsights/workspaces', variables('workspaces_feedupsellla_name')))]": "Resource"
+                      }
+                    },
+                    "method": "PUT",
+                    "uri": "[concat('https://management.azure.com/subscriptions/', subscription().subscriptionId, '/resourcegroups/', resourceGroup().name, '/providers/microsoft.insights/scheduledQueryRules/@{body(''HTTP'')[''name'']}?api-version=2018-04-16')]"
+                  }
+                },
+                "HTTP_5": {
+                  "runAfter": {
+                    "Send_Data": [
+                      "Succeeded"
+                    ]
+                  },
+                  "type": "Http",
+                  "inputs": {
+                    "authentication": {
+                      "audience": "https://api.loganalytics.io/",
+                      "type": "ManagedServiceIdentity"
+                    },
+                    "body": {
+                      "query": "CustomEvent_CL | order by TimeGenerated desc | project Name_s"
+                    },
+                    "method": "POST",
+                    "uri": "[concat('https://api.loganalytics.io/v1/workspaces/', reference(resourceId('Microsoft.OperationalInsights/workspaces', variables('workspaces_feedupsellla_name')), '2015-11-01-preview').customerId, '/query')]"
+                  }
+                },
+                "Send_Data": {
+                  "runAfter": {},
+                  "type": "ApiConnection",
+                  "inputs": {
+                    "body": "{\"Id\":\"@{body('HTTP')['id']}\",\"Name\":\"@{body('HTTP')['name']}\"}",
+                    "headers": {
+                      "Log-Type": "CustomEvent"
+                    },
+                    "host": {
+                      "connection": {
+                        "name": "@parameters('$connections')['azureloganalyticsdatacollector']['connectionId']"
+                      }
+                    },
+                    "method": "post",
+                    "path": "/api/logs"
+                  }
+                }
+              },
+              "runAfter": {
+                "Condition_3": [
+                  "Succeeded"
+                ]
+              },
+              "expression": {
+                "or": [
+                  {
+                    "equals": [
+                      "@body('HTTP_6')?['tables'][0]?['rows'][0][0]",
+                      false
+                    ]
+                  },
+                  {
+                    "equals": [
+                      "@empty(body('HTTP_4')?['tables'][0]?['rows'])",
+                      true
+                    ]
+                  }
+                ]
+              },
+              "type": "If"
+            },
+            "Condition_3": {
+              "actions": {
+                "HTTP_4": {
+                  "runAfter": {},
+                  "type": "Http",
+                  "inputs": {
+                    "authentication": {
+                      "audience": "https://api.loganalytics.io/",
+                      "type": "ManagedServiceIdentity"
+                    },
+                    "body": {
+                      "query": "CustomEvent_CL | where Id_g == \"@{body('HTTP')['id']}\""
+                    },
+                    "method": "POST",
+                    "uri": "[concat('https://api.loganalytics.io/v1/workspaces/', reference(resourceId('Microsoft.OperationalInsights/workspaces', variables('workspaces_feedupsellla_name')), '2015-11-01-preview').customerId, '/query')]"
+                  }
+                }
+              },
+              "expression": {
+                "and": [
+                  {
+                    "equals": [
+                      "@body('HTTP_6')?['tables'][0]?['rows'][0][0]",
+                      true
+                    ]
+                  }
+                ]
+              },
+              "runAfter": {
+                "HTTP_6": [
+                  "Succeeded"
+                ]
+              },
+              "type": "If"
+            },
+            "HTTP": {
+              "runAfter": {},
+              "type": "Http",
+              "inputs": {
+                "method": "GET",
+                "uri": "[variables('feed_read_url')]"
+              }
+            },
+            "HTTP_6": {
+              "inputs": {
+                "authentication": {
+                  "audience": "https://api.loganalytics.io/",
+                  "type": "ManagedServiceIdentity"
+                },
+                "body": {
+                  "query": "let hasNonEmptyTable = (T:string) { toscalar( union isfuzzy=true ( table(T) | count as Count ), (print Count=0) | summarize sum(Count) ) > 0 }; let TableName = 'CustomEvent_CL'; print IsPresent=hasNonEmptyTable(TableName)"
+                },
+                "method": "POST",
+                "uri": "[concat('https://api.loganalytics.io/v1/workspaces/', reference(resourceId('Microsoft.OperationalInsights/workspaces', variables('workspaces_feedupsellla_name')), '2015-11-01-preview').customerId, '/query')]"
+              },
+              "runAfter": {
+                "HTTP": [
+                  "Succeeded"
+                ]
+              },
+              "type": "Http"
+            }
+          },
+          "outputs": {
+          }
+        },
+        "parameters": {
+          "$connections": {
+            "value": {
+              "azureloganalyticsdatacollector": {
+                "connectionId": "[resourceId('Microsoft.Web/connections', variables('connections_azureloganalyticsdatacollector_name'))]",
+                "connectionName": "[variables('connections_azureloganalyticsdatacollector_name')]",
+                "id": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', parameters('location'), '/managedApis/', variables('connections_azureloganalyticsdatacollector_name'))]"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "principalId": {
+      "type": "string",
+      "value": "[reference(concat(resourceId('Microsoft.Logic/workflows', variables('workflows_feedupsell_name')), '/providers/Microsoft.ManagedIdentity/Identities/default'), '2015-08-31-PREVIEW').principalId]"
+    }
+  }
+}

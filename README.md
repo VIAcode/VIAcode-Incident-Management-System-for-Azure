@@ -25,7 +25,7 @@ The following resources are deployed as part of the solution
 
 + Click the "Deploy to Azure" button at the beginning of this document to deploy Service catalog managed application definition to Azure portal. After that deploy VIAcode Incident Management System for Azure from the definition on Azure portal.
 + Or follow [this documentation](https://github.com/VIAcode/VIAcode-Incident-Management-System-for-Azure/blob/develop/VIAcode%20Incident%20Management%20System%20for%20Azure%20deployment%20and%20сonfiguration%20guide.md) to build the solution from source code and deploy manually.
-+ To automatically deploy connector for VIAcode Incident Management System for Azure to multiple subscriptions download ConnectorAutoDeployment folder, run DeployConnectorToMultipleSubscripitons.ps1 script and follow instructions.
++ By default VIAcode Incident Management System for Azure will create tickets for alerts only from a subscription that you deploy it to.
 To connect another subscription to VIAcode Incident Management System for Azure you will have to [install Alert Connector](https://portal.azure.com/#create/viacode_consulting-1089577.viacode-itsm-z-previewitsm-z-paid) to that subscription.
 You can automatically deploy alert connector to multiple subscriptions.
 To do it run ConnectorAutoDeployment\DeployConnectorToMultipleSubscripitons.ps1 script and follow instructions.

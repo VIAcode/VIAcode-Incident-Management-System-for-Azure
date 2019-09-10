@@ -3,9 +3,14 @@
 //https://www.viacode.com/gnu-affero-general-public-license/
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Routing.Template;
 using Zammad.Client;
 using Zammad.Client.Resources;
 
@@ -66,7 +71,7 @@ namespace ITSMConnector
 
         public async Task CreateTicketAsync(Alert alert)
         {
-            var ticketArticle = MakeTicketArticle(alert);
+            var ticketArticle = await MakeTicketArticle(alert);
             var ticket = await _ticketClient.CreateTicketAsync(
                 new Ticket
                 {
@@ -82,44 +87,30 @@ namespace ITSMConnector
             await _tagClient.AddTagAsync("Ticket", ticket.Id, $"{alert.Data.Essentials.AlertRule}");
         }
 
-        private static TicketArticle MakeTicketArticle(Alert alert)
+        private static async Task<TicketArticle> MakeTicketArticle(Alert alert)
         {
             TicketArticle ticketArticle;
-            switch (alert.Data.Essentials.MonitoringService)
+            if (alert.Data.AlertContext.SearchQuery != null && alert.Data.AlertContext.SearchQuery.Equals("CustomEvent_CL", StringComparison.CurrentCultureIgnoreCase))
             {
-                case MonitoringService.Platform:
-                    ticketArticle = CreatePlatformArticle(alert.Data.AlertContext);
-                    break;
-                case MonitoringService.LogAnalytics:
-                    ticketArticle = CreateLogAnalyticsArticle(alert.Data.AlertContext);
-                    break;
-                case MonitoringService.ApplicationInsights:
-                    ticketArticle = CreateApplicationInsightsArticle(alert.Data.AlertContext);
-                    break;
-                case MonitoringService.Administrative:
-                case MonitoringService.Autoscale:
-                case MonitoringService.Policy:
-                case MonitoringService.Recomendation:
-                case MonitoringService.Security:
-                    ticketArticle = CreateActivityLogArticle(alert.Data.AlertContext);
-                    break;
-                case MonitoringService.ServiceHealth:
-                    ticketArticle = CreateServiceHealthArticle(alert.Data.AlertContext);
-                    break;
-                case MonitoringService.ResourceHealth:
-                    ticketArticle = CreateResourceHealthArticle(alert.Data.AlertContext);
-                    break;
-                default:
-                    ticketArticle = new TicketArticle
-                    {
-                        Subject = "Default Subject",
-                        Body = "Default Body",
-                        Type = "note",
-                    };
-                    break;
+                return new TicketArticle
+                {
+                    Subject = "Default Subject",
+                    Body = $"{alert.Data.Essentials.AlertRule}\r\n{alert.Data.Essentials.Description}",
+                    Type = "note",
+                    ContentType = "text/html"
+                };
             }
-
-            return ticketArticle;
+            else
+            {
+                var body = await GenerateArticleFromTemplate(alert.Data, alert.Data.Essentials.MonitoringService);
+                return new TicketArticle
+                {
+                    Subject = "Default Subject",
+                    Body = body,
+                    Type = "note",
+                    ContentType = "text/html"
+                };
+            }
         }
 
         public async Task CreateTicketIfNotExistsAsync(Alert alert)
@@ -147,143 +138,12 @@ namespace ITSMConnector
                 }
                 else
                 {
-                    article = MakeTicketArticle(alert);
+                    article = await MakeTicketArticle(alert);
                 }
                 article.TicketId = ticket.Id;
 
                 await _ticketClient.CreateTicketArticleAsync(article);
             }
-        }
-
-        private static TicketArticle CreatePlatformArticle(AlertContext context)
-        {
-            var conditions = $"Window Size: {context.Condition.WindowSize} \n";
-            foreach (var metric in context.Condition.AllOf)
-            {
-                conditions = $"Metric Name : {metric.MetricName} \n " +
-                             $"Operator: {metric.Operator} \n " +
-                             $"Threshold {metric.Threshold} \n " +
-                             $"Time Aggregation: {metric.TimeAggregation}";
-                conditions += "\n\n";
-            }
-
-            var activityLogArticle = new TicketArticle
-            {
-                Subject = context.ConditionType,
-                Body = $"Conditions: \n" +
-                       $"{conditions}" +
-                       $"Window Start Time: {context.Condition.WindowStartTime.ToString(DateTimeFormat)} \n " +
-                       $"Window End Time: {context.Condition.WindowEndTime.ToString(DateTimeFormat)}",
-                Type = "note",
-            };
-            return activityLogArticle;
-        }
-
-        private static TicketArticle CreateLogAnalyticsArticle(AlertContext context)
-        {
-            var affectedConfigurationItems = string.Empty;
-            foreach (var affectedItem in context.AffectedConfigurationItems)
-            {
-                affectedConfigurationItems += $"{affectedItem} \n";
-            }
-
-            //string tables = FormatSearchResults(context.SearchResults);
-
-            var activityLogArticle = new TicketArticle
-            {
-                Subject = context.AlertType,
-                Body = $"Search Query: \n" +
-                       $"{context.SearchQuery} \n\n " +
-
-                       $"Link To Search Results: {context.LinkToSearchResults} \n\n" +
-
-                       $"Affected Configuration Items: \n" +
-                       $"{affectedConfigurationItems} \n" +
-
-                       $"Search Interval Start Time Utc: {context.SearchIntervalStartTimeUtc.ToString(DateTimeFormat)} \n" +
-                       $"Result Count {context.ResultCount} \n " +
-                       $"Severity Description: {context.SeverityDescription} \n " +
-                       $"Search Interval In Minutes: {context.SearchIntervalInMinutes} \n " +
-                       $"Threshold: {context.Threshold} \n " +
-                       $"Operator: {context.Operator} \n\n ",
-
-                       //$"Search Result: \n" +
-                       //$"{tables}",
-                Type = "note"
-            };
-            return activityLogArticle;
-        }
-
-        private static TicketArticle CreateApplicationInsightsArticle(AlertContext context)
-        {
-            //string tables = FormatSearchResults(context.SearchResults);
-
-            var activityLogArticle = new TicketArticle
-            {
-                Subject = context.AlertType,
-                Body = $"Search Query {context.SearchQuery} \n " +
-                       $"Link To Search Results: {context.LinkToSearchResults} \n" +
-                       $"Search Interval Start Time Utc: {context.SearchIntervalStartTimeUtc.ToString(DateTimeFormat)} \n" +
-                       $"Result Count {context.ResultCount} \n " +
-                       $"Search Interval In Minutes: {context.SearchIntervalInMinutes} \n " +
-                       $"Threshold: {context.Threshold} \n " +
-                       $"Operator: {context.Operator} \n ",
-                       //$"Search Result: {tables}",
-                Type = "note"
-            };
-            return activityLogArticle;
-        }
-
-        private static TicketArticle CreateActivityLogArticle(AlertContext context) => new TicketArticle
-        {
-            Subject = context.OperationName,
-            Body = $"Level: {context.Level} \n" +
-                   $"Event Source: {context.EventSource} \n" +
-                   $"Status: {context.Status} \n" +
-                   $"Event Time: {context.EventTimestamp.ToString(DateTimeFormat)}",
-            Type = "note"
-        };
-
-        private static TicketArticle CreateServiceHealthArticle(AlertContext context) => new TicketArticle
-        {
-            Subject = context.EventSource,
-            Body = $"Level: {context.Level} \n " +
-                   $"Operation Name: {context.OperationName} \n\n" +
-
-                   $"Properties: \n" +
-                   $"Title: {context.Properties.Title} \n" +
-                   $"Service: {context.Properties.Service} \n" +
-                   $"Region: {context.Properties.Region} \n" +
-                   $"ImpactStartTime: {context.Properties.ImpactStartTime.ToString(DateTimeFormat)} \n" +
-                   $"Stage: {context.Properties.Stage} \n\n" +
-
-                   $"Status: {context.Status} \n " +
-                   $"Event Time: {context.EventTimestamp.ToString(DateTimeFormat)}",
-            Type = "note",
-            From = context.Caller
-        };
-
-        private static TicketArticle CreateResourceHealthArticle(AlertContext context)
-        {
-            var activityLogArticle = new TicketArticle
-            {
-                Subject = context.EventSource,
-                Body = $"Level: {context.Level} \n " +
-                       $"Operation Name: {context.OperationName} \n\n" +
-
-                       $"Properties: \n" +
-                       $"Title: {context.Properties.Title} \n" +
-                       $"Current Health Status: {context.Properties.CurrentHealthStatus} \n" +
-                       $"Previous Health Status: {context.Properties.PreviousHealthStatus} \n" +
-                       $"Type: {context.Properties.Type} \n" +
-                       $"Cause: {context.Properties.Cause} \n\n" +
-
-                       $"Status: {context.Status} \n " +
-                       $"Event Time: {context.EventTimestamp.ToString(DateTimeFormat)}",
-                Type = "note",
-                From = context.Caller
-            };
-            return activityLogArticle;
         }
 
         private static string FormatSearchResult(SearchResults searchResults)
@@ -308,6 +168,83 @@ namespace ITSMConnector
                 result += "\n\n";
             }
             return result;
+        }
+
+        private static async Task<string> GetArticleTemplate(string name)
+        {
+            var baseTemplate = await File.ReadAllTextAsync(AppendFilenameToPath("BaseTemplate.md"));
+            var templatePath = AppendFilenameToPath($"{name}.md");
+            var template = "";
+
+            if (!File.Exists(templatePath))
+            {
+                template = baseTemplate;
+            }
+            else
+            {
+                template = await File.ReadAllTextAsync(templatePath);
+                template = template.Replace("###BaseTemplate###", baseTemplate);
+            }
+            return template;
+
+            string AppendFilenameToPath(string fileName)
+            {
+                var rootPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                return Path.Combine(rootPath.Substring(0, rootPath.Length - 4), @"AlertArticleTemplates\" + fileName);
+            }
+        }
+
+        private static async Task<string> GenerateArticleFromTemplate(Data data,
+            MonitoringService monitoringService)
+        {
+            var articleTemplate = await GetArticleTemplate(monitoringService.ToString());
+
+            articleTemplate = FillPlaceholdersReqursive(data.Essentials, articleTemplate);
+            articleTemplate = FillPlaceholdersReqursive(data.AlertContext, articleTemplate);
+
+            string FillPlaceholdersReqursive(object obj, string template)
+            {
+                if (obj == null) return template;
+                var fields = obj.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance).Where(f => Attribute.IsDefined(f, typeof(DataMemberAttribute)));
+                foreach (var field in fields)
+                {
+                    if (field.FieldType.IsClass && Attribute.IsDefined(field.FieldType, typeof(DataContractAttribute)))
+                    {
+                        template = FillPlaceholdersReqursive(field.GetValue(obj), template);
+                        continue;
+                    }
+
+                    if (field.GetValue(obj) is IEnumerable objVal && field.FieldType.IsGenericType)
+                    {
+                        var gT = field.FieldType.GetGenericTypeDefinition();
+                        if (
+                            gT.FullName != null && (gT.FullName.StartsWith("System", StringComparison.CurrentCultureIgnoreCase) ||
+                                                    gT.FullName.StartsWith("Microsoft", StringComparison.CurrentCultureIgnoreCase)))
+                        {
+                            var atr = (DataMemberAttribute)field.GetCustomAttribute(typeof(DataMemberAttribute));
+                            var pl = $"###{atr.Name}###";
+                            if (template.Contains(pl, StringComparison.CurrentCultureIgnoreCase))
+                            {
+                                var val = "";
+                                template = template.Replace(pl, objVal.Cast<object>().Aggregate(val, (current, o) => val += $"{o.ToString()}; "), StringComparison.CurrentCultureIgnoreCase);
+                            }
+                        }
+
+                        template = objVal.Cast<object>().Aggregate(template, (current, o) => FillPlaceholdersReqursive(o, current));
+                        continue;
+                    }
+
+                    var attr = (DataMemberAttribute)field.GetCustomAttribute(typeof(DataMemberAttribute));
+                    var placeholder = $"###{attr.Name}###";
+                    if (template.Contains(placeholder, StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        template = template.Replace(placeholder, (field.GetValue(obj) ?? "undefined").ToString(), StringComparison.CurrentCultureIgnoreCase);
+                    }
+                }
+                return template;
+            }
+
+            return CommonMark.CommonMarkConverter.Convert(articleTemplate);
         }
     }
 }
