@@ -48,7 +48,7 @@ Verify that your account user type is not Guest in chosen tenant.
 
 - To deploy VIAcode Incident Management System for Azure press "Deploy to Azure" button.
 
-![Custom Deployment](./media/Custom&#32;Deployment.png)
+![Custom Deployment](./media/Custom&#32;deployment.png)
 
 - Choose a subscription to deploy Service catalog managed application definition.
 - Select a Resource group or crate a new one.
