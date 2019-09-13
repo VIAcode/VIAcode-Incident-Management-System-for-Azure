@@ -48,7 +48,7 @@ Verify that your account user type is not Guest in chosen tenant.
 
 - To deploy VIAcode Incident Management System for Azure press "Deploy to Azure" button.
 
-![Custom Deployment](./media/Custom&#32;deployment.png)
+![Custom Deployment](./media/Custom&#32;Deployment.png)
 
 - Choose a subscription to deploy Service catalog managed application definition.
 - Select a Resource group or crate a new one.
@@ -309,6 +309,14 @@ Navigate to the overview of the App registration and copy Application (client) I
 Use it as Azure AD Application Registration ID in Create VIAcode Incident Management System for Azure wizard.
 
 ![copy Application (client) ID](./media/copy&#32;Application&#32;(client)&#32;ID.png)
+
+**Step 8**
+Configure App registration authentication.
+
+Go to Authentication blade.
+Switch the radio button under 'Supported account types' to Multitenant:
+
+![Configure Redirect URI](./media/MultitenantConfiguration.png)
 
 ## Manual Deployment of VIAcode Incident Management System for Azure
 
