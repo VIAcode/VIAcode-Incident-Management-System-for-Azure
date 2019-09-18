@@ -4,7 +4,7 @@
   - [Deploy to Azure button](#deploy-to-azure-button)
     - [Pricing](#pricing)
 
-- [Configuration of VIAcode Incident Management System for Azure](#Configuration-of-viacode-incident-management-system-for-azure)
+- [Configuration of VIAcode Incident Management System for Azure](#configuration-of-viacode-incident-management-system-for-azure)
   - [Basics](#basics)
   - [Settings](#settings)
   - [Azure AD Integration](#azure-ad-integration)
@@ -29,6 +29,11 @@
   - [Build solution and prepare package](#Build-solution-and-prepare-package)
   - [Deploy Managed Application Definition](#deploy-managed-application-definition)
   
+- [Configuration of VIAcode Alert Connector Premium](#configuration-of-viacode-alert-connector-premium)
+  - [Premium Basics](#premium-basics)
+  - [Premium Settings](#premium-settings)
+  - [Premium Review and create](#premium-review-and-create)
+  
 <!-- TOC END -->
 
 ## Before you begin
@@ -48,7 +53,7 @@ Verify that your account user type is not Guest in chosen tenant.
 
 - To deploy VIAcode Incident Management System for Azure press "Deploy to Azure" button.
 
-![Custom Deployment](./media/Custom&#32;Deployment.png)
+![Custom Deployment](./media/Custom&#32;deployment.png)
 
 - Choose a subscription to deploy Service catalog managed application definition.
 - Select a Resource group or crate a new one.
@@ -419,3 +424,33 @@ New-AzManagedApplicationDefinition `
   -Authorization "${userId}:$ownerID","${appId}:$contributorID" `
   -PackageFileUri $blob.ICloudBlob.StorageUri.PrimaryUri.AbsoluteUri  
 ```
+
+## Configuration of VIAcode Alert Connector Premium
+
+Find VIAcode Incident Management System for Azure app in Azure Marketplace and click "GET IT NOW".
+
+## Premium Basics
+
+![Basics](./media/Premium&#32;basics.png)
+
+- Choose a subscription to deploy the managed application.
+- Create a new Resource Group.
+- Select a region.
+- Provide a name for your application's managed resource group.
+- Press "Next : Settings >" button.
+
+## Premium Settings
+
+![Settings](./media/Premium&#32;settings.png)
+
+- Specify id of a subscription where VIAcode Incident Management System for Azure to which you want to connect selected subscription is deployed to.
+- Specify name of a managed resource group of that VIAcode Incident Management System for Azure.
+- Specify name of a connector function app of that VIAcode Incident Management System for Azure (you can find it in output of a corresponding managed application under name connectorName).
+- Press "Next : Review + create >" button.
+
+## Premium Review and create
+
+![Review + create](./media/Premium&#32;review&#32;+&#32;create.png)
+
+- Agree to the terms and conditions.
+- Press "Create" button.

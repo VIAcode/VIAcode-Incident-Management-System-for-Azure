@@ -40,7 +40,7 @@
     }
   },
   "variables": {
-    "SLAworkbooksDisplayName": "Zammad reports",
+    "SLAworkbooksDisplayName": "VIAcode Incident Management SLA",
     "deploymentApi": "2018-02-01",
     "siteName": "[concat(parameters('namePrefix'), '-', uniqueString(resourceGroup().id))]",
     "serverfarmName": "[concat(parameters('namePrefix'), '-', uniqueString(resourceGroup().id))]",

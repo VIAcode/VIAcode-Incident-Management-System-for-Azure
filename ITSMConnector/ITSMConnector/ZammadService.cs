@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace ITSMConnector
         // G: 6/15/2008 9:15:07 PM
         private const string DateTimeFormat = "G";
         private const string ZammadUrlSetting = "ZammadUrl";
-
+        
         public ZammadService()
         {
             var zammadUrl = System.Environment.GetEnvironmentVariable(ZammadUrlSetting);
@@ -84,40 +85,36 @@ namespace ITSMConnector
 
             await _tagClient.AddTagAsync("Ticket", ticket.Id, $"AlertId:{alert.Data.Essentials.AlertId}");
             await _tagClient.AddTagAsync("Ticket", ticket.Id, $"{alert.Data.Essentials.MonitoringService}");
-            await _tagClient.AddTagAsync("Ticket", ticket.Id, $"{alert.Data.Essentials.AlertRule}");
+            await _tagClient.AddTagAsync("Ticket", ticket.Id, $"{alert.Data.Essentials.AlertRule.Replace(" ", "_")}");
         }
 
         private static async Task<TicketArticle> MakeTicketArticle(Alert alert)
         {
-            TicketArticle ticketArticle;
+            var service = alert.Data.Essentials.MonitoringService;
             if (alert.Data.AlertContext.SearchQuery != null && alert.Data.AlertContext.SearchQuery.Equals("CustomEvent_CL", StringComparison.CurrentCultureIgnoreCase))
             {
-                return new TicketArticle
-                {
-                    Subject = "Default Subject",
-                    Body = $"{alert.Data.Essentials.AlertRule}\r\n{alert.Data.Essentials.Description}",
-                    Type = "note",
-                    ContentType = "text/html"
-                };
+                service = MonitoringService.Feed;
             }
-            else
+            if (alert.Data.AlertContext.SearchQuery != null && alert.Data.AlertContext.SearchQuery.Equals("CustomEvent_UPSELL", StringComparison.CurrentCultureIgnoreCase))
             {
-                var body = await GenerateArticleFromTemplate(alert.Data, alert.Data.Essentials.MonitoringService);
-                return new TicketArticle
-                {
-                    Subject = "Default Subject",
-                    Body = body,
-                    Type = "note",
-                    ContentType = "text/html"
-                };
+                service = MonitoringService.Upsell;
             }
+            var body = await GenerateArticleFromTemplate(alert.Data, service);
+            return new TicketArticle
+            {
+                Subject = "Default Subject",
+                Body = body,
+                Type = "note",
+                ContentType = "text/html"
+            };
+            
         }
 
         public async Task CreateTicketIfNotExistsAsync(Alert alert)
         {
             //If there is an existing open ticket for the rule and the source of the incoming alert,
             //the connector should create a new article for the existing incident.
-            var ticket = (await _ticketClient.SearchTicketAsync($"tags:{alert.Data.Essentials.MonitoringService}%20AND%20{alert.Data.Essentials.AlertRule}",
+            var ticket = (await _ticketClient.SearchTicketAsync($"tags:{alert.Data.Essentials.MonitoringService}%20AND%20{alert.Data.Essentials.AlertRule.Replace(" ", "_")}",
                 1)).FirstOrDefault();
 
             if (ticket == null || ticket.Id == 0 || ticket.CloseAt.HasValue)
@@ -139,6 +136,7 @@ namespace ITSMConnector
                 else
                 {
                     article = await MakeTicketArticle(alert);
+                    await _tagClient.AddTagAsync("Ticket", ticket.Id, $"AlertId:{alert.Data.Essentials.AlertId}");
                 }
                 article.TicketId = ticket.Id;
 
@@ -225,8 +223,10 @@ namespace ITSMConnector
                             var pl = $"###{atr.Name}###";
                             if (template.Contains(pl, StringComparison.CurrentCultureIgnoreCase))
                             {
-                                var val = "";
-                                template = template.Replace(pl, objVal.Cast<object>().Aggregate(val, (current, o) => val += $"{o.ToString()}; "), StringComparison.CurrentCultureIgnoreCase);
+                                if (atr.Name.Equals("alertTargetIDs", StringComparison.CurrentCultureIgnoreCase))
+                                    template = template.Replace(pl, string.Join("; ", objVal.Cast<object>().Select(o => $"\r\n  * [{o.ToString()}]({data.GetLinkToTarget(o.ToString())})")));
+                                else
+                                    template = template.Replace(pl, string.Join("; ", objVal.Cast<object>().Select(o => $"\r\n  * {o.ToString()}")));
                             }
                         }
 

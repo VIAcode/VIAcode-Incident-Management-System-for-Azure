@@ -287,3 +287,4 @@ paket-files/
 __pycache__/
 *.pyc
 
+/ITSMConnector/ITSMConnector/Properties/PublishProfiles/demo-api-hhahqp5lrlhre - Web Deploy.pubxml

@@ -28,8 +28,8 @@ New-AzRoleAssignment -ObjectId (Get-AzADServicePrincipal -SearchString '{Environ
             {
                 var tagTask = ZService.GetTicketTagsAsync(ticket.Id);
                 tagTask.Wait();
-                var alertId = tagTask.Result.Where(r => r.StartsWith("AlertId:")).Select(r => r.Substring(8, (r.Length - 8))).FirstOrDefault();
-                CloseAlert(alertId);
+                foreach (var each in tagTask.Result.Where(r => r.StartsWith("AlertId:")).Select(r => r.Substring(8, (r.Length - 8))))
+                    CloseAlert(each);
             }
         }
 

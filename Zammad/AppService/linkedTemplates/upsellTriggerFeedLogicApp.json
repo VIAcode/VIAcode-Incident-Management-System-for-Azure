@@ -15,7 +15,7 @@
   "variables": {
     "workspaces_feedupsellla_name": "[concat(parameters('namePrefix'), '-ws-', uniqueString(resourceGroup().id))]",
     "connections_azureloganalyticsdatacollector_name": "azureloganalyticsdatacollector",
-    "feed_read_url": "https://upsell-trigger-feed-event-manager20190902081017.azurewebsites.net/Home/FeedRead"
+    "feed_read_url": "https://upselltriggerfeedeventmanager.azurewebsites.net/Home/FeedRead"
   },
   "resources": [
 	{

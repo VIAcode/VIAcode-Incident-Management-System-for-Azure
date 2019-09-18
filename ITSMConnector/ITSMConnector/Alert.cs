@@ -4,11 +4,18 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Runtime.Serialization;
 
 namespace ITSMConnector
 {
-    //https://docs.microsoft.com/en-us/azure/azure-monitor/platform/alerts-common-schema-definitions
+    internal class Constants
+    {
+        internal const string DateTimeFormat = "MM/dd/yyyy hh:mm:ss";
+    }
+
+//https://docs.microsoft.com/en-us/azure/azure-monitor/platform/alerts-common-schema-definitions
     [DataContract]
     public class Alert
     {
@@ -21,10 +28,44 @@ namespace ITSMConnector
     [DataContract(Name = "data")]
     public class Data
     {
+        const int LINK_TO_SEARCH_RESULTS_LENGTH_BEFORE_TENANT = 26;
+
         [DataMember(Name = "essentials")]
         public Essentials Essentials;
         [DataMember(Name = "alertContext")]
         public AlertContext AlertContext;
+
+        [OnDeserialized]
+        void OnDeserialized(StreamingContext context)
+        {
+            if (Essentials.AlertTargetIDs.Any())
+            {
+                Essentials.ResourceLink = GetLinkToTarget(Essentials.AlertTargetIDs[0]);
+            }
+        }
+
+        public string GetLinkToTarget(string targetId)
+        {
+            string tenant = null;
+
+            if (AlertContext.LinkToSearchResults != null)
+                tenant = AlertContext.LinkToSearchResults.Substring(LINK_TO_SEARCH_RESULTS_LENGTH_BEFORE_TENANT, Guid.Empty.ToString().Length);
+            else if (AlertContext.Claims != null)
+            {
+                var tenantIndex = AlertContext.Claims.IndexOf("tenantid\":\"");
+                if (tenantIndex != -1)
+                    tenant = AlertContext.Claims.Substring(tenantIndex + "tenantid\":\"".Length, Guid.Empty.ToString().Length);
+            }
+
+            string linkPrefix;
+
+            if (tenant != null)
+                linkPrefix = $"https://portal.azure.com#@{tenant}/resource";
+            else
+                linkPrefix = "https://portal.azure.com/#resource";
+
+            return $"{linkPrefix}{WebUtility.UrlEncode(targetId)}";
+        }
     }
 
     [DataContract(Name = "essentials")]
@@ -60,10 +101,57 @@ namespace ITSMConnector
         [DataMember(Name = "alertContextVersion")]
         public string AlertContextVersion;
 
+        /// <summary>
+        /// this is a synthetic field
+        /// </summary>
+        [DataMember(Name = "resourceName")]
+        public string ResourceName;
+
+        /// <summary>
+        /// this is a synthetic field
+        /// </summary>
+        [DataMember(Name = "resourceType")]
+        public string ResourceType;
+
+        /// <summary>
+        /// this is a synthetic field
+        /// </summary>
+        [DataMember(Name = "resourceGroupName")]
+        public string ResourceGroupName;
+
+        /// <summary>
+        /// this is a synthetic field
+        /// </summary>
+        [DataMember(Name = "subscriptionID")]
+        public string SubscriptionId;
+
+        /// <summary>
+        /// this is a synthetic field
+        /// </summary>
+        [DataMember(Name = "resourceLink")]
+        public string ResourceLink;
+
         [OnDeserialized]
         void OnDeserialized(StreamingContext context)
         {
             FiredDateTime = string.IsNullOrEmpty(firedDateTimeString) ? default(DateTime) : DateTime.Parse(firedDateTimeString);
+            firedDateTimeString = FiredDateTime.ToString("MM/dd/yyyy hh:mm:ss");
+            if (AlertTargetIDs.Any())
+            {
+                // / subscriptions / 0c39ec7b - 14d7 - 427f - af50 - 59aab0c0f6fc / resourcegroups / sandbox / providers / microsoft.compute / virtualmachines / cheapvm;
+                var cntMoreThanOne = AlertTargetIDs.Count > 1;
+                foreach (var alertTargetId in AlertTargetIDs)
+                {
+                    var split = alertTargetId.Split("/");
+                    SubscriptionId += split[2] + (cntMoreThanOne ? "; " : "");
+                    if(split.Length < 5) continue;
+                    ResourceGroupName += split[4] + (cntMoreThanOne ? "; " : "");
+                    if (split.Length < 8) continue;
+                    ResourceType += $"{split[7]}/{split[6]}" + (cntMoreThanOne ? "; " : "");
+                    if (split.Length < 9) continue;
+                    ResourceName += split[8] + (cntMoreThanOne ? "; " : "");
+                }
+            }
             Enum.TryParse(severityString, out Severity);
             switch (monitoringServiceString)
             {
@@ -198,9 +286,13 @@ namespace ITSMConnector
         void OnDeserialized(StreamingContext context)
         {
             SearchIntervalStartTimeUtc = string.IsNullOrEmpty(searchIntervalStartTimeUtcString) ? default(DateTime) : DateTime.Parse(searchIntervalStartTimeUtcString);
+            searchIntervalStartTimeUtcString = SearchIntervalStartTimeUtc.ToString(Constants.DateTimeFormat);
             SearchIntervalEndtimeUtc = string.IsNullOrEmpty(searchIntervalEndtimeUtcString) ? default(DateTime) : DateTime.Parse(searchIntervalEndtimeUtcString);
+            searchIntervalEndtimeUtcString = SearchIntervalEndtimeUtc.ToString(Constants.DateTimeFormat);
             EventTimestamp = string.IsNullOrEmpty(eventTimestampString) ? default(DateTime) : DateTime.Parse(eventTimestampString);
+            eventTimestampString = EventTimestamp.ToString(Constants.DateTimeFormat);
             SubmissionTimestamp = string.IsNullOrEmpty(submissionTimestampString) ? default(DateTime) : DateTime.Parse(submissionTimestampString);
+            submissionTimestampString = SubmissionTimestamp.ToString(Constants.DateTimeFormat);
         }
     }
 
@@ -288,7 +380,9 @@ namespace ITSMConnector
         void OnDeserialized(StreamingContext context)
         {
             ImpactStartTime = string.IsNullOrEmpty(impactStartTimeString) ? default(DateTime) : DateTime.Parse(impactStartTimeString);
+            impactStartTimeString = ImpactStartTime.ToString(Constants.DateTimeFormat);
             ImpactMitigationTime = string.IsNullOrEmpty(impactMitigationTimeString) ? default(DateTime) : DateTime.Parse(impactMitigationTimeString);
+            impactMitigationTimeString = ImpactMitigationTime.ToString(Constants.DateTimeFormat);
         }
     }
 
@@ -360,7 +454,9 @@ namespace ITSMConnector
         void OnDeserialized(StreamingContext context)
         {
             WindowStartTime = string.IsNullOrEmpty(windowStartTimeString) ? default(DateTime) : DateTime.Parse(windowStartTimeString);
+            windowStartTimeString = WindowStartTime.ToString(Constants.DateTimeFormat);
             WindowEndTime = string.IsNullOrEmpty(windowEndTimeString) ? default(DateTime) : DateTime.Parse(this.windowEndTimeString);
+            windowEndTimeString = WindowEndTime.ToString(Constants.DateTimeFormat);
         }
     }
 
@@ -384,7 +480,7 @@ namespace ITSMConnector
         [DataMember(Name = "value")]
         public string Value;
 
-        public override string ToString() => $"Name:{Name}[Value:{Value}]";
+        public override string ToString() => $"Name: **{Name}** [ Value: **{Value}**]";
     }
 
     public enum MonitoringService
@@ -398,7 +494,9 @@ namespace ITSMConnector
         Recommendation,
         Security,
         ServiceHealth,
-        ResourceHealth
+        ResourceHealth,
+        Upsell,
+        Feed
     }
 
     public enum Severity
