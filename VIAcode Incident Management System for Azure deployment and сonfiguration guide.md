@@ -445,7 +445,9 @@ Find VIAcode Incident Management System for Azure app in Azure Marketplace and c
 
 - Specify id of a subscription where VIAcode Incident Management System for Azure to which you want to connect selected subscription is deployed to.
 - Specify name of a managed resource group of that VIAcode Incident Management System for Azure.
-- Specify name of a connector function app of that VIAcode Incident Management System for Azure (you can find it in output of a corresponding managed application under name connectorName).
+- Specify name of a connector function app of that VIAcode Incident Management System for Azure.
+You can find it in output of a corresponding managed application under name connectorName:
+  ![Connector name](./media/connectorName.png)  
 - Press "Next : Review + create >" button.
 
 ## Premium Review and create

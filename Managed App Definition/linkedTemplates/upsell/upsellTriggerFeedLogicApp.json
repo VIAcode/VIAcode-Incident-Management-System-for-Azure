@@ -13,7 +13,7 @@
     "workspaces_feedupsellla_name": "[concat(parameters('namePrefix'), '-ws-', uniqueString(resourceGroup().id))]",
     "workflows_feedupsell_name": "[concat(parameters('namePrefix'), 'la-', uniqueString(resourceGroup().id))]",
     "connections_azureloganalyticsdatacollector_name": "azureloganalyticsdatacollector",
-    "feed_read_url": "https://upsell-trigger-feed-event-manager20190902081017.azurewebsites.net/Home/FeedRead",
+    "feed_read_url": "https://upselltriggerfeedeventmanager.azurewebsites.net/Home/FeedRead",
     "workspaceApiVersion": "2015-11-01-preview",
     "connectionApiVersion": "2016-06-01",
     "workflowsApiVersion": "2017-07-01"

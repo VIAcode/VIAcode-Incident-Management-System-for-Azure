@@ -20,7 +20,7 @@
   },
   "variables": {
     "deploymentApiVersion": "2018-02-01",
-    "SLAworkbooksDisplayName": "VIMS reports"
+    "SLAworkbooksDisplayName": "VIAcode Incident Management SLA"
   },
   "resources": [
     {

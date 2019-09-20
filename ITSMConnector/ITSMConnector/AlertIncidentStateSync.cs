@@ -35,6 +35,9 @@ New-AzRoleAssignment -ObjectId (Get-AzADServicePrincipal -SearchString '{Environ
 
         private static void CloseAlert(string alertId)
         {
+            if (alertId == null)
+                return;
+
             string alertSubscription = alertId.Split('/')[2];
             try
             {

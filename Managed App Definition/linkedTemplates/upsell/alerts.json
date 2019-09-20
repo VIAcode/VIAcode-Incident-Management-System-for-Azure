@@ -46,7 +46,8 @@
       "location": "[parameters('location')]",
       "dependsOn": [],
       "tags": {
-        "[concat('hidden-link:', parameters('appInsightsId'))]": "Resource"
+        "[concat('hidden-link:', parameters('appInsightsId'))]": "Resource",
+        "alert-purpose": "upsell"
       },
       "properties": {
         "description": "[variables('unmanagedSubscriptionAlertRuleDescriptionFormatted')]",
@@ -76,6 +77,9 @@
       "apiVersion": "2017-04-01",
       "name": "[parameters('serviceHealthAlertRuleName')]",
       "location": "Global",
+      "tags": {
+        "alert-purpose": "upsell"
+      },
       "properties": {
         "scopes": [
           "[subscription().id]"

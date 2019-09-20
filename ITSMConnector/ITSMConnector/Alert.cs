@@ -131,6 +131,12 @@ namespace ITSMConnector
         [DataMember(Name = "resourceLink")]
         public string ResourceLink;
 
+        /// <summary>
+        /// this is a synthetic field
+        /// </summary>
+        [DataMember(Name = "tags")]
+        public Dictionary<string, string> Tags;
+
         [OnDeserialized]
         void OnDeserialized(StreamingContext context)
         {

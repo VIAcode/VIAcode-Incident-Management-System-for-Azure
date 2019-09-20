@@ -86,6 +86,7 @@ namespace ITSMConnector
             await _tagClient.AddTagAsync("Ticket", ticket.Id, $"AlertId:{alert.Data.Essentials.AlertId}");
             await _tagClient.AddTagAsync("Ticket", ticket.Id, $"{alert.Data.Essentials.MonitoringService}");
             await _tagClient.AddTagAsync("Ticket", ticket.Id, $"{alert.Data.Essentials.AlertRule.Replace(" ", "_")}");
+            await _tagClient.AddTagAsync("Ticket", ticket.Id, "MS-Azure-Alert");
         }
 
         private static async Task<TicketArticle> MakeTicketArticle(Alert alert)
@@ -95,7 +96,7 @@ namespace ITSMConnector
             {
                 service = MonitoringService.Feed;
             }
-            if (alert.Data.AlertContext.SearchQuery != null && alert.Data.AlertContext.SearchQuery.Equals("CustomEvent_UPSELL", StringComparison.CurrentCultureIgnoreCase))
+            if( (alert.Data.Essentials.Tags?.ContainsValue("upsell")).GetValueOrDefault() )
             {
                 service = MonitoringService.Upsell;
             }
@@ -107,7 +108,7 @@ namespace ITSMConnector
                 Type = "note",
                 ContentType = "text/html"
             };
-            
+
         }
 
         public async Task CreateTicketIfNotExistsAsync(Alert alert)
