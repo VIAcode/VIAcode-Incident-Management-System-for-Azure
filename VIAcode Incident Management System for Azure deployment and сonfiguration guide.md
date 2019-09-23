@@ -378,7 +378,7 @@ Compress-Archive -Path "$scriptDir\ITSMConnector\ITSMConnector\bin\Release\netco
 # Create package itsm-z-free.zip
 $itsmzfree = ".\itsm-z-free.zip"
 
-Compress-Archive -Path "$scriptDir\Zammad\AppService\*" -DestinationPath $itsmzfree -Force
+Compress-Archive -Path "$scriptDir\Managed App Definition\*" -DestinationPath $itsmzfree -Force
 
 Compress-Archive -Path $Itsmapi -DestinationPath $itsmzfree -Update
 Compress-Archive -Path $slareports -DestinationPath $itsmzfree -Update
