@@ -405,10 +405,10 @@ dotnet restore
 dotnet build -c Release
 cd ..
 
-# Create Archive zammadconnector.zip
-$zammadconnector = ".\zammadconnector.zip"
+# Create Archive vimsconnector.zip
+$vimsconnector = ".\vimsconnector.zip"
 Compress-Archive -Path "$scriptDir\ITSMConnector\ITSMConnector\bin\Release\netcoreapp2.1\*" `
--DestinationPath $zammadconnector -Force
+-DestinationPath $vimsconnector -Force
 
 # Create package itsm-z-free.zip
 $itsmzfree = ".\itsm-z-free.zip"
@@ -417,7 +417,7 @@ Compress-Archive -Path "$scriptDir\Zammad\AppService\*" -DestinationPath $itsmzf
 
 Compress-Archive -Path $Itsmapi -DestinationPath $itsmzfree -Update
 Compress-Archive -Path $slareports -DestinationPath $itsmzfree -Update
-Compress-Archive -Path $zammadconnector -DestinationPath $itsmzfree -Update
+Compress-Archive -Path $vimsconnector -DestinationPath $itsmzfree -Update
 ```
 
 ## Deploy Managed Application Definition
