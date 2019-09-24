@@ -4,22 +4,16 @@
   "parameters": {
     "name": {
       "type": "string",
-      "defaultValue": "VIAcodeIncidentManagementSystem",
+      "defaultValue": "VIAcode-Incident-Management-System-for-Azure",
       "metadata": {
         "description": "Provide a name for the managed application"
-      }
-    },
-    "location": {
-      "type": "string",
-      "metadata": {
-        "description": "Specify the Azure region to place the application definition"
       }
     },
     "lockLevel": {
       "type": "string",
       "allowedValues": [
         "ReadOnly",
-        "CanNotDelete"
+        "None"
       ],
       "defaultValue": "ReadOnly",
       "metadata": {
@@ -35,7 +29,7 @@
     },
     "displayName": {
       "type": "string",
-      "defaultValue": "VIAcode Azure Incident Management System",
+      "defaultValue": "VIAcode Incident Management System for Azure",
       "metadata": {
         "description": "Display name for the managed application"
       }
@@ -51,7 +45,8 @@
     ],
     "deploymentApi": "2018-02-01"
   },
-  "resources": [    {
+  "resources": [
+    {
       "apiVersion": "[variables('deploymentApi')]",
       "name": "pid-a6eb1592-4217-5ddd-aa58-683a38abd54d",
       "type": "Microsoft.Resources/deployments",
@@ -77,7 +72,7 @@
             {
               "apiVersion": "2017-09-01",
               "name": "[parameters('name')]",
-              "location": "[parameters('location')]",
+              "location": "[resourceGroup().location]",
               "type": "Microsoft.Solutions/applicationDefinitions",
               "properties": {
                 "lockLevel": "[parameters('lockLevel')]",

@@ -1,15 +1,8 @@
-﻿using Microsoft.Azure.KeyVault;
-using Microsoft.Azure.Services.AppAuthentication;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
+﻿using Microsoft.Azure.Services.AppAuthentication;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ITSMConnector
@@ -24,7 +17,7 @@ namespace ITSMConnector
             var aiUrl = $"{ApiUrl}{resourceId}?api-version={apiVersion}";
             var aiRequest = await CreateRequestAsync(aiUrl);
             aiRequest.Method = "GET";
-            return (await GetResponseAsync(aiRequest)).value;
+            return await GetResponseAsync(aiRequest);
         }
 
         public static async Task<dynamic> GetAzResource(string subscriptionId, string resourceGroup, string resourceProvider, string id, string apiVersion)
@@ -32,7 +25,7 @@ namespace ITSMConnector
             var aiUrl = $"{ApiUrl}subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/{resourceProvider}/{id}?api-version={apiVersion}";
             var aiRequest = await CreateRequestAsync(aiUrl);
             aiRequest.Method = "GET";
-            return (await GetResponseAsync(aiRequest)).value;
+            return await GetResponseAsync(aiRequest);
         }
 
         public static async Task<dynamic> GetAzResource(string subscriptionId, string resourceProvider, string id, string apiVersion)
@@ -40,7 +33,7 @@ namespace ITSMConnector
             var aiUrl = $"{ApiUrl}subscriptions/{subscriptionId}/providers/{resourceProvider}/{id}?api-version={apiVersion}";
             var aiRequest = await CreateRequestAsync(aiUrl);
             aiRequest.Method = "GET";
-            return (await GetResponseAsync(aiRequest)).value;
+            return await GetResponseAsync(aiRequest);
         }
 
         public static async Task<dynamic> UpdateAzResource(string resourceId, string apiVersion, dynamic properties)

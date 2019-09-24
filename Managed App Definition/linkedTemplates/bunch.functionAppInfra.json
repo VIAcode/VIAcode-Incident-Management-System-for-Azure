@@ -1,0 +1,96 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "namePrefix": {
+      "type": "string"
+    },
+    "linkedTemplates": {
+      "type": "object"
+    },
+    "vimsUserName": {
+      "type": "string"
+    },
+    "vimsPassword": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "keyVaultApiVersion": "2018-02-14",
+    "deploymentApiVersion": "2018-02-01"
+  },
+  "resources": [
+    {
+      "apiVersion": "[variables('deploymentApiVersion')]",
+      "name": "deployKeyVault",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[parameters('linkedTemplates').functionAppInfra.keyVault]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "namePrefix": {
+            "value": "[parameters('namePrefix')]"
+          },
+          "vimsAdminUsername": {
+            "value": "[parameters('vimsUserName')]"
+          },
+          "vimsAdminPassword": {
+            "value": "[parameters('vimsPassword')]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "[variables('deploymentApiVersion')]",
+      "name": "deploySharedResources",
+      "type": "Microsoft.Resources/deployments",
+      "dependsOn": [],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[parameters('linkedTemplates').functionAppInfra.sharedResources]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "namePrefix": {
+            "value": "[parameters('namePrefix')]"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "storageName": {
+      "type": "string",
+      "value": "[reference('deploySharedResources', variables('deploymentApiVersion')).outputs.storageName.value]"
+    },
+    "aIName": {
+      "type": "string",
+      "value": "[reference('deploySharedResources', variables('deploymentApiVersion')).outputs.aIName.value]"
+    },
+    "serverfarmName": {
+      "type": "string",
+      "value": "[reference('deploySharedResources', variables('deploymentApiVersion')).outputs.serverfarmName.value]"
+    },
+    "vaultUri": {
+      "type": "string",
+      "value": "[reference('deployKeyVault', variables('deploymentApiVersion')).outputs.vaultUri.value]"
+    },
+    "vaultName": {
+      "type": "string",
+      "value": "[reference('deployKeyVault', variables('deploymentApiVersion')).outputs.name.value]"
+    }
+  }
+}

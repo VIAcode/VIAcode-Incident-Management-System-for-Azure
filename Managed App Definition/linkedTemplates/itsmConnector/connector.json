@@ -1,0 +1,102 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "type": "string"
+    },
+    "connectorFilesPath": {
+      "type": "string"
+    },
+    "namePrefix": {
+      "type": "string"
+    },
+    "storageName": {
+      "type": "string"
+    },
+    "aiName": {
+      "type": "string"
+    },
+    "serverfarmName": {
+      "type": "string"
+    },
+    "keyVaultUri": {
+      "type": "string"
+    },
+    "vimsUrl": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "appApiVersion": "2018-11-01",
+    "storageAccountApiVersion": "2019-04-01",
+    "managedIdentityApiVersion": "2015-08-31-PREVIEW",
+    "connectorName": "[concat(parameters('namePrefix'), '-api-', uniqueString(resourceGroup().id))]"
+  },
+  "resources": [
+    {
+      "apiVersion": "[variables('appApiVersion')]",
+      "name": "[variables('connectorName')]",
+      "type": "Microsoft.Web/sites",
+      "kind": "functionapp",
+      "location": "[parameters('location')]",
+      "properties": {
+        "httpsOnly": true,
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarmName'))]",
+        "siteConfig": {
+          "appSettings": [
+            {
+              "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+              "value": "[reference(resourceId('Microsoft.Insights/components', parameters('aiName')), '2018-05-01-preview').InstrumentationKey]"
+            },
+            {
+              "name": "AzureWebJobsStorage",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('storageName'), ';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageName')),variables('storageAccountApiVersion')).keys[0].value)]"
+            },
+            {
+              "name": "AzureWebJobsSecretStorageType",
+              "value": "Files"
+            },
+            {
+              "name": "WEBSITE_RUN_FROM_PACKAGE",
+              "value": "[parameters('connectorFilesPath')]"
+            },
+            {
+              "name": "FUNCTIONS_EXTENSION_VERSION",
+              "value": "~2"
+            },
+            {
+              "name": "KeyVaultUrl",
+              "value": "[parameters('keyVaultUri')]"
+            },
+            {
+              "name": "ZammadUrl",
+              "value": "[parameters('vimsUrl')]"
+            }
+          ]
+        }
+      },
+      "identity": {
+        "type": "SystemAssigned"
+      }
+    }
+  ],
+  "outputs": {
+    "appName": {
+      "type": "string",
+      "value": "[variables('connectorName')]"
+    },
+    "functionAppResourceId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Web/sites', variables('connectorName'))]"
+    },
+    "httpTriggerUrl": {
+      "type": "string",
+      "value": "[listSecrets(resourceId('Microsoft.Web/sites/functions', variables('connectorName'), 'EntrancePoint'),'2018-11-01').trigger_url]"
+    },
+    "principalId": {
+      "type": "string",
+      "value": "[reference(concat(resourceId('Microsoft.Web/sites', variables('connectorName')), '/providers/Microsoft.ManagedIdentity/Identities/default'), variables('managedIdentityApiVersion')).principalId]"
+    }
+  }
+}

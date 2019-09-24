@@ -1,0 +1,66 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "namePrefix": {
+      "type": "string"
+    },
+    "vimsAdminUsername": {
+      "type": "string"
+    },
+    "vimsAdminPassword": {
+      "type": "securestring"
+    },
+    "location": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "keyVaultApiVersion": "2018-02-14",
+    "kvName": "[concat(parameters('namePrefix'), 'kv-', uniqueString(resourceGroup().id))]"
+  },
+  "resources": [
+    {
+      "apiVersion": "[variables('keyVaultApiVersion')]",
+      "type": "Microsoft.KeyVault/vaults",
+      "name": "[variables('kvName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "tenantId": "[subscription().tenantId]",
+        "sku": {
+          "family": "A",
+          "name": "Standard"
+        },
+        "accessPolicies": []
+      }
+    },
+    {
+      "name": "[concat(variables('kvName'), '/Login')]",
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "[variables('keyVaultApiVersion')]",
+      "properties": {
+        "value": "[parameters('vimsAdminUsername')]"
+      },
+      "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('kvName'))]" ]
+    },
+    {
+      "name": "[concat(variables('kvName'), '/Password')]",
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "[variables('keyVaultApiVersion')]",
+      "properties": {
+        "value": "[parameters('vimsAdminPassword')]"
+      },
+      "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('kvName'))]" ]
+    }
+  ],
+  "outputs": {
+    "vaultUri": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.KeyVault/vaults', variables('kvName')), variables('keyVaultApiVersion')).vaultUri]"
+    },
+    "name": {
+      "type": "string",
+      "value": "[variables('kvName')]"
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "apiName": {
+      "type": "string"
+    },
+    "vimsAppId": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "providerApiVersion": "2018-09-01-preview",
+    "functionAppApiVersion": "2015-08-01",
+    "providerPairedLocations": {
+      "centralus": {
+        "geo": "unitedstates",
+        "pairedRegion": "eastus"
+      },
+      "eastus2": {
+        "geo": "unitedstates",
+        "pairedRegion": "eastus"
+      },
+      "northcentralus": {
+        "geo": "unitedstates",
+        "pairedRegion": "eastus"
+      },
+      "southcentralus": {
+        "geo": "unitedstates",
+        "pairedRegion": "eastus"
+      },
+      "westcentralus": {
+        "geo": "unitedstates",
+        "pairedRegion": "westus2"
+      },
+      "westus": {
+        "geo": "unitedstates",
+        "pairedRegion": "eastus"
+      },
+      "australiacentral": {
+        "geo": "australia",
+        "pairedRegion": "australiaeast"
+      },
+      "australiacentral2": {
+        "geo": "australia",
+        "pairedRegion": "australiaeast"
+      },
+      "default": {
+        "pairedRegion": "eastus"
+      }
+    },
+    "allowedLocation": [ "australiaeast", "eastus", "westeurope", "northeurope", "westus2", "australiasoutheast", "canadacentral", "canadaeast" ],
+    "providerLocation": "[if(contains(variables('allowedLocation'), parameters('location')), parameters('location'), if(contains(variables('providerPairedLocations'), parameters('location')), variables('providerPairedLocations')[parameters('location')].pairedRegion, variables('providerPairedLocations').default.pairedRegion))]"
+  },
+  "resources": [
+    {
+      "apiVersion": "[variables('providerApiVersion')]",
+      "type": "Microsoft.CustomProviders/resourceProviders",
+      "name": "public",
+      "location": "[variables('providerLocation')]",
+      "properties": {
+        "actions": [
+          {
+            "name": "restartVIMS",
+            "routingType": "Proxy",
+            "endPoint": "[concat(listSecrets(resourceId('Microsoft.Web/sites/functions', parameters('apiName'), 'restartVIMS'), variables('functionAppApiVersion')).trigger_url, '&appId=', uriComponent(parameters('vimsAppId')))]"
+          },
+          {
+            "name": "renewADIntegration",
+            "routingType": "Proxy",
+            "endPoint": "[listSecrets(resourceId('Microsoft.Web/sites/functions', parameters('apiName'), 'RenewADIntegration'), variables('functionAppApiVersion')).trigger_url]"
+          }
+        ]
+      }
+    }
+  ],
+  "outputs": {}
+}

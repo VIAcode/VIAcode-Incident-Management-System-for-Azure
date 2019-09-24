@@ -1,0 +1,104 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "namePrefix": {
+      "type": "string"
+    },
+    "linkedTemplates": {
+      "type": "object"
+    },
+    "azureApplicationId": {
+      "type": "string"
+    },
+    "azureApplicationSecretKey": {
+      "type": "securestring"
+    },
+    "vimsAdminUserName": {
+      "type": "string"
+    },
+    "vimsAdminPassword": {
+      "type": "securestring"
+    },
+    "location": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "deploymentApiVersion": "2018-02-01"
+  },
+  "resources": [
+    {
+      "apiVersion": "[variables('deploymentApiVersion')]",
+      "name": "deployVIMS",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[parameters('linkedTemplates').itsmApp.vimsApp]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "namePrefix": {
+            "value": "[parameters('namePrefix')]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "[variables('deploymentApiVersion')]",
+      "name": "setupVIMS",
+      "type": "Microsoft.Resources/deployments",
+      "dependsOn": [
+        "deployVims"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[parameters('linkedTemplates').itsmApp.vimsSetup]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "namePrefix": {
+            "value": "[parameters('namePrefix')]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "siteName": {
+            "value": "[reference('deployVIMS', variables('deploymentApiVersion')).outputs.vimsUrl.value]"
+          },
+          "azureApplicationId": {
+            "value": "[parameters('azureApplicationId')]"
+          },
+          "azureApplicationSecretKey": {
+            "value": "[parameters('azureApplicationSecretKey')]"
+          },
+          "vimsAdminUserName": {
+            "value": "[parameters('vimsAdminUserName')]"
+          },
+          "vimsAdminPassword": {
+            "value": "[parameters('vimsAdminPassword')]"
+          },
+          "scriptUri": {
+            "value": "[parameters('linkedTemplates').itsmApp.CreateAdminAndEnableAuthViaOffice365Runbook]"
+          }
+        }
+      }
+    }
+
+  ],
+  "outputs": {
+    "vimsUrl": {
+      "type": "string",
+      "value": "[reference('deployVims', variables('deploymentApiVersion')).outputs.vimsUrl.value]"
+    },
+    "vimsAppId": {
+      "type": "string",
+      "value": "[reference('deployVims', variables('deploymentApiVersion')).outputs.vimsAppId.value]"
+    }
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "namePrefix": {
+      "type": "string"
+    },
+    "linkedTemplates": {
+      "type": "object"
+    },
+    "connectorFilesPath": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "storageName": {
+      "type": "string"
+    },
+    "aiName": {
+      "type": "string"
+    },
+    "serverfarmName": {
+      "type": "string"
+    },
+    "keyVaultUri": {
+      "type": "string"
+    },
+    "vimsUrl": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "deploymentApiVersion": "2018-02-01"
+  },
+  "resources": [
+    {
+      "apiVersion": "[variables('deploymentApiVersion')]",
+      "name": "deployConnector",
+      "type": "Microsoft.Resources/deployments",
+      "dependsOn": [],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[parameters('linkedTemplates').itsmConnector.connector]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "connectorFilesPath": {
+            "value": "[parameters('connectorFilesPath')]"
+          },
+          "namePrefix": {
+            "value": "[parameters('namePrefix')]"
+          },
+          "storageName": {
+            "value": "[parameters('storageName')]"
+          },
+          "aiName": {
+            "value": "[parameters('aiName')]"
+          },
+          "serverfarmName": {
+            "value": "[parameters('serverfarmName')]"
+          },
+          "keyVaultUri": {
+            "value": "[parameters('keyVaultUri')]"
+          },
+          "vimsUrl": {
+            "value": "[parameters('vimsUrl')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "[variables('deploymentApiVersion')]",
+      "name": "deployActions",
+      "dependsOn": [
+        "deployConnector"
+      ],
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[parameters('linkedTemplates').itsmConnector.actions]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "connectorName": {
+            "value": "[reference('deployConnector', variables('deploymentApiVersion')).outputs.appName.value]"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "principalId": {
+      "type": "string",
+      "value": "[reference('deployConnector', variables('deploymentApiVersion')).outputs.principalId.value]"
+    },
+    "connectorName": {
+      "type": "string",
+      "value": "[reference('deployConnector', variables('deploymentApiVersion')).outputs.appName.value]"
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string"
+        },
+		"functionSubscription": {
+            "type": "string"
+        },
+        "functionResourceGroup": {
+            "type": "string"
+        },
+		"functionName": {
+            "type": "string"
+        },
+        "_artifactsLocation": {
+            "type": "string",
+            "metadata": {
+                "description": "The base URI where artifacts required by this template are located including a trailing '/'"
+            },
+            "defaultValue": "['https://catalogartifact.azureedge.net/publicartifacts/viacode_consulting-1089577.viacode-itsm-z-preview-6b9a38f2-c541-4324-8b7b-c1e1469bbc60-itsm-z-free/Artifacts/mainTemplate.json']"
+        },
+        "_artifactsLocationSasToken": {
+            "type": "securestring",
+            "metadata": {
+                "description": "The sasToken required to access _artifactsLocation.  When the template is deployed using the accompanying scripts, a sasToken will be automatically generated. Use the defaultValue if the staging location is not secured."
+            },
+            "defaultValue": ""
+        },
+        "applicationResourceName": {
+            "type": "string",
+            "defaultValue": "b7f2180e6876414dbac1e8294c67917e"
+        },
+        "managedResourceGroupId": {
+            "type": "string",
+            "defaultValue": ""
+        }
+    },
+    "variables": {
+        "managedResourceGroupId": "[if(empty(parameters('managedResourceGroupId')),concat(subscription().id,'/resourceGroups/',take(concat(resourceGroup().name,'-',uniquestring(resourceGroup().id),uniquestring(parameters('applicationResourceName'))),90)),parameters('managedResourceGroupId'))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Solutions/applications",
+            "apiVersion": "2017-09-01",
+            "location": "[resourceGroup().Location]",
+            "kind": "MarketPlace",
+            "name": "[parameters('applicationResourceName')]",
+            "plan": {
+                "name": "itsm-z-paid",
+                "product": "viacode-itsm-z-preview",
+                "publisher": "viacode_consulting-1089577",
+                "version": "1.0.0"
+            },
+            "properties": {
+                "managedResourceGroupId": "[variables('managedResourceGroupId')]",
+                "parameters": {
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+					"functionSubscription": {
+                        "value": "[parameters('functionSubscription')]"
+                    },
+                    "functionResourceGroup": {
+                        "value": "[parameters('functionResourceGroup')]"
+                    },
+                    "functionName": {
+                        "value": "[parameters('functionName')]"
+                    }
+                },
+                "jitAccessPolicy": null
+            }
+        }
+    ]
+}

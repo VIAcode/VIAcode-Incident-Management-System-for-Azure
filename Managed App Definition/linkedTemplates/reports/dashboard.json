@@ -1,0 +1,69 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "type": "string"
+    },
+    "vimsUrl": {
+      "type": "string"
+    }
+  },
+  "variables": {
+
+  },
+  "resources": [
+    {
+      "properties": {
+        "lenses": {
+          "0": {
+            "order": 0,
+            "parts": {
+              "0": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "colSpan": 3,
+                  "rowSpan": 2
+                },
+                "metadata": {
+                  "inputs": [],
+                  "type": "Extension/HubsExtension/PartType/MarkdownPart",
+                  "settings": {
+                    "content": {
+                      "settings": {
+                        "content": "[concat('[VIAcode Incident Management System for Azure Portal](', parameters('vimsUrl'), ')\r\n\r\n[VIAcode License](https://www.viacode.com/viacode-incident-management-license/?utm_source=product&utm_medium=web&utm_campaign=VIMS&utm_content=dashboardlicense)\r\n\r\n[GNU License](https://www.viacode.com/gnu-affero-general-public-license/?utm_source=product&utm_medium=web&utm_campaign=VIMS&utm_content=dashboardgnulicense)')]",
+                        "title": "Links",
+                        "subtitle": ""
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "metadata": {
+          "model": {
+            "timeRange": {
+              "value": {
+                "relative": {
+                  "duration": 24,
+                  "timeUnit": 1
+                }
+              },
+              "type": "MsPortalFx.Composition.Configuration.ValueTypes.TimeRange"
+            }
+          }
+        }
+      },
+      "name": "[concat('db-', uniqueString(resourceGroup().id))]",
+      "type": "Microsoft.Portal/dashboards",
+      "location": "[parameters('location')]",
+      "tags": {
+        "hidden-title": "VIAcode Incident Management System for Azure"
+      },
+      "apiVersion": "2015-08-01-preview"
+    }
+  ]
+}
