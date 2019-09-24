@@ -17,6 +17,7 @@
   - [First Sign in](#first-sign-in)
   - [Email configuration](#email-configuration)
     - [Notes](#notes)
+  - [Activity Log Alert description](#activity-log-alert-description)
 
 - [Technical details](#technical-details)
   - [Supported alert types](#supported-alert-types)
@@ -250,6 +251,40 @@ In general, VIAcode Incident Management System for Azure best practice is to cre
 - Do not use mailbox that forwards mails, VIAcode Incident Management System for Azure will be unable to read its own test email.
 
 For current email set up documentation see [e-mail](https://zammad-admin-documentation.readthedocs.io/en/latest/channels-email.html).
+
+## Activity Log Alert description
+
+At the time of this writing description didn't work for Activity Log Alerts in Azure.
+Workaround that fills description for tickets created from Activity Log Alerts has been implemented.
+Description is obtained from corresponding alert rule.
+However to get it up and working you need to assign at least Reader role to connector function app.
+
+In order to do so:
+
+- Click on "Subscriptions."
+- Select the subscription where VIAcode Incident Management System for Azure is deployed.
+- Click "Access control (IAM)."
+- "Add" > "Add role assignment."
+
+  - Role: 'Reader'.
+  - Assign access to: 'Function App'.
+  - Subscription: Your Subscription.
+  - Select: Function app name for VIAcode Incident Management System for Azure.*
+  - "Save."
+
+ *(Function app name equals connectorName, can be copied from 'Parameters and Outputs' of the installed managed application)
+  ![Connector name](./media/connectorName.png)  
+
+You can also execute the following PS script:
+
+```powershell
+New-AzRoleAssignment -ObjectId (Get-AzADServicePrincipal -SearchString '{CONNECTOR_NAME}').Id -RoleDefinitionName Reader -Scope '/subscriptions/{SUBSCRIPTION_ID}';
+```
+
+SUBSCRIPTION_ID - ID of a monitored subscription.  
+CONNECTOR_NAME - The CONNECTOR_NAME can be copied from 'Parameters and Outputs' of the installed managed application.
+
+If you have multiple subscriptions, execute the script for each of them.
 
 ## Technical details
 
