@@ -17,7 +17,7 @@
   - [First Sign in](#first-sign-in)
   - [Email configuration](#email-configuration)
     - [Notes](#notes)
-  - [Activity Log Alert description](#activity-log-alert-description)
+  - [Activity Log Alert message](#activity-log-alert-message)
 
 - [Technical details](#technical-details)
   - [Supported alert types](#supported-alert-types)
@@ -252,11 +252,12 @@ In general, VIAcode Incident Management System for Azure best practice is to cre
 
 For current email set up documentation see [e-mail](https://zammad-admin-documentation.readthedocs.io/en/latest/channels-email.html).
 
-## Activity Log Alert description
+## Activity Log Alert message
 
 At the time of this writing description didn't work for Activity Log Alerts in Azure.
-Workaround that fills description for tickets created from Activity Log Alerts has been implemented.
-Description is obtained from corresponding alert rule.
+Because of this alert message hasn't been filled for tickets created from Activity Log Alerts.
+Workaround that fills alert message for tickets created from Activity Log Alerts has been implemented.
+Alert message is obtained from corresponding alert rule's description.
 However to get it up and working you need to assign at least Reader role to connector function app.
 
 In order to do so:
