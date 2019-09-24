@@ -70,16 +70,16 @@
         "resourceProvider": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/resourceProvider/resourceProvider.json', parameters('_artifactsLocationSasToken')))]",
         "resourceProviderApi": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/resourceProvider/resourceProviderApi.json', parameters('_artifactsLocationSasToken')))]"
       },
-      "upsell": {
-        "alerts": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/upsell/alerts.json', parameters('_artifactsLocationSasToken')))]",
-        "upsellTriggerFeedLogicApp": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/upsell/upsellTriggerFeedLogicApp.json', parameters('_artifactsLocationSasToken')))]"
+      "viacodeInsights": {
+        "alerts": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/viacodeInsights/alerts.json', parameters('_artifactsLocationSasToken')))]",
+        "viacodeInsightsTriggerFeedLogicApp": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/viacodeInsights/viacodeInsightsTriggerFeedLogicApp.json', parameters('_artifactsLocationSasToken')))]"
       },
       "bunch_functionAppInfra": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/bunch.functionAppInfra.json', parameters('_artifactsLocationSasToken')))]",
       "bunch_itsmApp": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/bunch.itsmApp.json', parameters('_artifactsLocationSasToken')))]",
       "bunch_itsmConnector": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/bunch.itsmConnector.json', parameters('_artifactsLocationSasToken')))]",
       "bunch_reports": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/bunch.reports.json', parameters('_artifactsLocationSasToken')))]",
       "bunch_resourceProvider": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/bunch.resourceProvider.json', parameters('_artifactsLocationSasToken')))]",
-      "bunch_upsell": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/bunch.upsell.json', parameters('_artifactsLocationSasToken')))]",
+      "bunch_viacode_insights": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/bunch.viacodeInsights.json', parameters('_artifactsLocationSasToken')))]",
       "keyVaultPolicies": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/keyVaultPolicies.json', parameters('_artifactsLocationSasToken')))]",
       "roleAssignment": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/roleAssignment.json', parameters('_artifactsLocationSasToken')))]"
     },
@@ -614,10 +614,10 @@
       }
     },
 
-    //Upsell
+    //VIAcode Insights
     {
       "apiVersion": "[variables('deploymentApiVersion')]",
-      "name": "deployUpsell",
+      "name": "deployViacodeInsights",
       "type": "Microsoft.Resources/deployments",
       "dependsOn": [
         "deployFunctionAppInfra"
@@ -625,7 +625,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[variables('linkedTemplates').bunch_upsell]",
+          "uri": "[variables('linkedTemplates').bunch_viacode_insights]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
@@ -706,9 +706,10 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "[variables('deploymentApiVersion')]",
-      "name": "deployUpsellRoleAssignment",
+      "name": "deployConnectorRoleAssignmentMonContributor",
       "dependsOn": [
-        "deployUpsell"
+        "deployItsmApp",
+        "deployItsmConnector"
       ],
       "properties": {
         "mode": "Incremental",
@@ -718,7 +719,34 @@
         },
         "parameters": {
           "principalId": {
-            "value": "[reference('deployUpsell', variables('deploymentApiVersion')).outputs.logicAppPrincipalId.value]"
+            "value": "[reference('deployItsmConnector', variables('deploymentApiVersion')).outputs.principalId.value]"
+          },
+          "scopeId": {
+            "value": "[resourceGroup().id]"
+          },
+          "roleId": {
+            "value": "749f88d5-cbae-40b8-bcfc-e573ddc772fa"
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "[variables('deploymentApiVersion')]",
+      "name": "deployViacodeInsightsRoleAssignment",
+      "dependsOn": [
+        "deployViacodeInsights",
+        "deployItsmApp"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('linkedTemplates').roleAssignment]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "principalId": {
+            "value": "[reference('deployViacodeInsights', variables('deploymentApiVersion')).outputs.logicAppPrincipalId.value]"
           },
           "scopeId": {
             "value": "[resourceGroup().id]"

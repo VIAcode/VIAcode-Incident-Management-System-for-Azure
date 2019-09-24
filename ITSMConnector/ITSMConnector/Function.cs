@@ -11,9 +11,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Runtime.Serialization.Json;
 using System.Text;
-using Microsoft.Azure.Management.ApiManagement;
-using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Net;
 using System.Linq;
 using System;
 
@@ -23,6 +22,7 @@ namespace ITSMConnector
     {
         private const string AlertApiVersion = "2018-05-05";
         private const string AlertRuleApiVersion = "2018-04-16";
+        private const string ActivityLogAlertApiVersion = "2017-04-01";
 
         private static ILogger Log { get; set; }
 
@@ -42,7 +42,7 @@ namespace ITSMConnector
 
             log.LogInformation($"Alert rule: {alert.Data.Essentials.AlertRule}");
             if(alert.Data.Essentials.Tags != null)
-                log.LogInformation($"Alert tags: {alert.Data.Essentials.Tags}");
+                log.LogInformation($"Alert tags: {string.Join("; ", alert.Data.Essentials.Tags.Select(x => x.Key + "=" + x.Value).ToArray())}");
 
             log.LogInformation("Start zammad call");
             var zService = new ZammadService();
@@ -70,29 +70,52 @@ namespace ITSMConnector
 
             try
             {
-                alert.Data.Essentials.Tags = await GetAlertRuleTagsAsync(alert.Data.Essentials.AlertId);
+                alert.Data.Essentials.Tags = await GetAlertRuleTagsAsync(alert);
+            }
+            catch(WebException we)
+            {
+                Log.LogError(we, $"Connector could not get tags for alert. Response StatusCode: {(we.Response as HttpWebResponse)?.StatusCode}");
             }
             catch(Exception e)
             {
-                Log.LogInformation(e, "Connector could not get tags for alert. Please provide it's prinicpal a Monitoring Contributor role");
+                Log.LogError(e, $"Connector could not get tags for alert. Error message: {e.Message}");
+            }
+            
+            if (string.IsNullOrEmpty(alert.Data.Essentials.Description) && alert.Data.Essentials.SignalType == SignalType.ActivityLog)
+            {
+                try
+                {
+                    alert.Data.Essentials.Description = await GetActivityLogAlertDescriptionAsync(alert);
+                }
+                catch (WebException we)
+                {
+                    Log.LogError(we, $"Connector could not get description for alert rule. Response StatusCode: {(we.Response as HttpWebResponse)?.StatusCode}");
+                }
+                catch (Exception e)
+                {
+                    Log.LogError(e, $"Connector could not get description for alert rule. Error message: {e.Message}");
+                }
             }
 
             return alert;
         }
 
-        public static async Task<Dictionary<string, string>> GetAlertRuleTagsAsync(string alertId)
+        public static async Task<Dictionary<string, string>> GetAlertRuleTagsAsync(Alert alert)
         {
-            dynamic alertInfo = await AzureApiClient.GetAzResource(alertId, AlertApiVersion);
-
-            string alertRuleId = alertInfo.properties.essentials.alertRule.Value;
-
-            dynamic alertRuleInfo = await AzureApiClient.GetAzResource(alertRuleId, AlertRuleApiVersion);
-
-            //string alertProvider = "microsoft.insights/scheduledQueryRules";
-            //dynamic alertRuleInfo = await AzureApiClient.GetAzResource(alert.Data.Essentials.SubscriptionId, alert.Data.Essentials.ResourceGroupName, alertProvider, alert.Data.Essentials.AlertRule, AlertRuleApiVersion);
-
+            string alertProvider = "microsoft.insights/scheduledQueryRules";
+            dynamic alertRuleInfo = await AzureApiClient.GetAzResource(alert.Data.Essentials.SubscriptionId, alert.Data.Essentials.ResourceGroupName, alertProvider, alert.Data.Essentials.AlertRule, AlertRuleApiVersion);
             var tags = alertRuleInfo.tags.ToObject<Dictionary<string, string>>();
+
             return tags;
+        }
+
+        public static async Task<string> GetActivityLogAlertDescriptionAsync(Alert alert)
+        {
+            string alertProvider = "microsoft.insights/activityLogAlerts";
+            dynamic alertRuleInfo = await AzureApiClient.GetAzResource(alert.Data.Essentials.SubscriptionId, alert.Data.Essentials.ResourceGroupName, alertProvider, alert.Data.Essentials.AlertRule, ActivityLogAlertApiVersion);
+
+            var description = alertRuleInfo.properties.description.ToString();
+            return description;
         }
     }
 }

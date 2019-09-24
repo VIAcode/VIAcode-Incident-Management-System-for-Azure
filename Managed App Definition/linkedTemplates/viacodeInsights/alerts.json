@@ -47,7 +47,7 @@
       "dependsOn": [],
       "tags": {
         "[concat('hidden-link:', parameters('appInsightsId'))]": "Resource",
-        "alert-purpose": "upsell"
+        "alert-purpose": "VIAcode-Insights"
       },
       "properties": {
         "description": "[variables('unmanagedSubscriptionAlertRuleDescriptionFormatted')]",
@@ -78,7 +78,7 @@
       "name": "[parameters('serviceHealthAlertRuleName')]",
       "location": "Global",
       "tags": {
-        "alert-purpose": "upsell"
+        "alert-purpose": "VIAcode-Insights"
       },
       "properties": {
         "scopes": [
