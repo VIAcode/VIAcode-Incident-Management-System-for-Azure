@@ -1,0 +1,69 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "VIAcode Incident Management System for Azure API",
+    "version": "1.0",
+    "description": "The VIAcode Incident Management System for Azure is a robust incident management tool that fully integrates into an Azure environment helping to prioritize, simplify and streamline management of your Azure operations."
+  },
+  "host": "api.azure-api.net",
+  "schemes": [
+    "https"
+  ],
+  "securityDefinitions": {
+    "apiKeyHeader": {
+      "type": "apiKey",
+      "name": "Ocp-Apim-Subscription-Key",
+      "in": "header"
+    },
+    "apiKeyQuery": {
+      "type": "apiKey",
+      "name": "subscription-key",
+      "in": "query"
+    }
+  },
+  "security": [
+    {
+      "apiKeyHeader": []
+    },
+    {
+      "apiKeyQuery": []
+    }
+  ],
+  "paths": {
+    "/RenewADIntegration": {
+      "post": {
+        "operationId": "post-renewadintegration",
+        "summary": "RenewADIntegration",
+        "responses": {
+          "200": {
+            "description": "Empty HTTP 200 status code",
+            "schema": {}
+          }
+        }
+      },
+      "get": {
+        "operationId": "get-renewadintegration",
+        "summary": "RenewADIntegration",
+        "responses": {
+          "200": {
+            "description": "Empty HTTP 200 status code",
+            "schema": {}
+          }
+        }
+      }
+    },
+    "/RestartVIMS": {
+      "post": {
+        "operationId": "post-restartvims",
+        "summary": "RestartVIMS",
+        "responses": {
+          "200": {
+            "description": "Empty HTTP 200 status code",
+            "schema": {}
+          }
+        }
+      }
+    }
+  },
+  "tags": []
+}
