@@ -5,7 +5,7 @@
     "version": "1.0",
     "description": "The VIAcode Incident Management System for Azure is a robust incident management tool that fully integrates into an Azure environment helping to prioritize, simplify and streamline management of your Azure operations."
   },
-  "host": "api.azure-api.net",
+  "host": "vims-api.azure-api.net",
   "schemes": [
     "https"
   ],
@@ -30,10 +30,18 @@
     }
   ],
   "paths": {
-    "/RenewADIntegration": {
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/public/IncidentRulesAPI/RenewADIntegration": {
       "post": {
         "operationId": "post-renewadintegration",
         "summary": "RenewADIntegration",
+        "parameters": [
+          {
+            "$ref": "#/parameters/SubscriptionIdParameter"
+          },
+          {
+            "$ref": "#/parameters/ResourceGroupNameParameter"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Empty HTTP 200 status code",
@@ -44,6 +52,14 @@
       "get": {
         "operationId": "get-renewadintegration",
         "summary": "RenewADIntegration",
+        "parameters": [
+          {
+            "$ref": "#/parameters/SubscriptionIdParameter"
+          },
+          {
+            "$ref": "#/parameters/ResourceGroupNameParameter"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Empty HTTP 200 status code",
@@ -52,10 +68,18 @@
         }
       }
     },
-    "/RestartVIMS": {
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/public/IncidentRulesAPI/RestartVIMS": {
       "post": {
         "operationId": "post-restartvims",
         "summary": "RestartVIMS",
+        "parameters": [
+          {
+            "$ref": "#/parameters/SubscriptionIdParameter"
+          },
+          {
+            "$ref": "#/parameters/ResourceGroupNameParameter"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Empty HTTP 200 status code",
@@ -65,5 +89,24 @@
       }
     }
   },
-  "tags": []
+  "tags": [],
+  "parameters": {
+    "SubscriptionIdParameter": {
+      "name": "subscriptionId",
+      "in": "path",
+      "required": true,
+      "type": "string",
+      "description": "Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call."
+    },
+    "ResourceGroupNameParameter": {
+      "name": "resourceGroupName",
+      "in": "path",
+      "required": true,
+      "type": "string",
+      "description": "The name of the resource group. The name is case insensitive.",
+      "pattern": "^[-\\w\\._\\(\\)]+$",
+      "minLength": 1,
+      "maxLength": 90
+    }
+  }
 }
