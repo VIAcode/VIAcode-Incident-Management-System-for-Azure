@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "VIAcode Incident Management System for Azure API",
-    "version": "1.0",
+    "version": "2018-09-01-preview",
     "description": "The VIAcode Incident Management System for Azure is a robust incident management tool that fully integrates into an Azure environment helping to prioritize, simplify and streamline management of your Azure operations."
   },
   "schemes": [
