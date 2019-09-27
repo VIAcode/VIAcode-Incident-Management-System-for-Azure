@@ -5,7 +5,6 @@
     "version": "1.0",
     "description": "The VIAcode Incident Management System for Azure is a robust incident management tool that fully integrates into an Azure environment helping to prioritize, simplify and streamline management of your Azure operations."
   },
-  "host": "vims-api.azure-api.net",
   "schemes": [
     "https"
   ],
