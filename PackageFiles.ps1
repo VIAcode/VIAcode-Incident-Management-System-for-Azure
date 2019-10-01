@@ -10,8 +10,8 @@ param(
 )
 
 $connectorProjects = @("DashboardReport\DashboardReport",
-"ITSMConnector\ITSMConnector")
-$providerProjects = @("ResourceProvider\ItsmAPI")
+"VIMSConnector\VIMSConnector")
+$providerProjects = @("ResourceProvider\VimsAPI")
 
 if (Test-Path $definitionfileName) { Remove-Item $definitionfileName }
 if (Test-Path "providerApi.zip") { Remove-Item "providerApi.zip"}

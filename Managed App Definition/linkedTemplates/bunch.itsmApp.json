@@ -35,7 +35,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[parameters('linkedTemplates').itsmApp.vimsApp]",
+          "uri": "[parameters('linkedTemplates').vimsApp.vimsApp]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
@@ -58,7 +58,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[parameters('linkedTemplates').itsmApp.vimsSetup]",
+          "uri": "[parameters('linkedTemplates').vimsApp.vimsSetup]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
@@ -84,7 +84,7 @@
             "value": "[parameters('vimsAdminPassword')]"
           },
           "scriptUri": {
-            "value": "[parameters('linkedTemplates').itsmApp.CreateAdminAndEnableAuthViaOffice365Runbook]"
+            "value": "[parameters('linkedTemplates').vimsApp.CreateAdminAndEnableAuthViaOffice365Runbook]"
           }
         }
       }

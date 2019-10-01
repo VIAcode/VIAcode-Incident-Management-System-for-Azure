@@ -19,7 +19,7 @@
             "metadata": {
                 "description": "The base URI where artifacts required by this template are located including a trailing '/'"
             },
-            "defaultValue": "['https://catalogartifact.azureedge.net/publicartifacts/viacode_consulting-1089577.viacode-itsm-z-preview-6b9a38f2-c541-4324-8b7b-c1e1469bbc60-itsm-z-free/Artifacts/mainTemplate.json']"
+            "defaultValue": "['https://catalogartifact.azureedge.net/publicartifacts/viacode_consulting-1089577.viacode-vims-preview-6b9a38f2-c541-4324-8b7b-c1e1469bbc60-vims-free/Artifacts/mainTemplate.json']"
         },
         "_artifactsLocationSasToken": {
             "type": "securestring",
@@ -45,8 +45,8 @@
             "kind": "MarketPlace",
             "name": "[variables('applicationResourceName')]",
             "plan": {
-                "name": "itsm-z-paid",
-                "product": "viacode-itsm-z-preview",
+                "name": "vims-paid",
+                "product": "viacode-vims-preview",
                 "publisher": "viacode_consulting-1089577",
                 "version": "1.1.10"
             },

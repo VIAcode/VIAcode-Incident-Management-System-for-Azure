@@ -5,7 +5,7 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace ITSMConnector
+namespace VIMSConnector
 {
     public class AzureApiClient
     {

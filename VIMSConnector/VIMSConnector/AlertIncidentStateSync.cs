@@ -4,11 +4,11 @@ using System.Net;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 
-namespace ITSMConnector
+namespace VIMSConnector
 {
     public static class AlertIncidentStateSync
     {
-        private static readonly ZammadService ZService = new ZammadService();
+        private static readonly VimsService ZService = new VimsService();
         private const string AlertApiVersion = "2019-03-01-preview";
         private const string WarnTitle = "Backward alert state synchronization is not allowed";
 

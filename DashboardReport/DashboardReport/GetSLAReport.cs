@@ -17,11 +17,11 @@ namespace DashboardReport
         {
             log.LogInformation($"C# Timer trigger 'DashboardReport' function stared execution at: {DateTime.Now}");
 
-            ZammadService zammadService = new ZammadService();
+            VimsService vimsService = new VimsService();
 
-            IList<Ticket> ticketsList = zammadService.GetTickets().Result;
+            IList<Ticket> ticketsList = vimsService.GetTickets().Result;
 
-            IList<TicketArticle> ticketArticles = zammadService.GetTicketArticle().Result;
+            IList<TicketArticle> ticketArticles = vimsService.GetTicketArticle().Result;
 
             Tickets tickets = new Tickets(tickets: ticketsList, ticketsArticles: ticketArticles);
 
@@ -41,7 +41,7 @@ namespace DashboardReport
 
             // Add data to metrics
             // Users Count
-            int usersCount = zammadService.GetUsersCount().Result;
+            int usersCount = vimsService.GetUsersCount().Result;
             //users
             appInsightService.MetricMessage("Users", usersCount);
             // tickets count

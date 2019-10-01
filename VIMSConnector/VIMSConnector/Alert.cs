@@ -8,7 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Runtime.Serialization;
 
-namespace ITSMConnector
+namespace VIMSConnector
 {
     internal class Constants
     {

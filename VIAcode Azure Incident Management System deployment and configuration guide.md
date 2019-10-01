@@ -382,11 +382,11 @@ dotnet restore
 dotnet build -c Release
 cd ..
 
-# Create Archive Itsmapi.zip
-$Itsmapi = ".\Itsmapi.zip"
+# Create Archive Vimsapi.zip
+$Vimsapi = ".\Vimsapi.zip"
 
-Compress-Archive -Path "$scriptDir\ResourceProvider\ItsmAPI\bin\Release\netcoreapp2.1\*" `
--DestinationPath $Itsmapi -Force
+Compress-Archive -Path "$scriptDir\ResourceProvider\VimsAPI\bin\Release\netcoreapp2.1\*" `
+-DestinationPath $Vimsapi -Force
 
 # Build DashboardReport
 cd .\DashboardReport
@@ -400,25 +400,25 @@ $slareports = ".\slareports.zip"
 Compress-Archive -Path "$scriptDir\DashboardReport\DashboardReport\bin\Release\netcoreapp2.1\*" `
 -DestinationPath $slareports -Force
 
-# Build ITSMConnector
-cd .\ITSMConnector
+# Build VIMSConnector
+cd .\VIMSConnector
 dotnet restore
 dotnet build -c Release
 cd ..
 
-# Create Archive zammadconnector.zip
-$zammadconnector = ".\zammadconnector.zip"
-Compress-Archive -Path "$scriptDir\ITSMConnector\ITSMConnector\bin\Release\netcoreapp2.1\*" `
--DestinationPath $zammadconnector -Force
+# Create Archive vimsconnector.zip
+$vimsconnector = ".\vimsconnector.zip"
+Compress-Archive -Path "$scriptDir\VIMSConnector\VIMSConnector\bin\Release\netcoreapp2.1\*" `
+-DestinationPath $vimsconnector -Force
 
-# Create package itsm-z-free.zip
-$itsmzfree = ".\itsm-z-free.zip"
+# Create package vims-free.zip
+$vims-free = ".\vims-free.zip"
 
-Compress-Archive -Path "$scriptDir\Zammad\AppService\*" -DestinationPath $itsmzfree -Force
+Compress-Archive -Path "$scriptDir\Managed App Definition\*" -DestinationPath $vims-free -Force
 
-Compress-Archive -Path $Itsmapi -DestinationPath $itsmzfree -Update
-Compress-Archive -Path $slareports -DestinationPath $itsmzfree -Update
-Compress-Archive -Path $zammadconnector -DestinationPath $itsmzfree -Update
+Compress-Archive -Path $Vimsapi -DestinationPath $vims-free -Update
+Compress-Archive -Path $slareports -DestinationPath $vims-free -Update
+Compress-Archive -Path $vimsconnector -DestinationPath $vims-free -Update
 ```
 
 ## Deploy Managed Application Definition
@@ -428,14 +428,14 @@ Upload the package into an Azure blob or another accessible location.
 Execute the script below after filling [parameters] to deploy Service catalog managed application definition.
 
 ```powershell
-# Get Storage account where itsm-z-free.zip is stored in an Azure blob
+# Get Storage account where vims-free.zip is stored in an Azure blob
 $storageAccount = Get-AzStorageAccount -ResourceGroupName "[RG name]" -Name "[Storage account]"
 
 # Get Context of the Storage Account
 $ctx = $storageAccount.Context
 
-# Get the blob with itsm-z-free.zip
-$blob = Get-AzStorageBlob -Container "[Container Name]" -Blob "[itsm-z-free.zip]" -Context $ctx
+# Get the blob with vims-free.zip
+$blob = Get-AzStorageBlob -Container "[Container Name]" -Blob "[vims-free.zip]" -Context $ctx
 
 #Get owner ID
 $ownerID=(Get-AzRoleDefinition -Name Owner).Id
