@@ -48,7 +48,7 @@
                 "name": "itsm-z-paid",
                 "product": "viacode-itsm-z-preview",
                 "publisher": "viacode_consulting-1089577",
-                "version": "1.0.0"
+                "version": "1.1.9"
             },
             "properties": {
                 "managedResourceGroupId": "[variables('managedResourceGroupId')]",
