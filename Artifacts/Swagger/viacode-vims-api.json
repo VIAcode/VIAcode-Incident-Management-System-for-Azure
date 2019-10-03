@@ -41,10 +41,13 @@
             "$ref": "#/parameters/ResourceGroupNameParameter"
           },
           {
-            "$ref": "#/parameters/ApplicationIdParameter"
-          },
-          {
-            "$ref": "#/parameters/ApplicationSecretParameter"
+            "name": "parameters",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RenewADIntegrationParameters"
+            },
+            "description": "The parameters required call renew AD integration."
           }
         ],
         "responses": {
@@ -65,10 +68,13 @@
             "$ref": "#/parameters/ResourceGroupNameParameter"
           },
           {
-            "$ref": "#/parameters/ApplicationIdParameter"
-          },
-          {
-            "$ref": "#/parameters/ApplicationSecretParameter"
+            "name": "parameters",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RenewADIntegrationParameters"
+            },
+            "description": "The parameters required call renew AD integration."
           }
         ],
         "responses": {
@@ -100,6 +106,24 @@
       }
     }
   },
+  "definitions": {
+    "RenewADIntegrationParameters": {
+      "properties": {
+        "id": {
+          "readOnly": true,
+          "type": "string",
+          "description": "Application Id of application created for VIMS Office365 integration"
+        },
+        "secret": {
+          "readOnly": true,
+          "type": "string",
+          "description": "Secret of application created for VIMS Office365 integration"
+        }
+      },
+      "description": "Renew AD Integration Description.",
+      "x-ms-azure-resource": true
+    }
+  }
   "tags": [],
   "parameters": {
     "SubscriptionIdParameter": {
