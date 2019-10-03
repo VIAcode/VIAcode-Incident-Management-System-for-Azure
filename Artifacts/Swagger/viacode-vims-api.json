@@ -39,6 +39,12 @@
           },
           {
             "$ref": "#/parameters/ResourceGroupNameParameter"
+          },
+		  {
+            "$ref": "#/parameters/ApplicationIdParameter"
+          },
+		  {
+            "$ref": "#/parameters/ApplicationSecretParameter"
           }
         ],
         "responses": {
@@ -57,6 +63,12 @@
           },
           {
             "$ref": "#/parameters/ResourceGroupNameParameter"
+          },
+		  {
+            "$ref": "#/parameters/ApplicationIdParameter"
+          },
+		  {
+            "$ref": "#/parameters/ApplicationSecretParameter"
           }
         ],
         "responses": {
@@ -106,6 +118,20 @@
       "pattern": "^[-\\w\\._\\(\\)]+$",
       "minLength": 1,
       "maxLength": 90
+    },
+	"ApplicationIdParameter": {
+	  "name": "id",
+	  "in": "body",
+	  "required": true,
+	  "type": "string",
+	  "description": "Application Id of application created for VIMS Office365 integration"
+	},
+	"ApplicationSecretParameter": {
+	  "name": "secret",
+	  "in": "body",
+	  "required": true,
+	  "type": "string",
+	  "description": "Secret of application created for VIMS Office365 integration"
     }
   }
 }
