@@ -123,7 +123,7 @@
       "description": "Renew AD Integration Description.",
       "x-ms-azure-resource": true
     }
-  }
+  },
   "tags": [],
   "parameters": {
     "SubscriptionIdParameter": {
