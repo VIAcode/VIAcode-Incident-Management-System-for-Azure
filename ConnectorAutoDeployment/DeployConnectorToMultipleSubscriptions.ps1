@@ -89,7 +89,7 @@ if (Login-AzAccount) {
                                     while ($true) {
                                         $tries++
                                         try {                                        
-                                            New-AzResourceGroupDeployment -Name "viacode_consulting-1089577.viacode-itsm-z-preview-$date" -ResourceGroupName $resourceGroup -TemplateUri "https://raw.githubusercontent.com/VIAcode/VIAcode-Incident-Management-System-for-Azure/develop/ConnectorAutoDeployment/template.json" -functionSubscription $functionSubscription -functionResourceGroup $functionResourceGroup -functionName $functionName -location $location -AzContext $context
+                                            New-AzResourceGroupDeployment -Name "viacode_consulting-1089577.viacode-itsm-z-preview-$date" -ResourceGroupName $resourceGroup -TemplateUri "https://raw.githubusercontent.com/VIAcode/VIAcode-Incident-Management-System-for-Azure/master/ConnectorAutoDeployment/template.json" -functionSubscription $functionSubscription -functionResourceGroup $functionResourceGroup -functionName $functionName -location $location -AzContext $context
                                             break
                                         } catch {
                                             if($tries -ge 30){

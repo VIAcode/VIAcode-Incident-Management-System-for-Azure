@@ -31,4 +31,3 @@ foreach($prj in $connectorProjects)
 
 Get-ChildItem $templateDir | Compress-Archive -DestinationPath $definitionfileName -Update
 Compress-Archive "providerApi.zip", "connector.zip" -DestinationPath $definitionfileName -Update
-
