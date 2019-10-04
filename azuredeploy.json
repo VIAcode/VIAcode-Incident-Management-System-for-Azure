@@ -36,7 +36,7 @@
     }
   },
   "variables": {
-    "packageFileUri": "[uri(deployment().properties.templateLink.uri, 'itsm-z-free.zip')]",
+    "packageFileUri": "[uri(deployment().properties.templateLink.uri, 'vims-free.zip')]",
     "authorizations": [
       {
         "principalId": "b82b6153-1611-4d0c-bbdb-006363854565",

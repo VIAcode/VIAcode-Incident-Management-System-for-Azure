@@ -10,8 +10,8 @@ param(
 )
 
 $connectorProjects = @("DashboardReport\DashboardReport",
-"ITSMConnector\ITSMConnector")
-$providerProjects = @("ResourceProvider\ItsmAPI")
+"VIMSConnector\VIMSConnector")
+$providerProjects = @("ResourceProvider\VimsAPI")
 
 if (Test-Path $definitionfileName) { Remove-Item $definitionfileName }
 if (Test-Path "providerApi.zip") { Remove-Item "providerApi.zip"}
@@ -31,4 +31,3 @@ foreach($prj in $connectorProjects)
 
 Get-ChildItem $templateDir | Compress-Archive -DestinationPath $definitionfileName -Update
 Compress-Archive "providerApi.zip", "connector.zip" -DestinationPath $definitionfileName -Update
-

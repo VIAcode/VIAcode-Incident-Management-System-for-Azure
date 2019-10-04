@@ -150,7 +150,7 @@
                   ]
                 },
                 {
-                  "displayName": "Zammad statistics",
+                  "displayName": "Vims statistics",
                   "chartType": "Scatter",
                   "metrics": [
                     {

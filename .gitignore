@@ -4,21 +4,21 @@
 
 /.vs
 /.vscode
-/ITSMConnector/ITSMConnector/obj
-/ITSMConnector/ITSMConnector/bin
-/ITSMConnector/.vs
-/ITSMConnector/local.settings.json
-/ITSMConnector/Properties/PublishProfiles
+/VIMSConnector/VIMSConnector/obj
+/VIMSConnector/VIMSConnector/bin
+/VIMSConnector/.vs
+/VIMSConnector/local.settings.json
+/VIMSConnector/Properties/PublishProfiles
 /DashboardReport/DashboardReport/obj
 /DashboardReport/DashboardReport/bin
 /DashboardReport/.vs
 /DashboardReport/local.settings.json
 /DashboardReport/Properties/PublishProfiles
 /DashboardReport/DashboardReport/Properties/PublishProfiles
-/ResourceProvider/ItsmAPI/Properties/PublishProfiles
+/ResourceProvider/VimsAPI/Properties/PublishProfiles
 
 build.ps1
-buildZammad.ps1
+buildVims.ps1
 buildSLAReports.ps1
 
 
@@ -287,5 +287,5 @@ paket-files/
 __pycache__/
 *.pyc
 
-/ITSMConnector/ITSMConnector/Properties/PublishProfiles/demo-api-hhahqp5lrlhre - Web Deploy.pubxml
-/ITSMConnector/ITSMConnector/Properties/PublishProfiles
+/VIMSConnector/VIMSConnector/Properties/PublishProfiles/demo-api-hhahqp5lrlhre - Web Deploy.pubxml
+/VIMSConnector/VIMSConnector/Properties/PublishProfiles

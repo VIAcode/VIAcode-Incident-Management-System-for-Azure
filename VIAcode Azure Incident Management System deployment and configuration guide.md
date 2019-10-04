@@ -382,11 +382,11 @@ dotnet restore
 dotnet build -c Release
 cd ..
 
-# Create Archive VIMSapi.zip
-$VIMSapi = ".\VIMSapi.zip"
+# Create Archive Vimsapi.zip
+$Vimsapi = ".\Vimsapi.zip"
 
-Compress-Archive -Path "$scriptDir\ResourceProvider\VIMSapi\bin\Release\netcoreapp2.1\*" `
--DestinationPath $VIMSapi -Force
+Compress-Archive -Path "$scriptDir\ResourceProvider\VimsAPI\bin\Release\netcoreapp2.1\*" `
+-DestinationPath $Vimsapi -Force
 
 # Build DashboardReport
 cd .\DashboardReport
@@ -408,19 +408,17 @@ cd ..
 
 # Create Archive vimsconnector.zip
 $vimsconnector = ".\vimsconnector.zip"
-
-Compress-Archive -Path "$scriptDir\VIMSConnector\VIMSConnector\bin\Release\netcoreapp2.1\*" ` 
+Compress-Archive -Path "$scriptDir\VIMSConnector\VIMSConnector\bin\Release\netcoreapp2.1\*" `
 -DestinationPath $vimsconnector -Force
 
 # Create package vims-free.zip
-$vimsfree = ".\vims-free.zip"
+$vims-free = ".\vims-free.zip"
 
-Compress-Archive -Path "$scriptDir\Managed App Definition\*" -DestinationPath $vimsfree -Force
+Compress-Archive -Path "$scriptDir\Managed App Definition\*" -DestinationPath $vims-free -Force
 
-
-Compress-Archive -Path $VIMSapi -DestinationPath $vimsfree -Update
-Compress-Archive -Path $slareports -DestinationPath $vimsfree -Update
-Compress-Archive -Path $vimsconnector -DestinationPath $vimsfree -Update
+Compress-Archive -Path $Vimsapi -DestinationPath $vims-free -Update
+Compress-Archive -Path $slareports -DestinationPath $vims-free -Update
+Compress-Archive -Path $vimsconnector -DestinationPath $vims-free -Update
 ```
 
 ## Deploy Managed Application Definition

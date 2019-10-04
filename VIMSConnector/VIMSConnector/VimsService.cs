@@ -15,22 +15,22 @@ using Microsoft.AspNetCore.Routing.Template;
 using Zammad.Client;
 using Zammad.Client.Resources;
 
-namespace ITSMConnector
+namespace VIMSConnector
 {
-    public class ZammadService
+    public class VimsService
     {
         private readonly TicketClient _ticketClient;
         private readonly TagClient _tagClient;
 
         // G: 6/15/2008 9:15:07 PM
         private const string DateTimeFormat = "G";
-        private const string ZammadUrlSetting = "ZammadUrl";
+        private const string VimsUrlSetting = "VimsUrl";
         
-        public ZammadService()
+        public VimsService()
         {
-            var zammadUrl = System.Environment.GetEnvironmentVariable(ZammadUrlSetting);
+            var vimsUrl = System.Environment.GetEnvironmentVariable(VimsUrlSetting);
 
-            var account = ZammadAccount.CreateBasicAccount(zammadUrl, KeyVault.Login, KeyVault.Password);
+            var account = ZammadAccount.CreateBasicAccount(vimsUrl, KeyVault.Login, KeyVault.Password);
 
             _ticketClient = account.CreateTicketClient();
             _tagClient = account.CreateTagClient();

@@ -9,19 +9,19 @@ using Zammad.Client.Resources;
 
 namespace DashboardReport
 {
-    public class ZammadService
+    public class VimsService
     {
         private TicketClient _ticketClient;
         private UserClient _userClient;
 
         private const string DateTimeFormat = "G";
-        private const string ZammadUrlSetting = "ZammadUrl";
+        private const string VimsUrlSetting = "VimsUrl";
 
-        public ZammadService()
+        public VimsService()
         {
-            string zammadUrl = System.Environment.GetEnvironmentVariable(ZammadUrlSetting);
+            string vimsUrl = System.Environment.GetEnvironmentVariable(VimsUrlSetting);
             
-            var account = ZammadAccount.CreateBasicAccount(zammadUrl, KeyVault.Login, KeyVault.Password);
+            var account = ZammadAccount.CreateBasicAccount(vimsUrl, KeyVault.Login, KeyVault.Password);
 
             _ticketClient = account.CreateTicketClient();
             _userClient = account.CreateUserClient();

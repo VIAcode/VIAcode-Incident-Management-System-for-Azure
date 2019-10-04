@@ -5,7 +5,7 @@
 using Microsoft.Azure.KeyVault;
 using Microsoft.Azure.Services.AppAuthentication;
 
-namespace ITSMConnector
+namespace VIMSConnector
 {
     internal static class KeyVault
     {

@@ -53,14 +53,14 @@
         "keyVault": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/functionAppInfra/keyVault.json', parameters('_artifactsLocationSasToken')))]",
         "sharedResources": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/functionAppInfra/sharedResources.json', parameters('_artifactsLocationSasToken')))]"
       },
-      "itsmApp": {
-        "CreateAdminAndEnableAuthViaOffice365Runbook": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/itsmApp/CreateAdminAndEnableAuthViaOffice365Runbook.ps1', parameters('_artifactsLocationSasToken')))]",
-        "vimsApp": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/itsmApp/vimsApp.json', parameters('_artifactsLocationSasToken')))]",
-        "vimsSetup": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/itsmApp/vimsSetup.json', parameters('_artifactsLocationSasToken')))]"
+      "vimsApp": {
+        "CreateAdminAndEnableAuthViaOffice365Runbook": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/vimsApp/CreateAdminAndEnableAuthViaOffice365Runbook.ps1', parameters('_artifactsLocationSasToken')))]",
+        "vimsApp": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/vimsApp/vimsApp.json', parameters('_artifactsLocationSasToken')))]",
+        "vimsSetup": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/vimsApp/vimsSetup.json', parameters('_artifactsLocationSasToken')))]"
       },
-      "itsmConnector": {
-        "actions": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/itsmConnector/actions.json', parameters('_artifactsLocationSasToken')))]",
-        "connector": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/itsmConnector/connector.json', parameters('_artifactsLocationSasToken')))]"
+      "vimsConnector": {
+        "actions": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/vimsConnector/actions.json', parameters('_artifactsLocationSasToken')))]",
+        "connector": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/vimsConnector/connector.json', parameters('_artifactsLocationSasToken')))]"
       },
       "reports": {
         "dashboard": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/reports/dashboard.json', parameters('_artifactsLocationSasToken')))]",
@@ -75,8 +75,8 @@
         "viacodeInsightsTriggerFeedLogicApp": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/viacodeInsights/viacodeInsightsTriggerFeedLogicApp.json', parameters('_artifactsLocationSasToken')))]"
       },
       "bunch_functionAppInfra": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/bunch.functionAppInfra.json', parameters('_artifactsLocationSasToken')))]",
-      "bunch_itsmApp": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/bunch.itsmApp.json', parameters('_artifactsLocationSasToken')))]",
-      "bunch_itsmConnector": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/bunch.itsmConnector.json', parameters('_artifactsLocationSasToken')))]",
+      "bunch_vimsApp": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/bunch.vimsApp.json', parameters('_artifactsLocationSasToken')))]",
+      "bunch_vimsConnector": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/bunch.vimsConnector.json', parameters('_artifactsLocationSasToken')))]",
       "bunch_reports": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/bunch.reports.json', parameters('_artifactsLocationSasToken')))]",
       "bunch_resourceProvider": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/bunch.resourceProvider.json', parameters('_artifactsLocationSasToken')))]",
       "bunch_viacode_insights": "[uri(parameters('_artifactsLocation'), concat('linkedTemplates/bunch.viacodeInsights.json', parameters('_artifactsLocationSasToken')))]",
@@ -448,12 +448,12 @@
     //VIMS App
     {
       "apiVersion": "[variables('deploymentApiVersion')]",
-      "name": "deployItsmApp",
+      "name": "deployVimsApp",
       "type": "Microsoft.Resources/deployments",
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[variables('linkedTemplates').bunch_itsmApp]",
+          "uri": "[variables('linkedTemplates').bunch_vimsApp]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
@@ -485,16 +485,16 @@
     //Connector
     {
       "apiVersion": "[variables('deploymentApiVersion')]",
-      "name": "deployItsmConnector",
+      "name": "deployVimsConnector",
       "type": "Microsoft.Resources/deployments",
       "dependsOn": [
         "deployFunctionAppInfra",
-        "deployItsmApp"
+        "deployVimsApp"
       ],
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[variables('linkedTemplates').bunch_itsmConnector]",
+          "uri": "[variables('linkedTemplates').bunch_vimsConnector]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
@@ -523,7 +523,7 @@
             "value": "[reference('deployFunctionAppInfra', variables('deploymentApiVersion')).outputs.vaultUri.value]"
           },
           "vimsUrl": {
-            "value": "[reference('deployItsmApp', variables('deploymentApiVersion')).outputs.vimsUrl.value]"
+            "value": "[reference('deployVimsApp', variables('deploymentApiVersion')).outputs.vimsUrl.value]"
           }
         }
       }
@@ -536,7 +536,7 @@
       "type": "Microsoft.Resources/deployments",
       "dependsOn": [
         "deployFunctionAppInfra",
-        "deployItsmApp"
+        "deployVimsApp"
       ],
       "properties": {
         "mode": "Incremental",
@@ -558,7 +558,7 @@
             "value": "[reference('deployFunctionAppInfra', variables('deploymentApiVersion')).outputs.aiName.value]"
           },
           "vimsUrl": {
-            "value": "[reference('deployItsmApp', variables('deploymentApiVersion')).outputs.vimsUrl.value]"
+            "value": "[reference('deployVimsApp', variables('deploymentApiVersion')).outputs.vimsUrl.value]"
           }
         }
       }
@@ -571,7 +571,7 @@
       "type": "Microsoft.Resources/deployments",
       "dependsOn": [
         "deployFunctionAppInfra",
-        "deployItsmApp"
+        "deployVimsApp"
       ],
       "properties": {
         "mode": "Incremental",
@@ -596,10 +596,10 @@
             "value": "[reference('deployFunctionAppInfra', variables('deploymentApiVersion')).outputs.vaultUri.value]"
           },
           "vimsUrl": {
-            "value": "[reference('deployItsmApp', variables('deploymentApiVersion')).outputs.vimsUrl.value]"
+            "value": "[reference('deployVimsApp', variables('deploymentApiVersion')).outputs.vimsUrl.value]"
           },
           "vimsAppId": {
-            "value": "[reference('deployItsmApp', variables('deploymentApiVersion')).outputs.vimsUrl.value]"
+            "value": "[reference('deployVimsApp', variables('deploymentApiVersion')).outputs.vimsUrl.value]"
           },
           "storageName": {
             "value": "[reference('deployFunctionAppInfra', variables('deploymentApiVersion')).outputs.storageName.value]"
@@ -651,7 +651,7 @@
       "name": "deployKeyVaultPolicies",
       "dependsOn": [
         "deployFunctionAppInfra",
-        "deployItsmConnector",
+        "deployVimsConnector",
         "deployResourceProviderBunch"
       ],
       "type": "Microsoft.Resources/deployments",
@@ -664,7 +664,7 @@
         "parameters": {
           "apiMsis": {
             "value": [
-              "[reference('deployItsmConnector', variables('deploymentApiVersion')).outputs.principalId.value]",
+              "[reference('deployVimsConnector', variables('deploymentApiVersion')).outputs.principalId.value]",
               "[reference('deployResourceProviderBunch', variables('deploymentApiVersion')).outputs.principalId.value]"
             ]
           },
@@ -681,8 +681,8 @@
       "apiVersion": "[variables('deploymentApiVersion')]",
       "name": "deployConnectorRoleAssignment",
       "dependsOn": [
-        "deployItsmApp",
-        "deployItsmConnector"
+        "deployVimsApp",
+        "deployVimsConnector"
       ],
       "properties": {
         "mode": "Incremental",
@@ -692,7 +692,7 @@
         },
         "parameters": {
           "principalId": {
-            "value": "[reference('deployItsmConnector', variables('deploymentApiVersion')).outputs.principalId.value]"
+            "value": "[reference('deployVimsConnector', variables('deploymentApiVersion')).outputs.principalId.value]"
           },
           "scopeId": {
             "value": "[resourceGroup().id]"
@@ -708,8 +708,8 @@
       "apiVersion": "[variables('deploymentApiVersion')]",
       "name": "deployConnectorRoleAssignmentMonContributor",
       "dependsOn": [
-        "deployItsmApp",
-        "deployItsmConnector"
+        "deployVimsApp",
+        "deployVimsConnector"
       ],
       "properties": {
         "mode": "Incremental",
@@ -719,7 +719,7 @@
         },
         "parameters": {
           "principalId": {
-            "value": "[reference('deployItsmConnector', variables('deploymentApiVersion')).outputs.principalId.value]"
+            "value": "[reference('deployVimsConnector', variables('deploymentApiVersion')).outputs.principalId.value]"
           },
           "scopeId": {
             "value": "[resourceGroup().id]"
@@ -736,7 +736,7 @@
       "name": "deployViacodeInsightsRoleAssignment",
       "dependsOn": [
         "deployViacodeInsights",
-        "deployItsmApp"
+        "deployVimsApp"
       ],
       "properties": {
         "mode": "Incremental",
@@ -761,11 +761,11 @@
   "outputs": {
     "portalUrl": {
       "type": "string",
-      "value": "[reference('deployItsmApp', variables('deploymentApiVersion')).outputs.vimsUrl.value]"
+      "value": "[reference('deployVimsApp', variables('deploymentApiVersion')).outputs.vimsUrl.value]"
     },
     "connectorName": {
       "type": "string",
-      "value": "[reference('deployItsmConnector', variables('deploymentApiVersion')).outputs.connectorName.value]"
+      "value": "[reference('deployVimsConnector', variables('deploymentApiVersion')).outputs.connectorName.value]"
     }
   }
 }
