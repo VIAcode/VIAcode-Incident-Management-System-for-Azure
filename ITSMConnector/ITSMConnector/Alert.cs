@@ -41,10 +41,18 @@ namespace ITSMConnector
             if (Essentials.AlertTargetIDs.Any())
             {
                 Essentials.ResourceLink = GetLinkToTarget(Essentials.AlertTargetIDs[0]);
+                Essentials.ResourceGroupLink =$"{GetLinkPrefix(Essentials.ResourceGroupName)}/subscriptions/{Essentials.SubscriptionId}/resourceGroups/{Essentials.ResourceGroupName}/overview";
+                Essentials.SubscriptionLink =$"{GetLinkPrefix(Essentials.AlertTargetIDs[0])}/subscriptions/{Essentials.SubscriptionId}";
             }
         }
 
         public string GetLinkToTarget(string targetId)
+        {
+            var linkPrefix = GetLinkPrefix(targetId);
+            return $"{linkPrefix}{WebUtility.UrlEncode(targetId)}";
+        }
+
+        private string GetLinkPrefix(string targetId)
         {
             string tenant = null;
 
@@ -64,7 +72,7 @@ namespace ITSMConnector
             else
                 linkPrefix = "https://portal.azure.com/#resource";
 
-            return $"{linkPrefix}{WebUtility.UrlEncode(targetId)}";
+            return linkPrefix;
         }
     }
 
@@ -122,8 +130,20 @@ namespace ITSMConnector
         /// <summary>
         /// this is a synthetic field
         /// </summary>
+        [DataMember(Name = "resourceGroupLink")]
+        public string ResourceGroupLink;
+
+        /// <summary>
+        /// this is a synthetic field
+        /// </summary>
         [DataMember(Name = "subscriptionID")]
         public string SubscriptionId;
+
+        /// <summary>
+        /// this is a synthetic field
+        /// </summary>
+        [DataMember(Name = "subscriptionLink")]
+        public string SubscriptionLink;
 
         /// <summary>
         /// this is a synthetic field
@@ -153,7 +173,7 @@ namespace ITSMConnector
                     if(split.Length < 5) continue;
                     ResourceGroupName += split[4] + (cntMoreThanOne ? "; " : "");
                     if (split.Length < 8) continue;
-                    ResourceType += $"{split[7]}/{split[6]}" + (cntMoreThanOne ? "; " : "");
+                    ResourceType += $"{split[6]}/{split[7]}" + (cntMoreThanOne ? "; " : "");
                     if (split.Length < 9) continue;
                     ResourceName += split[8] + (cntMoreThanOne ? "; " : "");
                 }

@@ -17,6 +17,7 @@
   - [First Sign in](#first-sign-in)
   - [Email configuration](#email-configuration)
     - [Notes](#notes)
+  - [Activity Log Alert message](#activity-log-alert-message)
 
 - [Technical details](#technical-details)
   - [Supported alert types](#supported-alert-types)
@@ -251,6 +252,41 @@ In general, VIAcode Incident Management System for Azure best practice is to cre
 
 For current email set up documentation see [e-mail](https://zammad-admin-documentation.readthedocs.io/en/latest/channels-email.html).
 
+## Activity Log Alert message
+
+At the time of this writing description didn't work for Activity Log Alerts in Azure.
+Because of this alert message hasn't been filled for tickets created from Activity Log Alerts.
+Workaround that fills alert message for tickets created from Activity Log Alerts has been implemented.
+Alert message is obtained from corresponding alert rule's description.
+However to get it up and working you need to assign at least Reader role to connector function app.
+
+In order to do so:
+
+- Click on "Subscriptions."
+- Select the subscription where VIAcode Incident Management System for Azure is deployed.
+- Click "Access control (IAM)."
+- "Add" > "Add role assignment."
+
+  - Role: 'Reader'.
+  - Assign access to: 'Function App'.
+  - Subscription: Your Subscription.
+  - Select: Function app name for VIAcode Incident Management System for Azure.*
+  - "Save."
+
+ *(Function app name equals connectorName, can be copied from 'Parameters and Outputs' of the installed managed application)
+  ![Connector name](./media/connectorName.png)  
+
+You can also execute the following PS script:
+
+```powershell
+New-AzRoleAssignment -ObjectId (Get-AzADServicePrincipal -SearchString '{CONNECTOR_NAME}').Id -RoleDefinitionName Reader -Scope '/subscriptions/{SUBSCRIPTION_ID}';
+```
+
+SUBSCRIPTION_ID - ID of a monitored subscription.  
+CONNECTOR_NAME - The CONNECTOR_NAME can be copied from 'Parameters and Outputs' of the installed managed application.
+
+If you have multiple subscriptions, execute the script for each of them.
+
 ## Technical details
 
 ### Supported alert types
@@ -346,11 +382,11 @@ dotnet restore
 dotnet build -c Release
 cd ..
 
-# Create Archive Itsmapi.zip
-$Itsmapi = ".\Itsmapi.zip"
+# Create Archive VIMSapi.zip
+$VIMSapi = ".\VIMSapi.zip"
 
-Compress-Archive -Path "$scriptDir\ResourceProvider\ItsmAPI\bin\Release\netcoreapp2.1\*" `
--DestinationPath $Itsmapi -Force
+Compress-Archive -Path "$scriptDir\ResourceProvider\VIMSapi\bin\Release\netcoreapp2.1\*" `
+-DestinationPath $VIMSapi -Force
 
 # Build DashboardReport
 cd .\DashboardReport
@@ -364,25 +400,24 @@ $slareports = ".\slareports.zip"
 Compress-Archive -Path "$scriptDir\DashboardReport\DashboardReport\bin\Release\netcoreapp2.1\*" `
 -DestinationPath $slareports -Force
 
-# Build ITSMConnector
-cd .\ITSMConnector
+# Build VIMSConnector
+cd .\VIMSConnector
 dotnet restore
 dotnet build -c Release
 cd ..
 
-# Create Archive zammadconnector.zip
-$zammadconnector = ".\zammadconnector.zip"
-Compress-Archive -Path "$scriptDir\ITSMConnector\ITSMConnector\bin\Release\netcoreapp2.1\*" `
--DestinationPath $zammadconnector -Force
+# Create Archive vimsconnector.zip
+$vimsconnector = ".\vimsconnector.zip"
+Compress-Archive -Path "$scriptDir\VIMSConnector\VIMSConnector\bin\Release\netcoreapp2.1\*" `
+-DestinationPath $vimsconnector -Force
 
-# Create package itsm-z-free.zip
-$itsmzfree = ".\itsm-z-free.zip"
+# Create package vims-z-free.zip
+$vimszfree = ".\vims-z-free.zip"
 
-Compress-Archive -Path "$scriptDir\Managed App Definition\*" -DestinationPath $itsmzfree -Force
-
-Compress-Archive -Path $Itsmapi -DestinationPath $itsmzfree -Update
-Compress-Archive -Path $slareports -DestinationPath $itsmzfree -Update
-Compress-Archive -Path $zammadconnector -DestinationPath $itsmzfree -Update
+Compress-Archive -Path "$scriptDir\Managed App Definition\*" -DestinationPath $vimszfree -Force
+Compress-Archive -Path $VIMSapi -DestinationPath $vimszfree -Update
+Compress-Archive -Path $slareports -DestinationPath $vimszfree -Update
+Compress-Archive -Path $vimsconnector -DestinationPath $vimszfree -Update
 ```
 
 ## Deploy Managed Application Definition
@@ -392,14 +427,14 @@ Upload the package into an Azure blob or another accessible location.
 Execute the script below after filling [parameters] to deploy Service catalog managed application definition.
 
 ```powershell
-# Get Storage account where itsm-z-free.zip is stored in an Azure blob
+# Get Storage account where vims-z-free.zip is stored in an Azure blob
 $storageAccount = Get-AzStorageAccount -ResourceGroupName "[RG name]" -Name "[Storage account]"
 
 # Get Context of the Storage Account
 $ctx = $storageAccount.Context
 
-# Get the blob with itsm-z-free.zip
-$blob = Get-AzStorageBlob -Container "[Container Name]" -Blob "[itsm-z-free.zip]" -Context $ctx
+# Get the blob with vims-z-free.zip
+$blob = Get-AzStorageBlob -Container "[Container Name]" -Blob "[vims-z-free.zip]" -Context $ctx
 
 #Get owner ID
 $ownerID=(Get-AzRoleDefinition -Name Owner).Id

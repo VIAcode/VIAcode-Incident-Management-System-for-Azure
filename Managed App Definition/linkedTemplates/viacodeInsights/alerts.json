@@ -1,0 +1,107 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "appInsightsId": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "unmanagedSubscriptionAlertRuleName": {
+      "defaultValue": "Subscription is unmanaged",
+      "type": "string"
+    },
+    "unmanagedSubscriptionAlertRuleDescription": {
+      "defaultValue": "Issue: Managing the Azure infrastructure by yourself is a time-consuming process that is requiring you to continuously invest most of your time in the investigation of the root-causes, tuning the workload size, managing the updates and other activities. \n\nRecommendation: Activate {0} offer via the Azure Marketplace or contact the VIAcode MSP Experts team to delegate management of this subscription to our team.",
+      "type": "string"
+    },
+    "viaCodeManagedServiceLink": {
+      "defaultValue": "<link>",
+      "type": "string"
+    },
+    "serviceHealthAlertRuleName": {
+      "defaultValue": "Microsoft Azure infrastructure failure!",
+      "type": "string"
+    },
+    "serviceHealthAlertRuleDescription": {
+      "defaultValue": "Issue: Microsoft Azure infrastructure is experiencing an issue that may affect your services. \n\nRecommendation: Sign up for a free {0} to get recommendations for providing business continuity and protect your infrastructure from the major cloud platform failures.",
+      "type": "string"
+    },
+    "viaCodeCloudAssessmentLink": {
+      "defaultValue": "<link>",
+      "type": "string"
+    }
+  },
+  "variables": {
+    "subscriptionId": "[subscription().subscriptionId]",
+    "unmanagedSubscriptionAlertRuleDescriptionFormatted": "[format(parameters('unmanagedSubscriptionAlertRuleDescription'), parameters('viaCodeManagedServiceLink') )]",
+    "serviceHealthAlertRuleDescriptionFormatted": "[format(parameters('serviceHealthAlertRuleDescription'), parameters('viaCodeCloudAssessmentLink') )]"
+  },
+  "resources": [
+    {
+      "type": "microsoft.insights/scheduledqueryrules",
+      "apiVersion": "2018-04-16",
+      "name": "[parameters('unmanagedSubscriptionAlertRuleName')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [],
+      "tags": {
+        "[concat('hidden-link:', parameters('appInsightsId'))]": "Resource",
+        "alert-purpose": "VIAcode-Insights"
+      },
+      "properties": {
+        "description": "[variables('unmanagedSubscriptionAlertRuleDescriptionFormatted')]",
+        "enabled": "true",
+        "source": {
+          "query": "let requests = requests | limit 1; range offset from 1 to 12 step 1\n | project timestamp = endofmonth(startofyear(now()), offset)\n | where timestamp==endofday(now())",
+          "authorizedResources": [],
+          "dataSourceId": "[parameters('appInsightsId')]",
+          "queryType": "ResultCount"
+        },
+        "schedule": {
+          "frequencyInMinutes": 1440,
+          "timeWindowInMinutes": 1440
+        },
+        "action": {
+          "odata.type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction",
+          "severity": "0",
+          "trigger": {
+            "thresholdOperator": "GreaterThan",
+            "threshold": 0
+          }
+        }
+      }
+    },
+    {
+      "type": "microsoft.insights/activityLogAlerts",
+      "apiVersion": "2017-04-01",
+      "name": "[parameters('serviceHealthAlertRuleName')]",
+      "location": "Global",
+      "tags": {
+        "alert-purpose": "VIAcode-Insights"
+      },
+      "properties": {
+        "scopes": [
+          "[subscription().id]"
+        ],
+        "condition": {
+          "allOf": [
+            {
+              "field": "category",
+              "equals": "ServiceHealth"
+            },
+            {
+              "field": "properties.incidentType",
+              "equals": "Incident"
+            }
+          ]
+        },
+        "actions": {
+          "actionGroups": []
+        },
+        "enabled": true,
+        "description": "[variables('serviceHealthAlertRuleDescriptionFormatted')]"
+      }
+    }
+  ]
+}

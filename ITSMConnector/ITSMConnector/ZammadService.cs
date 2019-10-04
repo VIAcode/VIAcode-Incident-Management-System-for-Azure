@@ -96,7 +96,7 @@ namespace ITSMConnector
             {
                 service = MonitoringService.Feed;
             }
-            if( (alert.Data.Essentials.Tags?.ContainsValue("upsell")).GetValueOrDefault() )
+            if( (alert.Data.Essentials.Tags?.ContainsValue("VIAcode-Insights")).GetValueOrDefault() )
             {
                 service = MonitoringService.Upsell;
             }

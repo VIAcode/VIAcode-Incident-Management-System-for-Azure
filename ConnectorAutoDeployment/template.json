@@ -34,8 +34,8 @@
         }
     },
     "variables": {
-        "managedResourceGroupId": "[if(empty(parameters('managedResourceGroupId')),concat(subscription().id,'/resourceGroups/',take(concat(resourceGroup().name,'-',uniquestring(resourceGroup().id),uniquestring(parameters('applicationResourceName'))),90)),parameters('managedResourceGroupId'))]",
-		"applicationResourceName": "VIAcode-Incident-Management-System-Alert-Connector"
+        "applicationResourceName": "VIAcode-Incident-Management-System-Alert-Connector",
+        "managedResourceGroupId": "[if(empty(parameters('managedResourceGroupId')),concat(subscription().id,'/resourceGroups/',take(concat(resourceGroup().name,'-',uniquestring(resourceGroup().id),uniquestring(variables('applicationResourceName'))),90)),parameters('managedResourceGroupId'))]"
     },
     "resources": [
         {
@@ -45,10 +45,10 @@
             "kind": "MarketPlace",
             "name": "[variables('applicationResourceName')]",
             "plan": {
-                "name": "itsm-z-paid",
+                "name": "vims-connector-azure-monitor",
                 "product": "viacode-itsm-z-preview",
                 "publisher": "viacode_consulting-1089577",
-                "version": "1.0.0"
+                "version": "1.1.11"
             },
             "properties": {
                 "managedResourceGroupId": "[variables('managedResourceGroupId')]",
