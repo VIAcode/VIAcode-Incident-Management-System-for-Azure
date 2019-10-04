@@ -63,9 +63,9 @@ if (Login-AzAccount) {
                 if ($location) {
                     Select-AzSubscription -Subscription $selectedSubscriptions[0].Id | Out-Null                    
 
-                    $terms = Get-AzMarketplaceTerms -Publisher "viacode_consulting-1089577" -Product "viacode-vims-preview" -Name "vims-paid"
+                    $terms = Get-AzMarketplaceTerms -Publisher "viacode_consulting-1089577" -Product "viacode-itsm-z-preview" -Name "vims-connector-azure-monitor"
                         
-                    $input = Read-Host "`nBy deploying alert connector via this script you automatically accept the following:`n`nTerms of use: https://catalogartifact.azureedge.net/publicartifacts/viacode_consulting-1089577.viacode-vims-preview-aefc5caa-174f-49fe-97c5-22e9c894ab2d/termsOfUse.html`nPrivacy policy: $($terms.PrivacyPolicyLink)`nAzure Marketplace Terms: https://azure.microsoft.com/support/legal/marketplace-terms/`n`nDo you want to proceed? (Y/N)"
+                    $input = Read-Host "`nBy deploying alert connector via this script you automatically accept the following:`n`nTerms of use: https://catalogartifact.azureedge.net/publicartifacts/viacode_consulting-1089577.viacode-itsm-z-preview-aefc5caa-174f-49fe-97c5-22e9c894ab2d/termsOfUse.html`nPrivacy policy: $($terms.PrivacyPolicyLink)`nAzure Marketplace Terms: https://azure.microsoft.com/support/legal/marketplace-terms/`n`nDo you want to proceed? (Y/N)"
 
                     if ($input -eq 'y') {
                         Write-Progress -Activity "Deploying VIAcode Incident Management System for Azure connectors" -PercentComplete -1
@@ -73,7 +73,7 @@ if (Login-AzAccount) {
                         $selectedSubscriptions | ForEach-Object {
                             Select-AzSubscription -Subscription $_.Id | Out-Null
                                                                             
-                            Get-AzMarketplaceTerms -Publisher "viacode_consulting-1089577" -Product "viacode-vims-preview" -Name "vims-paid" | Set-AzMarketplaceTerms -Accept | Out-Null
+                            Get-AzMarketplaceTerms -Publisher "viacode_consulting-1089577" -Product "viacode-itsm-z-preview" -Name "vims-connector-azure-monitor" | Set-AzMarketplaceTerms -Accept | Out-Null
 
                             $date = Get-Date -Format "yyyyMMddHHmmss"
                             try {
