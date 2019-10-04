@@ -56,33 +56,6 @@
             "schema": {}
           }
         }
-      },
-      "get": {
-        "operationId": "get-renewadintegration",
-        "summary": "RenewADIntegration",
-        "parameters": [
-          {
-            "$ref": "#/parameters/SubscriptionIdParameter"
-          },
-          {
-            "$ref": "#/parameters/ResourceGroupNameParameter"
-          },
-          {
-            "name": "parameters",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/RenewADIntegrationParameters"
-            },
-            "description": "The parameters required call renew AD integration."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Empty HTTP 200 status code",
-            "schema": {}
-          }
-        }
       }
     },
     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/public/IncidentRulesAPI/RestartVIMS": {
@@ -142,20 +115,6 @@
       "pattern": "^[-\\w\\._\\(\\)]+$",
       "minLength": 1,
       "maxLength": 90
-    },
-    "ApplicationIdParameter": {
-      "name": "id",
-      "in": "body",
-      "required": true,
-      "type": "string",
-      "description": "Application Id of application created for VIMS Office365 integration"
-    },
-    "ApplicationSecretParameter": {
-      "name": "secret",
-      "in": "body",
-      "required": true,
-      "type": "string",
-      "description": "Secret of application created for VIMS Office365 integration"
     }
   }
 }
