@@ -48,7 +48,7 @@
                 "name": "vims-paid",
                 "product": "viacode-vims-preview",
                 "publisher": "viacode_consulting-1089577",
-                "version": "1.1.10"
+                "version": "1.1.12"
             },
             "properties": {
                 "managedResourceGroupId": "[variables('managedResourceGroupId')]",
