@@ -29,7 +29,7 @@
     }
   ],
   "paths": {
-    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/public/IncidentRulesAPI/RenewADIntegration": {
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/public/renewADIntegration": {
       "post": {
         "operationId": "post-renewadintegration",
         "summary": "RenewADIntegration",
@@ -39,24 +39,15 @@
           },
           {
             "$ref": "#/parameters/ResourceGroupNameParameter"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Empty HTTP 200 status code",
-            "schema": {}
-          }
-        }
-      },
-      "get": {
-        "operationId": "get-renewadintegration",
-        "summary": "RenewADIntegration",
-        "parameters": [
-          {
-            "$ref": "#/parameters/SubscriptionIdParameter"
           },
           {
-            "$ref": "#/parameters/ResourceGroupNameParameter"
+            "name": "parameters",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RenewADIntegrationParameters"
+            },
+            "description": "The parameters required call renew AD integration."
           }
         ],
         "responses": {
@@ -67,7 +58,7 @@
         }
       }
     },
-    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/public/IncidentRulesAPI/RestartVIMS": {
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/public/restartVIMS": {
       "post": {
         "operationId": "post-restartvims",
         "summary": "RestartVIMS",
@@ -86,6 +77,24 @@
           }
         }
       }
+    }
+  },
+  "definitions": {
+    "RenewADIntegrationParameters": {
+      "properties": {
+        "id": {
+          "readOnly": true,
+          "type": "string",
+          "description": "Application Id of application created for VIMS Office365 integration"
+        },
+        "secret": {
+          "readOnly": true,
+          "type": "string",
+          "description": "Secret of application created for VIMS Office365 integration"
+        }
+      },
+      "description": "Renew AD Integration Description.",
+      "x-ms-azure-resource": true
     }
   },
   "tags": [],
