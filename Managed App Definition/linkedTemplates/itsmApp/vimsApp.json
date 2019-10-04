@@ -11,7 +11,7 @@
   },
   "variables": {
     "siteName": "[concat(parameters('namePrefix'), '-', uniqueString(resourceGroup().id))]",
-    "dockerContainer": "DOCKER|viacode/itsm-z:latest",
+    "dockerContainer": "DOCKER|viacode/vims:latest",
     "siteApiVersion": "2018-11-01",
     "serverFarmApiVersion": "2018-02-01",
     "serverfarmName": "[concat(parameters('namePrefix'), '-', uniqueString(resourceGroup().id))]",

@@ -411,14 +411,14 @@ $vimsconnector = ".\vimsconnector.zip"
 Compress-Archive -Path "$scriptDir\VIMSConnector\VIMSConnector\bin\Release\netcoreapp2.1\*" `
 -DestinationPath $vimsconnector -Force
 
-# Create package vims-z-free.zip
-$vimszfree = ".\vims-z-free.zip"
+# Create package vims-free.zip
+$vimsfree = ".\vims-free.zip"
 
-Compress-Archive -Path "$scriptDir\Managed App Definition\*" -DestinationPath $vimszfree -Force
+Compress-Archive -Path "$scriptDir\Managed App Definition\*" -DestinationPath $vimsfree -Force
 
-Compress-Archive -Path $VIMSapi -DestinationPath $vimszfree -Update
-Compress-Archive -Path $slareports -DestinationPath $vimszfree -Update
-Compress-Archive -Path $vimsconnector -DestinationPath $vimszfree -Update
+Compress-Archive -Path $VIMSapi -DestinationPath $vimsfree -Update
+Compress-Archive -Path $slareports -DestinationPath $vimsfree -Update
+Compress-Archive -Path $vimsconnector -DestinationPath $vimsfree -Update
 ```
 
 ## Deploy Managed Application Definition
@@ -428,14 +428,14 @@ Upload the package into an Azure blob or another accessible location.
 Execute the script below after filling [parameters] to deploy Service catalog managed application definition.
 
 ```powershell
-# Get Storage account where vims-z-free.zip is stored in an Azure blob
+# Get Storage account where vims-free.zip is stored in an Azure blob
 $storageAccount = Get-AzStorageAccount -ResourceGroupName "[RG name]" -Name "[Storage account]"
 
 # Get Context of the Storage Account
 $ctx = $storageAccount.Context
 
-# Get the blob with vims-z-free.zip
-$blob = Get-AzStorageBlob -Container "[Container Name]" -Blob "[vims-z-free.zip]" -Context $ctx
+# Get the blob with vims-free.zip
+$blob = Get-AzStorageBlob -Container "[Container Name]" -Blob "[vims-free.zip]" -Context $ctx
 
 #Get owner ID
 $ownerID=(Get-AzRoleDefinition -Name Owner).Id

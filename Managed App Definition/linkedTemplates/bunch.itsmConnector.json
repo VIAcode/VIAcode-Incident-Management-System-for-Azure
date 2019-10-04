@@ -42,7 +42,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[parameters('linkedTemplates').itsmConnector.connector]",
+          "uri": "[parameters('linkedTemplates').vimsConnector.connector]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
@@ -83,7 +83,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[parameters('linkedTemplates').itsmConnector.actions]",
+          "uri": "[parameters('linkedTemplates').vimsConnector.actions]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {

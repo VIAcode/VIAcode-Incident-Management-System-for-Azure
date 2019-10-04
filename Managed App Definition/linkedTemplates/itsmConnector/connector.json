@@ -70,7 +70,7 @@
               "value": "[parameters('keyVaultUri')]"
             },
             {
-              "name": "ZammadUrl",
+              "name": "VimsUrl",
               "value": "[parameters('vimsUrl')]"
             }
           ]

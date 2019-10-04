@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Zammad.Client;
-using ITSMConnector;
+using VIMSConnector;
 using Zammad.Client.Resources;
 using System.Net;
 using System.Text;
@@ -17,7 +17,7 @@ namespace IncidentRulesAPI
 {
 	public static class RenewADIntegration
 	{
-		private static readonly string zammadUrl = Environment.GetEnvironmentVariable("ZammadUrl");
+		private static readonly string vimsUrl = Environment.GetEnvironmentVariable("VimsUrl");
 		[FunctionName("RenewADIntegration")]
 		public static async Task<IActionResult> Run(
 			[HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
@@ -34,9 +34,9 @@ namespace IncidentRulesAPI
 
 			dynamic data = JsonConvert.DeserializeObject(requestBody);
 
-			var account = ZammadAccount.CreateBasicAccount(zammadUrl, KeyVault.Login, KeyVault.Password);
+			var account = ZammadAccount.CreateBasicAccount(vimsUrl, KeyVault.Login, KeyVault.Password);
 
-			HttpWebRequest r = WebRequest.CreateHttp($"{zammadUrl}/api/v1/settings/65");
+			HttpWebRequest r = WebRequest.CreateHttp($"{vimsUrl}/api/v1/settings/65");
 			r.Method = HttpMethods.Put;
 			r.ContentType = "application/json";
 			r.Headers.Add(HttpRequestHeader.Authorization, $"Basic {Convert.ToBase64String(Encoding.UTF8.GetBytes($"{KeyVault.Login}:{KeyVault.Password}"))}");

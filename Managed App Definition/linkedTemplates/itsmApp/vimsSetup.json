@@ -71,7 +71,7 @@
           }
         },
         {
-          "name": "ZammadAzureAppCredential",
+          "name": "VimsAzureAppCredential",
           "type": "credentials",
           "apiVersion": "2015-01-01-preview",
           "location": "[parameters('location')]",
@@ -86,7 +86,7 @@
           }
         },
         {
-          "name": "ZammadAdminCredential",
+          "name": "VimsAdminCredential",
           "type": "credentials",
           "apiVersion": "2015-01-01-preview",
           "location": "[parameters('location')]",

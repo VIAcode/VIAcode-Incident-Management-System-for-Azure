@@ -38,16 +38,16 @@ workflow CreateAdminAndEnableAuthViaOffice365Runbook
     }
 
     if ($doesSiteWork) {
-        $CredentialAssetName = 'ZammadAzureAppCredential'
+        $CredentialAssetName = 'VimsAzureAppCredential'
 
         #Get the credential with the above name from the Automation Asset store
         $Cred = Get-AutomationPSCredential -Name $CredentialAssetName
 
-        $CredentialAssetName = 'ZammadAdminCredential'
+        $CredentialAssetName = 'VimsAdminCredential'
 
         #Get the credential with the above name from the Automation Asset store
-        $zammadAdminCred = Get-AutomationPSCredential -Name $CredentialAssetName
-        if(!$zammadAdminCred) {
+        $vimsAdminCred = Get-AutomationPSCredential -Name $CredentialAssetName
+        if(!$vimsAdminCred) {
             Throw "Could not find an Automation Credential Asset named '${CredentialAssetName}'. Make sure you have created one in this Automation Account."
         }
     
@@ -60,20 +60,20 @@ workflow CreateAdminAndEnableAuthViaOffice365Runbook
                 'X-CSRF-Token' = $webrequest.Headers['CSRF-TOKEN']
             }
             $Url = "$Using:siteDomain/api/v1/users"
-            $zammadAdminCred = $Using:zammadAdminCred
+            $vimsAdminCred = $Using:vimsAdminCred
             $Body = "{
-                ""email"": ""$($zammadAdminCred.UserName)"",
+                ""email"": ""$($vimsAdminCred.UserName)"",
                 ""firstname"": ""Admin"",
                 ""id"": ""c-0"",
                 ""lastname"": ""User"",
-                ""password"": ""$($zammadAdminCred.GetNetworkCredential().Password)"",
+                ""password"": ""$($vimsAdminCred.GetNetworkCredential().Password)"",
                 ""role_ids"": []        
             }"
             Invoke-RestMethod -Method 'Post' -Uri $url -Headers $headers -Body $body -WebSession $websession
         }
 
         if ($Cred) {
-            $Bytes = [System.Text.Encoding]::UTF8.GetBytes("$($ZammadAdminCred.UserName):$($ZammadAdminCred.GetNetworkCredential().Password)")
+            $Bytes = [System.Text.Encoding]::UTF8.GetBytes("$($VimsAdminCred.UserName):$($VimsAdminCred.GetNetworkCredential().Password)")
             $EncodedCreds =[Convert]::ToBase64String($Bytes)
 
             $headers = @{

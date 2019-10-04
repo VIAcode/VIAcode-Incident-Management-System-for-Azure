@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.539
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ITSMConnector", "ITSMConnector\ITSMConnector.csproj", "{1C7153B7-0071-4965-B55F-CE1DF68289B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VIMSConnector", "VIMSConnector\VIMSConnector.csproj", "{1C7153B7-0071-4965-B55F-CE1DF68289B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

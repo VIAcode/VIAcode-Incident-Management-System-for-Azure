@@ -16,7 +16,7 @@ using System.Net;
 using System.Linq;
 using System;
 
-namespace ITSMConnector
+namespace VIMSConnector
 {
     public static class Function
     {
@@ -44,8 +44,8 @@ namespace ITSMConnector
             if(alert.Data.Essentials.Tags != null)
                 log.LogInformation($"Alert tags: {string.Join("; ", alert.Data.Essentials.Tags.Select(x => x.Key + "=" + x.Value).ToArray())}");
 
-            log.LogInformation("Start zammad call");
-            var zService = new ZammadService();
+            log.LogInformation("Start vims call");
+            var zService = new VimsService();
             await zService.CreateTicketIfNotExistsAsync(alert);
             log.LogInformation("End call");
 
