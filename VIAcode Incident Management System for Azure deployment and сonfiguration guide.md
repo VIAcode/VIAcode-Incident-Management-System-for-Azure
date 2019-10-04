@@ -415,7 +415,6 @@ Compress-Archive -Path "$scriptDir\VIMSConnector\VIMSConnector\bin\Release\netco
 $vimszfree = ".\vims-z-free.zip"
 
 Compress-Archive -Path "$scriptDir\Managed App Definition\*" -DestinationPath $vimszfree -Force
-
 Compress-Archive -Path $VIMSapi -DestinationPath $vimszfree -Update
 Compress-Archive -Path $slareports -DestinationPath $vimszfree -Update
 Compress-Archive -Path $vimsconnector -DestinationPath $vimszfree -Update
