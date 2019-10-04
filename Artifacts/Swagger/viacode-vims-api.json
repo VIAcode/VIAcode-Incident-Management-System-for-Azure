@@ -29,7 +29,7 @@
     }
   ],
   "paths": {
-    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/public/IncidentRulesAPI/RenewADIntegration": {
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/public/renewADIntegration": {
       "post": {
         "operationId": "post-renewadintegration",
         "summary": "RenewADIntegration",
@@ -58,7 +58,7 @@
         }
       }
     },
-    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/public/IncidentRulesAPI/RestartVIMS": {
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/public/restartVIMS": {
       "post": {
         "operationId": "post-restartvims",
         "summary": "RestartVIMS",
