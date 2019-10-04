@@ -408,13 +408,15 @@ cd ..
 
 # Create Archive vimsconnector.zip
 $vimsconnector = ".\vimsconnector.zip"
-Compress-Archive -Path "$scriptDir\VIMSConnector\VIMSConnector\bin\Release\netcoreapp2.1\*" `
+
+Compress-Archive -Path "$scriptDir\VIMSConnector\VIMSConnector\bin\Release\netcoreapp2.1\*" ` 
 -DestinationPath $vimsconnector -Force
 
 # Create package vims-free.zip
 $vimsfree = ".\vims-free.zip"
 
 Compress-Archive -Path "$scriptDir\Managed App Definition\*" -DestinationPath $vimsfree -Force
+
 
 Compress-Archive -Path $VIMSapi -DestinationPath $vimsfree -Update
 Compress-Archive -Path $slareports -DestinationPath $vimsfree -Update
