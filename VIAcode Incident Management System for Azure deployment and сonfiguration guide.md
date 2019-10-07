@@ -48,11 +48,7 @@ Verify that your account user type is not Guest in chosen tenant.
 
 [Guest](https://docs.microsoft.com/en-us/azure/active-directory/b2b/user-properties) accounts have limited permissions. Deployment under a guest account will fail.
 
-## Deploy to Azure button
-
-![Deploy to Azure](./media/deploy&#32;to&#32;azure.png)
-
-- To deploy VIAcode Incident Management System for Azure press "Deploy to Azure" button.
+## Deploy from Azure Marketplace
 
 ![Custom Deployment](./media/Custom&#32;deployment.png)
 
