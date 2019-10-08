@@ -11,6 +11,7 @@
     - [Purpose of an App registration](#purpose-of-an-app-registration)
   - [Review and create](#review-and-create)
   - [Redirect URI for Azure AD Integration](#redirect-uri-for-azure-ad-integration)
+  - [Enable Azure AD Integration after installation](#enable-azure-ad-integration)
   - [Alert state backward synchronization](#alert-state-backward-synchronization)
     - [Overview](#overview)
     - [How to setup](#how-to-setup)
@@ -135,6 +136,22 @@ Note: The [App Service Address] can be copied from Parameters and Outputs of the
 Final string looks like `https://viaaims-milyddjpnf8sw.azurewebsites.net/auth/microsoft_office365/callback`.
 
 - "Save."
+
+## Enable Azure AD integration after instalation
+
+To enable Office 365 login after you installed VIAcode Incident Management System for Azure with AD Integration disabled follow these steps:
+
+1. Enable HTTPS in System - Base. Make sure Fully Qualified Domain Name is identical to your real URL
+
+
+2. Select Security - Third-party Applications 
+
+
+3. Enable checkbox Authentication via Office 365
+
+
+4. Fill App ID and App Secret according to created Application
+
 
 ## Alert state backward synchronization
 
