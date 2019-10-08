@@ -82,7 +82,7 @@ When you have Managed App Definition installed run it to create VIAcode Incident
 ![Settings](./media/Settings.png)
 
 - Set a nameprefix for the resources.
-- Specify administrator email address for VIAcode Incident Management System for Azure. Administrator will be the first agent who receives notifications on new tickets. Make sure email address exist.
+- Specify administrator email address for VIAcode Incident Management System for Azure. Administrator will be the first agent who receives notifications on new tickets. Make sure the email address exists.
 - Set password.
 - Press "Next : Azure AD Integration >" button.
 
@@ -141,11 +141,11 @@ Final string looks like `https://viaaims-milyddjpnf8sw.azurewebsites.net/auth/mi
 
 To enable Office 365 login after you installed VIAcode Incident Management System for Azure with AD Integration disabled follow these steps:
 
-1. Enable HTTPS in System - Base and Make sure Fully Qualified Domain Name is identical to your real URL
+1. Enable HTTPS in System - Base and Make sure Fully Qualified Domain Name is identical to your real URL.
 
 ![Check HTTPS enabled](./media/Https&#32;config&#32;enabled.png)
 
-2. Select Security - Third-party Applications and enable checkbox Authentication via Office 365, then fill App ID and App Secret according to created Application
+2. Select Security - Third-party Applications and enable checkbox Authentication via Office 365, then fill App ID and App Secret according to created application.
 
 ![Configure Office365](./media/Auth&#32;Office&#32;365&#32;config.png)
 
