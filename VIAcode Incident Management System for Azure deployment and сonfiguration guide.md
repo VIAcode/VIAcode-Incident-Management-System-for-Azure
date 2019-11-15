@@ -25,12 +25,7 @@
 
 - [Additional information](#additional-information)
   - [Steps to create a new App registration in Azure AD](#steps-to-create-a-new-app-registration-in-azure-ad)
-  
-- [Manual Deployment of VIAcode Incident Management System for Azure](#manual-deployment-of-viacode-incident-management-system-for-azure)  
-  - [Get source code](#get-source-code)  
-  - [Build solution and prepare package](#Build-solution-and-prepare-package)
-  - [Deploy Managed Application Definition](#deploy-managed-application-definition)
-  
+    
 - [Configuration of VIAcode Alert Connector Premium](#configuration-of-viacode-alert-connector-premium)
   - [Premium Basics](#premium-basics)
   - [Premium Settings](#premium-settings)
