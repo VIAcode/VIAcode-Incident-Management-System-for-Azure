@@ -3,7 +3,6 @@
 - [Before you begin](#before-you-begin)
   - [Deploy from Azure Marketplace](#deploy-from-azure-marketplace)
     - [Pricing](#pricing)
-
 - [Configuration of VIAcode Incident Management System for Azure](#configuration-of-viacode-incident-management-system-for-azure)
   - [Basics](#basics)
   - [Settings](#settings)
@@ -46,15 +45,15 @@ Verify that your account user type is not Guest in chosen tenant.
 
 ## Deploy from Azure Marketplace
 
-- Navigate to Microsfot Azure Marketplace and find "VIAcode Incident Management System for Azure" offer.
-
+- [Navigate](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/viacode_consulting-1089577.viacode-itsm-z?tab=Overview) to Microsoft Azure Marketplace and find "VIAcode Incident Management System for Azure" offer.
+![Azure Market Place](./media/AzureMarketPlace.png)
 - Press "GET IT NOW" button.
 - Select "VIAcode Incident Management System for Azure" software plan and press "Continue".
 
-You will be taken to Azure Portal:
-
+You will be taken to Azure Portal to complete installation:
+![Azure Portal](./media/AzurePortalOfferProfile.png)
 - Select "VIAcode Incident Management System for Azure" software plan.
-- Press "Create"
+- Press "Create".
 
 ### Pricing
 
