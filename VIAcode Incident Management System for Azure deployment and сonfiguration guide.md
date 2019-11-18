@@ -61,7 +61,7 @@ The total cost of running VIAcode Incident Management System on Azure is a combi
 
 ## Configuration of VIAcode Incident Management System for Azure
 
-After you have selected "VIAcode Incident Management System for Azure" software plan you need to configre it.
+After you have selected "VIAcode Incident Management System for Azure" software plan you need to configure it.
 
 ## Basics
 
