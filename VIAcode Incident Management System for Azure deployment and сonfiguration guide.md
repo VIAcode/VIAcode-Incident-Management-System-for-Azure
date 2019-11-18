@@ -1,7 +1,7 @@
 # VIAcode Incident Management System for Azure deployment and configuration guide
 <!-- TOC -->
 - [Before you begin](#before-you-begin)
-  - [Deploy to Azure button](#deploy-to-azure-button)
+  - [Deploy from Azure Marketplace](#deploy-from-azure-marketplace)
     - [Pricing](#pricing)
 
 - [Configuration of VIAcode Incident Management System for Azure](#configuration-of-viacode-incident-management-system-for-azure)
@@ -46,13 +46,15 @@ Verify that your account user type is not Guest in chosen tenant.
 
 ## Deploy from Azure Marketplace
 
-![Custom Deployment](./media/Custom&#32;deployment.png)
+- Navigate to Microsfot Azure Marketplace and find "VIAcode Incident Management System for Azure" offer.
 
-- Choose a subscription to deploy Service catalog managed application definition.
-- Select a Resource group or crate a new one.
-- Select a location.
-- Agree to terms and conditions.
-- Press "Purchase" button.
+- Press "GET IT NOW" button.
+- Select "VIAcode Incident Management System for Azure" software plan and press "Continue".
+
+You will be taken to Azure Portal:
+
+- Select "VIAcode Incident Management System for Azure" software plan.
+- Press "Create"
 
 ### Pricing
 
@@ -60,7 +62,7 @@ The total cost of running VIAcode Incident Management System on Azure is a combi
 
 ## Configuration of VIAcode Incident Management System for Azure
 
-When you have Managed App Definition installed run it to create VIAcode Incident Management System for Azure.
+After you have selected "VIAcode Incident Management System for Azure" software plan you need to configre it.
 
 ## Basics
 
