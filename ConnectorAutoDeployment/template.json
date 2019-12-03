@@ -48,7 +48,7 @@
                 "name": "vims-connector-azure-monitor",
                 "product": "viacode-itsm-z-preview",
                 "publisher": "viacode_consulting-1089577",
-                "version": "1.1.14"
+                "version": "1.1.15"
             },
             "properties": {
                 "managedResourceGroupId": "[variables('managedResourceGroupId')]",
