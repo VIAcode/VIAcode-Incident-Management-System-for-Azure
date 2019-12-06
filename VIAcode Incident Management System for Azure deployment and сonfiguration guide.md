@@ -6,7 +6,6 @@
 - [Configuration of VIAcode Incident Management System for Azure](#configuration-of-viacode-incident-management-system-for-azure)
   - [Basics](#basics)
   - [Settings](#settings)
-  - [Azure AD Integration](#azure-ad-integration)
     - [Purpose of an App registration](#purpose-of-an-app-registration)
   - [Review and create](#review-and-create)
   - [Redirect URI for Azure AD Integration](#redirect-uri-for-azure-ad-integration)
@@ -74,15 +73,6 @@ After you have selected "VIAcode Incident Management System for Azure" software 
 - Press "Next : Settings >" button.
 
 ## Settings
-
-![Settings](./media/Settings.png)
-
-- Set a nameprefix for the resources.
-- Specify administrator email address for VIAcode Incident Management System for Azure. Administrator will be the first agent who receives notifications on new tickets. Make sure the email address exists.
-- Set password.
-- Press "Next : Azure AD Integration >" button.
-
-## Azure AD Integration
 
 To enable Azure AD Integration you have to specify Azure AD Application Registration ID and Secret. To create a new App registration see [Steps to create a new App registration in Azure AD](#steps-to-create-a-new-app-registration-in-azure-ad).
 
