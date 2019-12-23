@@ -2,89 +2,40 @@
 
 <!-- TOC -->
 - [VIAcode Incident Management System for Azure 1.2.0](#viacode-incident-management-system-for-azure-120)
-- [VIAcode Incident Management System for Azure initial](#viacode-incident-management-system-for-azure-initial)  
+- [VIAcode Incident Management System for Azure initial release](#viacode-incident-management-system-for-azure-initial-release)  
 <!-- TOC END -->
 
 ## VIAcode Incident Management System for Azure 1.2.0
 
 ### Features
 
-- Integration scenario for Sentinel incidents in VIMS
-- Original VIMS KB features
-- Fork Zammad and reconfigure pipelines
-- VIMS image shall have predefined Group
-- VIMS Web UI shall have a button for incident delegation to Azure DevOps
-- Add repeat count and substitute custom alert tag with custom field
-- Deploy VIMS to VIAcode CSP/ production (Dogfooding)
-- Update offer on AMP with all the fixes from this sprint
-- Check possibility of manual update of VIMS
-- Prepare Dev Demo Env
-- Develop arm-template for automate resource creation for alerts
-- As CLIENT I want to see Azure Alert status changed to "Acknowledged" to make sure that the incident created in VIMS and set to Open state.
-- Upgrade of VIMS on CSP or regular pay as you go subscription to the newer version
-- Integrate Azure Dev Ops Connector into VIMS
-- Prepare Env for Sprint 2 Demo
-- Elaborate hybrid solution for Sentinel Incident
-- Update spec with offer details
-- Create spec
-- Elaborate deployment model for connectors.
-- VIMS must have a designated user for Azure Monitor Connector
-- New incidents must be created using "Azure Monitor Connector" user + default properties
-- VIMS must have a default organizations
-- Add state "Delegated" to ticket
-- Add state "Pending Review" for ticket
-- VIMS should have predefined roles
-- Customer can set ticket state to "Pending Review" to return it to Agent, but customer can not close the ticket
-- Create a separated offer for VIMS Azure Monitor Connector
-- Admin user should have default values for password and login
-- Remove "Name Prefix" field from "Settings" page
-- Prepare Env for Sprint 3 Demo
-- Agent wants to see Delegated view with his delegated tickets
-- Change tier of App Service Plan of WebApp to P1V2
-- Azure Monitor Connector user must have permissions for Renew AAD functionality
-- Azure Monitor Connector should have avatar picture
-- Remove direct links to GitHub for js and css files
-- Remove GetSLAReport project from VIMS
-- Alert's Severity should be mapped to ticket's priority
-- Prepare Env for Sprint 4 Demo
-- Create missing alerts in VIMS for FarCorner
-- "My Assigned Tickets" overview should display delegated and pending review tickets
+- By default Admin user name is admin and password is admin.
+- App Service Plan of VIAcode Incident Management System for Azure Web Application was changed to P1V2. It supports backups.
+- A new Repeat Count property was added to every ticket, it displays the number of alert repeats.
+- Azure Alert status changes to Acknowledged when an incident created in VIMS changes its state to Open.
+- A new default group Incoming added, it replaces Users.
+- A new designated customer Azure Monitor was added. It connects VIMS to Azure Monitor. All new tickets are created by the customer.
+- By default VIMS has Customer and Default SRE Provider shared organizations.
+- Added states Delegated and Pending Review for tickets. Customer can set ticket into Pending Review state in place of closing the ticket.
+- A new role Connector was added. It has minimal set of privileges just to create and update tickets. Agent role has full access to Incoming group and it is an editor of Knowledge Base. Customer role has access to Incoming group.
+- An avatar for Azure Monitor Connector was added.
+- My Assigned Tickets overview now displays delegated and pending review tickets. My delegated Tickets overview was added.
+- Name Prefix was removed from Settings page.
+- Customer doesn't receive notifications.
+- Azure Alert severity now affects ticket priority.
+- A new [repository](https://github.com/VIAcode/VIAcode-Incident-Management-System) for VIMS.
 
-### Bugfixes
+### Bug-fixes
 
-- Incorrect text Welcome to VIAcode
-- Remove Z-word from all visible places on staging environment and staging subscription
-- Remove "Itsm" Managed App Definition/mainTemplate.json
-- VIMS cannot be installed into CSP subscription
-- Broken links are displayed in ticket when there are no resource and/or resource group for alert target
-- Dates in tickets are in 12-hour format but without specification if it is morning or evening (AM/PM)
-- Remove SLA Dashboards from template
-- Remove unavailiable locations from UI
-- Sometimes function isn't triggered when alert is fired
-- All links in emails should be hidden behind the display text.
-- Sometimes ticket creation request to Zammad fails with HTTP error 422: Unprocessable Entity when connector function triggers it
-- Sometimes two tickets are created for single alert
-- Manual ticket creation doesn't work
-- BUG incorrect packages on Cloud Partner Portal
-- VIMS DB not backed up on upgrade
-- Documentation Update TOC  on github
-- Customer doesn't receive any notifications
-- Fix Azure Monitor connector template
-- Z-metric Zammad statistics (version 1.1.15)
-- VIMS must have a designated user for Azure DevOps Connector
-- Connector role is not localized and doesn't have a description
-- Customer receives emails about problem with VIMS administrator account
-- Azure DevOps token is visible to user
-- Zammad in display strings
-- Can not see Delegate button
-- Ticket in custom status like delegated is not visible in any view to Agent.
-- It is not secure to have password of Azure Monitor Connector hardcoded in GitHub
-- Delegate button not always works
-- Link to "SearchResults" for AppInsight alert is not working
-- Ticket cannot be created if "Threshold"  is not integer value
-- Minor bugfixes.
+- Dates in tickets are in 12-hour with AM/PM indication.
+- Installation wizard lists only the right locations.
+- There are no duplicates and lost alerts anymore.
+- Tickets can be created manually.
+- A ticket can be created even if Threshold is decimal.
+- Broken links are no longer displayed in tickets when an Azure Alert does not have a Resource Group or a resource.
+- Minor bug-fixes.
 
-## VIAcode Incident Management System for Azure initial
+## VIAcode Incident Management System for Azure initial release
 
 VIAcode Incident Management System is a cloud-born ticketing system that combines a powerful incident management engine with out-of-the-box integration with Azure platform. It creates a process around alerts, recommendations and threats in order to foster individual and organizational accountability. It helps visualize operational maturity and compliance.
 
