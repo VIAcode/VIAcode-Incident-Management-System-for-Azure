@@ -23,7 +23,7 @@
 - [Additional information](#additional-information)
   - [Steps to create a new App registration in Azure AD](#steps-to-create-a-new-app-registration-in-azure-ad)
 
-- [Configuration of VIAcode Alert Connector Premium](#configuration-of-viacode-alert-connector-premium)
+- [Configuration of Azure Monitor connector for VIAcode IMS](#configuration-of-azure-monitor-connector-for-viacode-ims)
   - [Premium Basics](#premium-basics)
   - [Premium Settings](#premium-settings)
   - [Premium Review and create](#premium-review-and-create)
@@ -333,9 +333,9 @@ Switch the radio button under 'Supported account types' to Multitenant:
 
 ![Configure Redirect URI](./media/MultitenantConfiguration.png)
 
-## Configuration of VIAcode Alert Connector Premium
+## Configuration of Azure Monitor connector for VIAcode IMS
 
-Find VIAcode Incident Management System for Azure app in Azure Marketplace and click "GET IT NOW".
+Find [Azure Monitor connector for VIAcode IMS](https://azuremarketplace.microsoft.com/marketplace/apps/viacode_consulting-1089577.vims-azuremonitor?tab=Overview) on Azure Marketplace and click "Get it now".
 
 ## Premium Basics
 
@@ -351,11 +351,11 @@ Find VIAcode Incident Management System for Azure app in Azure Marketplace and c
 
 ![Settings](./media/Premium&#32;settings.png)
 
-- Specify id of a subscription where VIAcode Incident Management System for Azure to which you want to connect selected subscription is deployed to.
-- Specify name of a managed resource group of that VIAcode Incident Management System for Azure.
-- Specify name of a connector function app of that VIAcode Incident Management System for Azure.
+- Specify id of the subscription where VIAcode Incident Management System for Azure to which you want to connect selected subscription is deployed to.
+- Specify name of a managed resource group of VIAcode Incident Management System for Azure.
+- Specify name of a connector function app of VIAcode Incident Management System for Azure.
 You can find it in output of a corresponding managed application under name connectorName:
-  ![Connector name](./media/connectorName.png)  
+![Connector name](./media/connectorName.png)  
 - Press "Next : Review + create >" button.
 
 ## Premium Review and create
