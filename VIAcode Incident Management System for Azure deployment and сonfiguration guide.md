@@ -3,27 +3,26 @@
 - [Before you begin](#before-you-begin)
   - [Deploy from Azure Marketplace](#deploy-from-azure-marketplace)
     - [Pricing](#pricing)
+
 - [Configuration of VIAcode Incident Management System for Azure](#configuration-of-viacode-incident-management-system-for-azure)
   - [Basics](#basics)
   - [Settings](#settings)
     - [Purpose of an App registration](#purpose-of-an-app-registration)
   - [Review and create](#review-and-create)
-  - [Redirect URI for Azure AD Integration](#redirect-uri-for-azure-ad-integration)
-  - [Enable Azure AD Integration after installation](#enable-azure-ad-integration-after-installation)
+  - [Redirect URI for Azure AD Integration](#redirect-uri-for-azure-ad-integration)  
   - [Alert state backward synchronization](#alert-state-backward-synchronization)
     - [Overview](#overview)
     - [How to setup](#how-to-setup)
   - [First Sign in](#first-sign-in)
-  - [Email configuration](#email-configuration)
-    - [Notes](#notes)
-  - [Activity Log Alert message](#activity-log-alert-message)
-
+    - [Email configuration](#email-configuration)
+    - [Enable Azure AD Integration after installation](#enable-azure-ad-integration-after-installation)
+  
 - [Technical details](#technical-details)
   - [Supported alert types](#supported-alert-types)
 
 - [Additional information](#additional-information)
   - [Steps to create a new App registration in Azure AD](#steps-to-create-a-new-app-registration-in-azure-ad)
-    
+
 - [Configuration of VIAcode Alert Connector Premium](#configuration-of-viacode-alert-connector-premium)
   - [Premium Basics](#premium-basics)
   - [Premium Settings](#premium-settings)
@@ -33,25 +32,27 @@
 
 ## Before you begin
 
-Verify that your account user type is not Guest in chosen tenant.
+Verify that your account user type is not Guest in the chosen tenant.
 
-- Sign in to the [Azure portal](https://portal.azure.com/).
+- Sign in to the [Azure Portal](https://portal.azure.com/).
 - Select "Azure Active Directory", select "Users".
 
 ![Guest type account](./media/Guest&#32;account.png)
 
-[Guest](https://docs.microsoft.com/en-us/azure/active-directory/b2b/user-properties) accounts have limited permissions. Deployment under a guest account will fail.
+[Guest](https://docs.microsoft.com/azure/active-directory/b2b/user-properties) accounts have limited permissions. Deployment under a guest account will fail.
 
 ## Deploy from Azure Marketplace
 
-- [Navigate](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/viacode_consulting-1089577.viacode-itsm-z?tab=Overview) to Microsoft Azure Marketplace and find "VIAcode Incident Management System for Azure" offer.
+- [Navigate](https://azuremarketplace.microsoft.com/marketplace/apps/viacode_consulting-1089577.viacode-itsm-z?tab=Overview) to Microsoft Azure Marketplace and find "VIAcode Incident Management System for Azure" offer.
 ![Azure Market Place](./media/AzureMarketPlace.png)
-- Press "GET IT NOW" button.
+
+- Press "Get it now" button.
 - Select "VIAcode Incident Management System for Azure" software plan and press "Continue".
 
 You will be taken to Azure Portal to complete installation:
 ![Azure Portal](./media/AzurePortalOfferProfile.png)
-- Select "VIAcode Incident Management System for Azure" software plan.
+
+- Make sure "VIAcode Incident Management System for Azure" software plan is selected.
 - Press "Create".
 
 ### Pricing
@@ -88,7 +89,7 @@ To enable Azure AD Integration you have to specify Azure AD Application Registra
 It is used to integrate VIAcode Incident Management System for Azure with Azure AD and Office 365.
 Using Azure App, we can generate the token to authenticate the application.
 When Azure App is created we can get the Application (client) ID and Secret.
-For more information see [Quickstart: Register an application with the Microsoft identity platform.](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app)
+For more information see [Quickstart: Register an application with the Microsoft identity platform.](https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app)
 
 ## Review and create
 
@@ -119,32 +120,19 @@ Note: The [App Service Address] can be copied from Parameters and Outputs of the
 
 ![Configure Redirect URI](./media/Configure&#32;Redirect&#32;URI.png)
 
-Final string looks like `https://viaaims-milyddjpnf8sw.azurewebsites.net/auth/microsoft_office365/callback`.
+Final string looks like `https:/vims-nktbyzg56jxak.azurewebsites.net/auth/microsoft_office365/callback`.
 
 - "Save."
-
-### Enable Azure AD Integration after installation
-
-To enable Office 365 login after you installed VIAcode Incident Management System for Azure with AD Integration disabled follow these steps:
-
-1. Enable HTTPS in System - Base and Make sure Fully Qualified Domain Name is identical to your real URL.
-
-![Check HTTPS enabled](./media/Https&#32;config&#32;enabled.png)
-
-2. Select Security - Third-party Applications and enable checkbox Authentication via Office 365, then fill App ID and App Secret according to created application.
-
-![Configure Office365](./media/Auth&#32;Office&#32;365&#32;config.png)
-
 
 ## Alert state backward synchronization
 
 ### Overview
 
-VIAcode Incident Management System for Azure provides an alert state backward synchronization mechanism. Whenever an incident created based on an Azure alert or closed, the alert is closed automatically.
+VIAcode Incident Management System for Azure provides an alert state backward synchronization mechanism. It enables automatic state synchronization of the VIMS incidents and Azure Monitor Alerts.
 
 ### How to setup
 
-In order to configure alert state synchronization please assign the VIAcode Incident Management System for Azure Function App Monitoring Contributor Role for your subscription in Azure portal.
+In order to configure alert state synchronization please provide VIAcode Incident Management System for Azure Function App with Monitoring Contributor Role for your subscription in Azure Portal.
 
 - Click on "Subscriptions."
 - Select the subscription where VIAcode Incident Management System for Azure is deployed.
@@ -179,15 +167,19 @@ If you have multiple subscriptions, execute the script for each of them.
 
 ![Sign in using credentials](./media/Sign&#32;in&#32;using&#32;credentials.png)
 
-- Sign in using credentials you entered for VIAcode Incident Management System for Azure administrator.
+- USERNAME / EMAIL - admin.
+- Password - admin.
+- "Sign in".
 
-## Email configuration
+Note: By default VIMS administrator has admin/admin credentials. Please, do not forget to change them after your first Sign in.
+
+### Email configuration
 
 When you Log in to VIAcode Incident Management System for Azure as administrator please configure email notification.
 
 ![Notification Sender](./media/Notification&#32;Sender.png)
 
-- Click "Cogwheel" in the lest bottom corner.
+- Click "Cogwheel" in the left bottom corner.
 - Click "Email" in Channels section.
 - Click "Settings".
 - Enter sender name and email in angle brackets in Notification Sender section like it is shown in the screenshot.
@@ -227,7 +219,16 @@ When you Log in to VIAcode Incident Management System for Azure as administrator
 - Default port for SMTP is 587.
 - Click "Continue" button.
 
-### Notes
+Now, when email configuration is complete, make sure Incoming Group has email configured.
+
+![Edit Incoming Group](./media/Edit&#32;Incoming&#32;Group.png)
+
+- Click "Cogwheel" in the left bottom corner.
+- Click "Groups".
+- Click "Incoming".
+- Click "Email" and select the Notification Sender you have configured.
+
+#### Notes
 
 Email configuration is required for enabling following functionality:
 
@@ -248,40 +249,17 @@ In general, VIAcode Incident Management System for Azure best practice is to cre
 
 For current email set up documentation see [e-mail](https://zammad-admin-documentation.readthedocs.io/en/latest/channels-email.html).
 
-## Activity Log Alert message
+### Enable Azure AD Integration after installation
 
-At the time of this writing description didn't work for Activity Log Alerts in Azure.
-Because of this alert message hasn't been filled for tickets created from Activity Log Alerts.
-Workaround that fills alert message for tickets created from Activity Log Alerts has been implemented.
-Alert message is obtained from corresponding alert rule's description.
-However to get it up and working you need to assign at least Reader role to connector function app.
+To Sign in using Office 365 account after you installed VIAcode Incident Management System for Azure with AD Integration disabled follow these steps:
 
-In order to do so:
+- Enable HTTPS in System - Base and Make sure Fully Qualified Domain Name is identical to your real URL.
 
-- Click on "Subscriptions."
-- Select the subscription where VIAcode Incident Management System for Azure is deployed.
-- Click "Access control (IAM)."
-- "Add" > "Add role assignment."
+![Check HTTPS enabled](./media/Https&#32;config&#32;enabled.png)
 
-  - Role: 'Reader'.
-  - Assign access to: 'Function App'.
-  - Subscription: Your Subscription.
-  - Select: Function app name for VIAcode Incident Management System for Azure.*
-  - "Save."
+- Select Security - Third-party Applications and enable checkbox Authentication via Office 365, then fill App ID and App Secret according to created application.
 
- *(Function app name equals connectorName, can be copied from 'Parameters and Outputs' of the installed managed application)
-  ![Connector name](./media/connectorName.png)  
-
-You can also execute the following PS script:
-
-```powershell
-New-AzRoleAssignment -ObjectId (Get-AzADServicePrincipal -SearchString '{CONNECTOR_NAME}').Id -RoleDefinitionName Reader -Scope '/subscriptions/{SUBSCRIPTION_ID}';
-```
-
-SUBSCRIPTION_ID - ID of a monitored subscription.  
-CONNECTOR_NAME - The CONNECTOR_NAME can be copied from 'Parameters and Outputs' of the installed managed application.
-
-If you have multiple subscriptions, execute the script for each of them.
+![Configure Office365](./media/Auth&#32;Office&#32;365&#32;config.png)
 
 ## Technical details
 
@@ -315,7 +293,7 @@ Please be informed, that alerts generated by Azure Cost Management currently are
 Follow the below-listed steps to register the application.
 
 **Step 1**
-Log in to the Azure portal using your Azure account.
+Log in to the Azure Portal using your Azure account.
 URL - <https://portal.azure.com/>.
 
 **Step 2**
