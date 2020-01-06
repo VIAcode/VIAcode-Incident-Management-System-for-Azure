@@ -9,19 +9,17 @@
 
 ### Features
 
-- By default Admin user name is admin and password is admin.
-- App Service Plan of VIAcode Incident Management System for Azure Web Application was changed to P1V2. It supports backups.
+- Simplified installation process. By default Admin user name is 'admin' and password is 'admin'. Default prefix for resources is 'vims'.
 - A new Repeat Count property was added to every ticket, it displays the number of alert repeats.
 - Azure Alert status changes to Acknowledged when an incident created in VIMS changes its state to Open.
-- A new default group Incoming added, it replaces Users.
-- A new designated customer Azure Monitor was added. It connects VIMS to Azure Monitor. All new tickets are created by the customer.
-- By default VIMS has Customer and Default SRE Provider shared organizations.
+- A new default group 'Incoming' added, it replaces 'Users'.
+- A new designated user 'Azure Monitor Connector' was added. It connects VIMS to Azure Monitor. All new tickets are created by this user. By default 'Azure Monitor Connector' user is Customer for such tickets.
+- By default VIMS has 'Customer' and 'Default SRE Provider' shared organizations.
 - Added states Delegated and Pending Review for tickets. Customer can set ticket into Pending Review state in place of closing the ticket.
-- A new role Connector was added. It has minimal set of privileges just to create and update tickets. Agent role has full access to Incoming group and it is an editor of Knowledge Base. Customer role has access to Incoming group.
+- A new role 'Connector' was added. It has minimal set of privileges just to create and update tickets. Agent role has full access to Incoming group and it is an editor of Knowledge Base. Customer role has access to Incoming group.
 - An avatar for Azure Monitor Connector was added.
-- My Assigned Tickets overview now displays delegated and pending review tickets. My delegated Tickets overview was added.
-- Name Prefix was removed from Settings page.
-- Customer doesn't receive notifications.
+- 'My assigned Tickets', 'Open' and 'Unassigned&Open' overviews now displays delegated and pending review tickets. 'My delegated Tickets' overview was added.
+- Customer now receives notifications about any updates in it's tickets.
 - Azure Alert severity now affects ticket priority.
 - A new [repository](https://github.com/VIAcode/VIAcode-Incident-Management-System) for VIMS.
 
@@ -31,7 +29,8 @@
 - Installation wizard lists only the right locations.
 - There are no duplicates and lost alerts anymore.
 - Tickets can be created manually.
-- A ticket can be created even if Threshold is decimal.
+- An Azure Monitor ticket can be created even if Threshold field from Alert Rule is decimal.
+- Activity Log alerts now can be automatically closed after ticket's closing in VIMS.
 - Broken links are no longer displayed in tickets when an Azure Alert does not have a Resource Group or a resource.
 - Minor bug-fixes.
 
