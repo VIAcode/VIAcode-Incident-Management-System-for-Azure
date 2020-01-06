@@ -10,6 +10,7 @@
 ### Features
 
 - Simplified installation process. By default Admin user name is 'admin' and password is 'admin'. Default prefix for resources is 'vims'.
+- Restyled formating of tickets created based on Azure Monitor alerts.Notification emails has same new clear format.
 - A new Repeat Count property was added to every ticket, it displays the number of alert repeats.
 - Azure Alert status changes to Acknowledged when an incident created in VIMS changes its state to Open.
 - A new default group 'Incoming' added, it replaces 'Users'.
