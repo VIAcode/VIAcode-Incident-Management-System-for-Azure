@@ -27,7 +27,7 @@
   - [Premium Basics](#premium-basics)
   - [Premium Settings](#premium-settings)
   - [Premium Review and create](#premium-review-and-create)
-  
+- [Known issues](#known-issues)  
 <!-- TOC END -->
 
 ## Before you begin
@@ -365,3 +365,7 @@ You can find it in output of a corresponding managed application under name conn
 
 - Agree to the terms and conditions.
 - Press "Create" button.
+
+## Known issues
+### Tickets are not created based on Azure Monitor Alerts
+  - Review the AppInsight logs for FunctionApp, there could be an exception: "*Exception while executing function: AlertProcessor The type initializer for 'VIMSConnector.KeyVault' threw an exception. One or more errors occurred.(Operation returned an invalid status code 'Forbidden') Operation returned an invalid status code*". Try to restart Function App with name "vims-api-[uid]".
