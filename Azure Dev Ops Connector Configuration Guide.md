@@ -1,5 +1,19 @@
 # VIAcode Incident Management System Azure DevOps Connector deployment and configuration guide
 <!-- TOC -->
+- [Before you begin](#before-you-begin)
+- [Deploy from Azure Marketplace](#deploy-from-azure-marketplace)
+  - [Plans + Pricing](#plans-+-pricing)
+
+- [Configuration of Azure DevOps connector for VIAcode IMS](#configuration-of-azure-devOps-connector-for-VIAcode-IMS)
+  - [Basics](#basics)
+  - [Settings](#settings)
+  - [Review and create](#review-and-create)
+
+- [Obtaining the Azure DevOps token](#Obtaining-the-Azure-DevOps-token)
+
+- [VIMS organization settings](#VIMS-organization-settings)
+
+<!-- TOC END -->
 
 ## Before you begin
 
@@ -23,9 +37,9 @@ Software plans include two options:
 
 The total cost of running VIAcode Incident Management System on Azure is a combination of the selected software plan and cost of the Azure infrastructure on which you will be running it. The Azure infrastructure cost might vary with regards to the region, type of subscription and other discounts.
 
-## Configuration of VIAcode Incident Management System for Azure
+## Configuration of Azure DevOps connector for VIAcode IMS
 
-After you have selected "VIAcode Incident Management System for Azure" software plan you need to configure it.
+After you have selected appropriate software plan you need to configure the deployment.
 
 ### Basics
 
