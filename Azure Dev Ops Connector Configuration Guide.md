@@ -4,14 +4,14 @@
 - [Deploy from Azure Marketplace](#deploy-from-azure-marketplace)
   - [Plans + Pricing](#plans-+-pricing)
 
-- [Configuration of Azure DevOps connector for VIAcode IMS](#configuration-of-azure-devOps-connector-for-VIAcode-IMS)
+- [Configuration of Azure DevOps connector for VIAcode IMS](#configuration-of-azure-devops-connector-for-viacode-ims)
   - [Basics](#basics)
   - [Settings](#settings)
   - [Review and create](#review-and-create)
 
-- [Obtaining the Azure DevOps token](#Obtaining-the-Azure-DevOps-token)
+- [Obtaining the Azure DevOps token](#obtaining-the-azure-devops-token)
 
-- [VIMS organization settings](#VIMS-organization-settings)
+- [VIMS organization settings](#vims-organization-settings)
 
 <!-- TOC END -->
 
@@ -110,7 +110,7 @@ In opened dialogue windows please fill all "Azure DevOps" related properties:
 - Azure DevOps Organization
 - Azure DevOps Project
 - Azure DevOps Area
-- Azure DevOps Token
+- Azure DevOps Token - see [Obtaining the Azure DevOps token](#obtaining-the-azure-devops-token)
 - Azure DevOps Token (confirm)
 
 Press "Submit" button
