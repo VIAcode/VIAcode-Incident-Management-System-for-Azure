@@ -13,7 +13,7 @@
 
 - [VIMS organization settings](#vims-organization-settings)
 
-- [Additional information](#Additional-information)
+- [Additional information](#additional-information)
 
 <!-- TOC END -->
 
