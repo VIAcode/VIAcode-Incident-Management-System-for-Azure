@@ -19,7 +19,7 @@
 
 ## Before you begin
 
-Prerequisite: [VIAcode Incident Management System for Azure](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/viacode_consulting-1089577.viacode-itsm-z?tab=Overview) already installed and configued.
+Prerequisite: [VIAcode Incident Management System for Azure](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/viacode_consulting-1089577.viacode-itsm-z?tab=Overview) already installed and configured.
 You must install Azure DevOps connector in the same Azure subscriptions as VIAcode Incident Management System (VIMS) that you’d like to integrate with Azure DevOps.
 
 ## Deploy from Azure Marketplace
@@ -121,7 +121,7 @@ Press "Submit" button
 
 ## Additional information
 
-If all parts was successfully configured, each time upon delegation a new article will be added to the ticket, which will contain delegation details. Moreover, on each VIMS ticket update, DevOps also will be received related notification:
+Upon delegation a new article will be added to the ticket, which will contain delegation details. Moreover, on each VIMS ticket update, DevOps also will be received related notification:
 
 ![Delegationresult](./media/devOpsConnector/delegationResult.png)
 
