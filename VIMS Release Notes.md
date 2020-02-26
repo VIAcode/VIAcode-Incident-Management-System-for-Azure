@@ -14,7 +14,7 @@
 - Added alert processing retry in case of any errors
 - Added tracking of changes to Azure resources
 - Added Teams bot allowing to manage tickets
-- Added "My delegated Tickets" overview for customers
+- Added "My delegated" overview for customers
 - Made that roles should be assigned to managed application instead of specific resources in managed resource group
 - Made that states of alerts generated before ticket creation which are related to that ticket are synchronized
 - Added article creation in ticket on alert repeats
