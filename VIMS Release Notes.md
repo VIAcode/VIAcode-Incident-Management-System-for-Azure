@@ -18,6 +18,8 @@
 - Made that roles should be assigned to managed application instead of specific resources in managed resource group
 - Made that states of alerts generated before ticket creation which are related to that ticket are synchronized
 - Added article creation in ticket on alert repeats
+- Enabled HTTPS only for web application
+- Added synchronization of states for merged tickets
 
 ### Bug-fixes
 
@@ -26,6 +28,11 @@
 - Hidden technical tags
 - Ticket creation optimization
 - Fixed article subjects
+- Fixed ticket duplication
+- Fixed VIAcode Insights Feed
+- Fixed ticket repeat count
+- Added timezone specification to times in ticket articles
+- Made that not only the first page of alerts is closed when corresponding ticket is closed
 
 ## VIAcode Incident Management System for Azure 1.2.5
 
