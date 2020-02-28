@@ -20,18 +20,18 @@
 - Added article creation in ticket on alert repeats
 - Enabled HTTPS only for web application
 - Added synchronization of states for merged tickets
+- Optimized ticket creation. Now there is only one API call to create ticket.
 
 ### Bug-fixes
 
 - Fixed VIAcode Insights ticket look
 - Fixed backward synchronization in case when states of tickets created from alerts that are more than one month old are changed
 - Hidden technical tags
-- Ticket creation optimization
-- Fixed article subjects
-- Fixed ticket duplication
+- Monitor alert tickets article's subject now has "Azure Alert Fired"
+- Fixed ticket duplication by avoiding use of Ful Text Search for exising ticket search
 - Fixed VIAcode Insights Feed
 - Fixed ticket repeat count
-- Added timezone specification to times in ticket articles
+- Added timezone specification for date-time fields in ticket articles
 - Made that not only the first page of alerts is closed when corresponding ticket is closed
 
 ## VIAcode Incident Management System for Azure 1.2.5
