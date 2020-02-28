@@ -1,9 +1,38 @@
 # VIAcode Incident Management System for Azure Release Notes
 
 <!-- TOC -->
-- [VIAcode Incident Management System for Azure 1.2.5](#viacode-incident-management-system-for-azure-120)
+- [VIAcode Incident Management System for Azure 1.2.7](#viacode-incident-management-system-for-azure-127)
+- [VIAcode Incident Management System for Azure 1.2.5](#viacode-incident-management-system-for-azure-125)
 - [VIAcode Incident Management System for Azure initial release](#viacode-incident-management-system-for-azure-initial-release)  
 <!-- TOC END -->
+
+## VIAcode Incident Management System for Azure 1.2.7
+
+### Features
+
+- Added support for automatic ticket delegation to Azure DevOps
+- Added alert processing retry in case of any errors
+- Added tracking of changes to Azure resources
+- Added Teams bot allowing to manage tickets
+- Added "My delegated" overview for customers
+- Made that roles should be assigned to managed application instead of specific resources in managed resource group
+- Made that states of alerts generated before ticket creation which are related to that ticket are synchronized
+- Added article creation in ticket on alert repeats
+- Enabled HTTPS only for web application
+- Added synchronization of states for merged tickets
+
+### Bug-fixes
+
+- Fixed VIAcode Insights ticket look
+- Fixed backward synchronization in case when states of tickets created from alerts that are more than one month old are changed
+- Hidden technical tags
+- Ticket creation optimization
+- Fixed article subjects
+- Fixed ticket duplication
+- Fixed VIAcode Insights Feed
+- Fixed ticket repeat count
+- Added timezone specification to times in ticket articles
+- Made that not only the first page of alerts is closed when corresponding ticket is closed
 
 ## VIAcode Incident Management System for Azure 1.2.5
 
