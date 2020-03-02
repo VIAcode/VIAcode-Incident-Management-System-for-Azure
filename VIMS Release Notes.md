@@ -12,7 +12,7 @@
 
 - Added support for automatic ticket delegation to Azure DevOps
 - Added alert processing retry in case of any errors by using of Azure Service Bus queue.
-- Added tracking of changes to Azure resources using Azure Dev Ops Repos and Event Grid Subscription
+- Added tracking of changes to Azure resources using Azure DevOps Repos and Event Grid Subscription
 - Added Teams bot allowing to manage tickets and receive notifications
 - Added "My delegated" overview for customers
 - Made that roles should be assigned to managed application instead of specific resources in managed resource group
