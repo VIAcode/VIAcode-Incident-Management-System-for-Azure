@@ -11,14 +11,14 @@
 ### Features
 
 - Added support for automatic ticket delegation to Azure DevOps
-- Added alert processing retry in case of any errors
-- Added tracking of changes to Azure resources
-- Added Teams bot allowing to manage tickets
+- Added alert processing retry in case of any errors by using of Azure Service Bus queue.
+- Added tracking of changes to Azure resources using Azure Dev Ops Repos and Event Grid Subscription
+- Added Teams bot allowing to manage tickets and receive notifications
 - Added "My delegated" overview for customers
 - Made that roles should be assigned to managed application instead of specific resources in managed resource group
 - Made that states of alerts generated before ticket creation which are related to that ticket are synchronized
 - Added article creation in ticket on alert repeats
-- Enabled HTTPS only for web application
+- Enabled "HTTPS only" for web application
 - Added synchronization of states for merged tickets
 - Optimized ticket creation. Now there is only one API call to create ticket.
 
@@ -28,9 +28,9 @@
 - Fixed backward synchronization in case when states of tickets created from alerts that are more than one month old are changed
 - Hidden technical tags
 - Monitor alert tickets article's subject now has "Azure Alert Fired"
-- Fixed ticket duplication by avoiding use of Ful Text Search for exising ticket search
+- Fixed ticket duplication by avoiding use of Full Text Search for exising ticket search
 - Fixed VIAcode Insights Feed
-- Fixed ticket repeat count
+- Fixed ticket repeat count. Added service bus message de-dupulciation.
 - Added timezone specification for date-time fields in ticket articles
 - Made that not only the first page of alerts is closed when corresponding ticket is closed
 
