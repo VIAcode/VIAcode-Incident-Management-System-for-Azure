@@ -132,32 +132,16 @@ VIAcode Incident Management System for Azure provides an alert state backward sy
 
 ### How to setup
 
-In order to configure alert state synchronization please provide VIAcode Incident Management System for Azure Function App with Monitoring Contributor Role for your subscription in Azure Portal.
+In order to configure alert state synchronization please provide VIAcode Incident Management System for Azure Managed App with Monitoring Contributor Role for your subscription in Azure Portal.
 
-- Click on "Subscriptions."
-- Select the subscription where VIAcode Incident Management System for Azure is deployed.
-- Click "Access control (IAM)."
-- "Add" > "Add role assignment."
+- Click on the installed managed application.
+- Select 'Application Permissions (preview)' blade.
+- Click "Add."
+  - Select 'Monitoring Contributor' role.
+  - Select your subscription.
+  - "OK."
 
-  - Role: 'Monitoring Contributor'.
-  - Assign access to: 'Azure AD user, group, or service principal'.
-  - Subscription: Your Subscription.
-  - Select: Function app name for VIAcode Incident Management System for Azure.*
-  - "Save."
-
- *(Function app name equals connectorName, can be copied from 'Parameters and Outputs' of the installed managed application)
-  ![Connector name](./media/connectorName.png)  
-
-You can also execute the following PS script:
-
-```powershell
-New-AzRoleAssignment -ObjectId (Get-AzADServicePrincipal -SearchString '{CONNECTOR_NAME}').Id -RoleDefinitionName 'Monitoring Contributor' -Scope '/subscriptions/{SUBSCRIPTION_ID}';
-```
-
-SUBSCRIPTION_ID - ID of a monitored subscription.  
-CONNECTOR_NAME - The CONNECTOR_NAME can be copied from 'Parameters and Outputs' of the installed managed application.
-
-If you have multiple subscriptions, execute the script for each of them.
+If you have multiple subscriptions, add a role for each of them.
 
 ## First Sign in
 
