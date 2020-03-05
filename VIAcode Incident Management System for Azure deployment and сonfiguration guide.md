@@ -136,10 +136,13 @@ In order to configure alert state synchronization please provide VIAcode Inciden
 
 - Click on the installed managed application.
 - Select 'Application Permissions (preview)' blade.
+![App permissions blade](./media/ManagedAppPermissions-1.png)
 - Click "Add."
+![Add](./media/ManagedAppPermissions-2.png)
   - Select 'Monitoring Contributor' role.
   - Select your subscription.
   - "OK."
+![OK](./media/ManagedAppPermissions-3.png)
 
 If you have multiple subscriptions, add a role for each of them.
 
