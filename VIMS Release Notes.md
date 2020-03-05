@@ -6,7 +6,7 @@
 - [VIAcode Incident Management System for Azure initial release](#viacode-incident-management-system-for-azure-initial-release)  
 <!-- TOC END -->
 
-## VIAcode Incident Management System for Azure 1.2.7
+## VIAcode Incident Management System for Azure 1.3.0
 
 ### Features
 
