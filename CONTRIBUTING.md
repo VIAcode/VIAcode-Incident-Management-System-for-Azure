@@ -1,6 +1,6 @@
 # Contribute to the VIAcode Products documentation
 
-This document covers the process for contributing to the configuration guider for open-source VIAcode products.Typo corrections and new articles are welcome contributions.
+This document covers the process for contributing to the configuration guides for open-source VIAcode products.Typo corrections and new articles are welcome contributions.
 
 ## How to make a simple correction or suggestion
 
