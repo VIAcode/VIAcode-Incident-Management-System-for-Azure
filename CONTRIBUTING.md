@@ -84,6 +84,6 @@ To highlight selected lines in a rendered snippet (usually renders as yellow bac
 
 Our goal is to write documentation that is easily understandable by the widest possible audience. To that end, we established guidelines for writing style that we ask our contributors to follow. For more information, see [Voice and tone guidelines](https://docs.microsoft.com/en-us/contribute/dotnet/dotnet-voice-tone).
 
-## Microsoft Writing Style Guide
+## Writing Style Guide
 
-The [Microsoft Writing Style Guide](https://docs.microsoft.com/style-guide/welcome/) provides writing style and terminology guidance for all forms of technology communication.
+We use [Microsoft Writing Style Guide](https://docs.microsoft.com/style-guide/welcome/) which provides writing style and terminology guidance for all forms of technology communication. Following guide reflects our rules: [Dot Net Docs Style Guide](https://docs.microsoft.com/en-us/contribute/dotnet/dotnet-style-guide)
