@@ -82,7 +82,7 @@ To highlight selected lines in a rendered snippet (usually renders as yellow bac
 
 ## Voice and tone
 
-Our goal is to write documentation that is easily understandable by the widest possible audience. To that end, we established guidelines for writing style that we ask our contributors to follow. For more information, see [Voice and tone guidelines](https://github.com/dotnet/docs/blob/master/styleguide/voice-tone.md) in the .NET repo.
+Our goal is to write documentation that is easily understandable by the widest possible audience. To that end, we established guidelines for writing style that we ask our contributors to follow. For more information, see [Voice and tone guidelines](https://docs.microsoft.com/en-us/contribute/dotnet/dotnet-voice-tone).
 
 ## Microsoft Writing Style Guide
 
