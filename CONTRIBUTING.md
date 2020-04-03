@@ -31,8 +31,6 @@ All images should have [alternative (alt) text](https://wikipedia.org/wiki/Alt_a
 
 Use lowercase for Markdown file names and image file names.
 
-## Internal links
-
 ## Images and screenshots
 
 Don't include images with articles, except:
@@ -43,42 +41,6 @@ Don't include images with articles, except:
 These restrictions reduce the size of the repository.
 
 As an optional step, ensure that any images and screenshots used in the documentation are compressed, which helps with file size and page load performance. A few popular tools include TinyPNG (using the [TinyPNG website](https://tinypng.com/) or the [TinyPNG API](https://tinypng.com/developers)) or the [Image Optimizer](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.ImageOptimizer) Visual Studio extension. 
-
-## Code snippets
-
-Articles frequently contain code snippets to illustrate points. DFM allows you to copy code into the Markdown file or refer to a separate code file. We prefer to use separate code files whenever possible to minimize the chance of errors in the code. The code files are stored in the repo using the folder structure described earlier for sample projects. 
-
-The following examples illustrate [DFM code snippet syntax](https://dotnet.github.io/docfx/spec/docfx_flavored_markdown.html#code-snippet) for use in a *configuration/index.md* file.
-
-To render an entire code file as a snippet:
-
-```md
-[!code-csharp[](configuration/index/sample/Program.cs)]
-```
-
-To render a portion of a file as a snippet by using line numbers:
-
-```md
-[!code-csharp[](configuration/index/sample/Program.cs?range=1-10,20,30,40-50]
-[!code-html[](configuration/index/sample/Views/Home/Index.cshtml?range=1-10,20,30,40-50]
-```
-
-For C# snippets, reference a [C# region](https://docs.microsoft.com/dotnet/csharp/language-reference/preprocessor-directives/preprocessor-region). Whenever possible, use regions rather than line numbers because line numbers in a code file tend to change and become out of sync with line number references in Markdown. C# regions can be nested. If referencing the outer region, the inner `#region` and `#endregion` directives aren't rendered in a snippet. 
-
-To render a C# region named "snippet_Example":
-
-```md
-[!code-csharp[](configuration/index/sample/Program.cs?name=snippet_Example)]
-```
-
-To highlight selected lines in a rendered snippet (usually renders as yellow background color):
-
-```md
-[!code-csharp[](configuration/index/sample/Program.cs?name=snippet_Example&highlight=1-3,10,20-25)]
-[!code-csharp[](configuration/index/sample/Program.cs?range=10-20&highlight=1-3]
-[!code-html[](configuration/index/sample/Views/Home/Index.cshtml?range=10-20&highlight=1-3]
-[!code-javascript[](configuration/index/sample/UsingOptionsSample.csproj?range=10-20&highlight=1-3]
-```
 
 ## Voice and tone
 
