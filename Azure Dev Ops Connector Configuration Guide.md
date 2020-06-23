@@ -15,6 +15,8 @@
 
 - [Additional information](#additional-information)
 
+- [VIAcode Incident Management System for Azure with custom domain](#viacode-incident-management-system-for-azure-with-custom-domain)
+
 <!-- TOC END -->
 
 ## Before you begin
@@ -127,3 +129,14 @@ If all parts was successfully configured, each time upon delegation a new articl
 In case of any issues or Azure DevOps connector unavailability new ticket will be created on VIMS side:
 
 ![Issues](./media/devOpsConnector/issues.png)
+
+## VIAcode Incident Management System for Azure with custom domain
+
+If you configure custom domain for VIAcode Incident Management System for Azure (VIMS) then you should also configure following in Azure DevOps connector for it:
+
+- Configure custom domain for Azure DevOps connector for VIAcode IMS (Azure DevOps connector) in the format: <VIMS 3rd level custom domain>-azdevops.<VIMS custom domains of level less than 3>.
+For example if you configured vims.viacode.com custom domain for VIMS then you should configure vims-azdevops.viacode.com custom domain for Azure DevOps connector.
+- In order to have links to VIMS tickets with custom domain in Azure DevOps work items' Acceptance Criteria section you should change Vims__URL setting in Azure DevOps connector container settings to URL with VIMS custom domain.
+![ChangingVimsDomain](./media/devOpsConnector/changingVimsDomain.png)
+![WorkItemLinkToVimsTicket](./media/devOpsConnector/workItemLinkToVimsTicket.png)
+
