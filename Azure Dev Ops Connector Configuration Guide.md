@@ -25,7 +25,7 @@ You must install Azure DevOps connector in the same Azure subscriptions as
 
 ## Deploy from Azure Marketplace
 
--Navigate to [Microsoft Azure Marketplace](https://azuremarketplace.microsoft.com/) and find ["Azure DevOps connector for VIAcode IMS"](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/viacode_consulting-1089577.vims-azuredevops-preview?tab=Overview&flightCodes=073c61f2-6359-4b50-9e49-76f04063d00c) offer.
+-Navigate to [Microsoft Azure Marketplace](https://azuremarketplace.microsoft.com/) and find ["Azure DevOps connector for VIAcode IMS"](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/viacode_consulting-1089577.vims-azuredevops?tab=Overview) offer.
 - Press "Create".
 
 ![Azure Marketplace](./media/devOpsConnector/marketOffer.png)

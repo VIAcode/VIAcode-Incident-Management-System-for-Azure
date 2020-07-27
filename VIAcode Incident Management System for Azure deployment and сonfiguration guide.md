@@ -15,6 +15,7 @@
     - [How to setup](#how-to-setup)
   - [First Sign in](#first-sign-in)
     - [Email configuration](#email-configuration)
+    - [Notes](#notes)
     - [Enable Azure AD Integration after installation](#enable-azure-ad-integration-after-installation)
   
 - [Technical details](#technical-details)
@@ -37,20 +38,20 @@ Verify that your account user type is not Guest in the chosen tenant.
 - Sign in to the [Azure Portal](https://portal.azure.com/).
 - Select "Azure Active Directory", select "Users".
 
-![Guest type account](./media/Guest&#32;account.png)
+![Guest type account](./media/guestAccount.png)
 
 [Guest](https://docs.microsoft.com/azure/active-directory/b2b/user-properties) accounts have limited permissions. Deployment under a guest account will fail.
 
 ## Deploy from Azure Marketplace
 
-- [Navigate](https://azuremarketplace.microsoft.com/marketplace/apps/viacode_consulting-1089577.viacode-itsm-z?tab=Overview) to Microsoft Azure Marketplace and find "VIAcode Incident Management System for Azure" offer.
-![Azure Market Place](./media/AzureMarketPlace.png)
+- [Navigate](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/viacode_consulting-1089577.viacode-itsm-z) to Microsoft Azure Marketplace and find "VIAcode Incident Management System for Azure" offer.
+![Azure Market Place](./media/azureMarketPlace.png)
 
 - Press "Get it now" button.
 - Select "VIAcode Incident Management System for Azure" software plan and press "Continue".
 
 You will be taken to Azure Portal to complete installation:
-![Azure Portal](./media/AzurePortalOfferProfile.png)
+![Azure Portal](./media/azurePortalOfferProfile.png)
 
 - Make sure "VIAcode Incident Management System for Azure" software plan is selected.
 - Press "Create".
@@ -65,7 +66,12 @@ After you have selected "VIAcode Incident Management System for Azure" software 
 
 ## Basics
 
-![Basics](./media/Basics.png)
+### Attention!!!
+Alerts on Services located in mrg group can be monitored only by support admins, eg. Those that belong to group:  VIAcode Incident Management Support? So you can’t create Alert rule on it. 
+Groups mrg and vims should not contain alert rules.
+You can rename group mrg to comply with your main group.
+
+![Basics](./media/basics.png)
 
 - Choose a subscription to deploy the management application.
 - Create a new Resource Group.
@@ -77,7 +83,7 @@ After you have selected "VIAcode Incident Management System for Azure" software 
 
 To enable Azure AD Integration you have to specify Azure AD Application Registration ID and Secret. To create a new App registration see [Steps to create a new App registration in Azure AD](#steps-to-create-a-new-app-registration-in-azure-ad).
 
-![Azure AD Integration](./media/Azure&#32;AD&#32;Integration.png)
+![Azure AD Integration](./media/azureADIntegration.png)
 
 - Either "Enable" Azure AD integration or leave it "Disabled".
 - Set Azure AD Application Registration ID.
@@ -93,7 +99,7 @@ For more information see [Quickstart: Register an application with the Microsoft
 
 ## Review and create
 
-![Review + create](./media/Review&#32;+&#32;create.png)
+![Review + create](./media/reviewPlusCreate.png)
 
 - Agree to the terms and conditions.
 - Press "Create" button.
@@ -103,26 +109,32 @@ For more information see [Quickstart: Register an application with the Microsoft
 When deployment finishes (it usually takes up to 15 minutes to complete) you will have to configure redirect URI to enable Azure Active Directory integration.
 
 **Step 1**
-In the left-hand navigation pane, select the "Azure Active Directory" service, then select "App registrations" and "[Name of the App registration you used to install VIAcode Incident Management System for Azure]."
+In the left navigation pane of the Azure portal, select "Azure Active Directory" or write "Azure Active Directory" in the search bar at the top, then select "App registrations".
+
+![Redirect URIs link](./media/azureADAppRegistration.png)
 
 **Step 2**
-Click on "Redirect URIs" link.
+Click on "New registration".
 
-![Redirect URIs link](./media/Click&#32;on&#32;Redirect&#32;URIs&#32;link.png)
+![Redirect URIs link](./media/azureADNewRegistration.png)
 
 **Step 3**
 Configure Redirect URI.
 
-- TYPE - Web.
-- REDIRECT URI - `https://[App Service Address]/auth/microsoft_office365/callback`.
+- Name - "VIMS".
+- Supported account types - choose the one that your organization needs (default first type).
+- Type - Web.
+- Redirect URI (optional) - `https://[App Service Address]/auth/microsoft_office365/callback`.
+
+![Redirect URIs link](./media/registerAnApplicationExample.png)
 
 Note: The [App Service Address] can be copied from Parameters and Outputs of the installed managed application.
 
-![Configure Redirect URI](./media/Configure&#32;Redirect&#32;URI.png)
+![Configure Redirect URI](./media/configureRedirectURI.png)
 
 Final string looks like `https:/vims-nktbyzg56jxak.azurewebsites.net/auth/microsoft_office365/callback`.
 
-- "Save."
+- Click on "Register."
 
 ## Alert state backward synchronization
 
@@ -136,23 +148,23 @@ In order to configure alert state synchronization please provide VIAcode Inciden
 
 - Click on the installed managed application.
 - Select 'Application Permissions (preview)' blade.
-![App permissions blade](./media/ManagedAppPermissions-1.png)
+![App permissions blade](./media/managedAppPermissions-1.png)
 - Click "Add."
-![Add](./media/ManagedAppPermissions-2.png)
+![Add](./media/managedAppPermissions-2.png)
   - Select 'Monitoring Contributor' role.
   - Select your subscription.
   - "OK."
-![OK](./media/ManagedAppPermissions-3.png)
+![OK](./media/managedAppPermissions-3.png)
 
 If you have multiple subscriptions, add a role for each of them.
 
 ## First Sign in
 
-![First Sign in](./media/First&#32;Sign&#32;in.png)
+![First Sign in](./media/firstSignIn.png)
 
 - Open VIAcode Incident Management System for Azure dashboard and click on the link to get to the system.
 
-![Sign in using credentials](./media/Sign&#32;in&#32;using&#32;credentials.png)
+![Sign in using credentials](./media/signInUsingCredentials.png)
 
 - USERNAME / EMAIL - admin.
 - Password - admin.
@@ -164,7 +176,7 @@ Note: By default VIMS administrator has admin/admin credentials. Please, do not 
 
 When you Log in to VIAcode Incident Management System for Azure as administrator please configure email notification.
 
-![Notification Sender](./media/Notification&#32;Sender.png)
+![Notification Sender](./media/notificationSender.png)
 
 - Click "Cogwheel" in the left bottom corner.
 - Click "Email" in Channels section.
@@ -172,7 +184,7 @@ When you Log in to VIAcode Incident Management System for Azure as administrator
 - Enter sender name and email in angle brackets in Notification Sender section like it is shown in the screenshot.
 - Click "Submit".
 
-![Email Notification](./media/Email&#32;Notification.png)
+![Email Notification](./media/emailNotification.png)
 
 - Click "Accounts".
 - Click "Edit" in Email Notification section.
@@ -183,7 +195,7 @@ When you Log in to VIAcode Incident Management System for Azure as administrator
 - Default port for SMTP is 587.
 - Click "Continue" button.
 
-![New email Accounts and Experts](./media/New&#32;email&#32;Accounts&#32;and&#32;Experts.png)
+![New email Accounts and Experts](./media/newEmailAccountsAndExperts.png)
 
 - Click "New" button in Email Accounts section.
 - Fill Organization & Department Name.
@@ -191,7 +203,7 @@ When you Log in to VIAcode Incident Management System for Azure as administrator
 - Select "Users" in Destination Group.
 - Click "Experts" link.
 
-![Email Inbound](./media/Email&#32;Inbound.png)
+![Email Inbound](./media/emailInbound.png)
 
 - Select "IMAP" Type.
 - Fill Host with `outlook.office365.com` for office 365 accounts.
@@ -200,7 +212,7 @@ When you Log in to VIAcode Incident Management System for Azure as administrator
 - Default port for IMAP is 993.
 - Click "Continue" button.
 
-![Email Outbound](./media/Email&#32;Outbound.png)
+![Email Outbound](./media/emailOutbound.png)
 
 - Check settings.
 - Default port for SMTP is 587.
@@ -208,7 +220,7 @@ When you Log in to VIAcode Incident Management System for Azure as administrator
 
 Now, when email configuration is complete, make sure Incoming Group has email configured.
 
-![Edit Incoming Group](./media/Edit&#32;Incoming&#32;Group.png)
+![Edit Incoming Group](./media/editIncomingGroup.png)
 
 - Click "Cogwheel" in the left bottom corner.
 - Click "Groups".
@@ -242,11 +254,11 @@ To Sign in using Office 365 account after you installed VIAcode Incident Managem
 
 - Enable HTTPS in System - Base and Make sure Fully Qualified Domain Name is identical to your real URL.
 
-![Check HTTPS enabled](./media/Https&#32;config&#32;enabled.png)
+![Check HTTPS enabled](./media/httpsConfigEnabled.png)
 
 - Select Security - Third-party Applications and enable checkbox Authentication via Office 365, then fill App ID and App Secret according to created application.
 
-![Configure Office365](./media/Auth&#32;Office&#32;365&#32;config.png)
+![Configure Office365](./media/authOffice365Config.png)
 
 ## Technical details
 
@@ -305,13 +317,13 @@ When the Add a client secret page appears, specify Description and Expiration pe
 Copy the secret to clipboard.
 Use it as Secret in Create VIAcode Incident Management System for Azure wizard.
 
-![Copy Secret](./media/Create&#32;VIAcode&#32;Incident&#32;management&#32;System.png)
+![Copy Secret](./media/createVIAcodeIncidentManagementSystem.png)
 
 **Step 7**
 Navigate to the overview of the App registration and copy Application (client) ID.  
 Use it as Azure AD Application Registration ID in Create VIAcode Incident Management System for Azure wizard.
 
-![copy Application (client) ID](./media/copy&#32;Application&#32;(client)&#32;ID.png)
+![copy Application (client) ID](./media/copyApplicationClientID.png)
 
 **Step 8**
 Configure App registration authentication.
@@ -319,40 +331,4 @@ Configure App registration authentication.
 Go to Authentication blade.
 Switch the radio button under 'Supported account types' to Multitenant:
 
-![Configure Redirect URI](./media/MultitenantConfiguration.png)
-
-## Configuration of Azure Monitor connector for VIAcode IMS
-
-Find [Azure Monitor connector for VIAcode IMS](https://azuremarketplace.microsoft.com/marketplace/apps/viacode_consulting-1089577.vims-azuremonitor?tab=Overview) on Azure Marketplace and click "Get it now".
-
-## Premium Basics
-
-![Basics](./media/Premium&#32;basics.png)
-
-- Choose a subscription to deploy the managed application.
-- Create a new Resource Group.
-- Select a region.
-- Provide a name for your application's managed resource group.
-- Press "Next : Settings >" button.
-
-## Premium Settings
-
-![Settings](./media/Premium&#32;settings.png)
-
-- Specify id of the subscription where VIAcode Incident Management System for Azure to which you want to connect selected subscription is deployed to.
-- Specify name of a managed resource group of VIAcode Incident Management System for Azure.
-- Specify name of a connector function app of VIAcode Incident Management System for Azure.
-You can find it in output of a corresponding managed application under name connectorName:
-![Connector name](./media/connectorName.png)  
-- Press "Next : Review + create >" button.
-
-## Premium Review and create
-
-![Review + create](./media/Premium&#32;review&#32;+&#32;create.png)
-
-- Agree to the terms and conditions.
-- Press "Create" button.
-
-## Known issues
-### Tickets are not created based on Azure Monitor Alerts
-  - Review the AppInsight logs for FunctionApp, there could be an exception: "*Exception while executing function: AlertProcessor The type initializer for 'VIMSConnector.KeyVault' threw an exception. One or more errors occurred.(Operation returned an invalid status code 'Forbidden') Operation returned an invalid status code*". Try to restart Function App with name "vims-api-[uid]".
+![Configure Redirect URI](./media/multitenantConfiguration.png)
