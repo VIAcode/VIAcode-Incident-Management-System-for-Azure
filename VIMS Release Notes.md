@@ -1,10 +1,32 @@
 # VIAcode Incident Management System for Azure Release Notes
 
 <!-- TOC -->
+- [VIAcode Incident Management System for Azure 1.4.0](#viacode-incident-management-system-for-azure-140)
 - [VIAcode Incident Management System for Azure 1.3.1](#viacode-incident-management-system-for-azure-131)
 - [VIAcode Incident Management System for Azure 1.2.5](#viacode-incident-management-system-for-azure-125)
 - [VIAcode Incident Management System for Azure initial release](#viacode-incident-management-system-for-azure-initial-release)  
 <!-- TOC END -->
+
+## VIAcode Incident Management System for Azure 1.4.0
+
+### Major  Features
+
+- Swiched to Docker Compose for VIMS App Service
+- Added separated container for scripts execution (Database Backup)
+- New default configuration that includes
+  - New fields for ticket: "Aspect", "Reason", "Codes"
+  - "Incoming" group renamed to "Incidents"
+  - New group "Recommendations"
+  - New overviews for "Customer" role
+  - Macros, SLA's and System Settings 
+- Two-way synchronisation between ticket's articles and PBI discussion
+
+### Minor Improvements
+- Fixed: Dates in card for Teams Bot in same format as in VIMS
+- Technical ticket's articles are internal now by default
+- "Pending review" state hidden from "Customer" role
+- "Https Only" set to "On" by default for Dev Ops Connector
+- [Change Tracking] Commits in Dev Ops are filtered by ticket creations date by default
 
 ## VIAcode Incident Management System for Azure 1.3.1
 
