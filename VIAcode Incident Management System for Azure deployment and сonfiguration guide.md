@@ -188,7 +188,7 @@ When you Log in to VIAcode Incident Management System for Azure as administrator
 - Click "New" button in Email Accounts section.
 - Fill Organization & Department Name.
 - Fill Email with the account you will you use for email notification.
-- Select "Users" in Destination Group.
+- Select "Incidents" in Destination Group.
 - Click "Experts" link.
 
 ![Email Inbound](./media/emailInbound.png)
