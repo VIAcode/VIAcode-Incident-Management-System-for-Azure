@@ -82,11 +82,11 @@ If installation of Azure DevOps Connector for VIMS is successfull, a new ticket 
 To delegate a ticket, select the "Delegate" menu item in the upper right corner of the ticket drop-down menu.
 But remember, before the delegation you need to create an Azure DevOps project.
 
+![delegateItem](./media/devOpsConnector/delegateItemMenu.png)
+
 ### Create Azure DevOps project ####
 
 Before generating access token, [create Azure DevOps project.](https://docs.microsoft.com/en-us/azure/devops/organizations/projects/create-project?view=azure-devops&tabs=preview-page)
-
-![delegateItem](./media/devOpsConnector/delegateItemMenu.png)
 
 ## Obtaining the Azure DevOps token
 
