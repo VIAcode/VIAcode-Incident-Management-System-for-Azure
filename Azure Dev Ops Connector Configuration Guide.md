@@ -86,7 +86,7 @@ But remember, before the delegation you need to create an Azure DevOps project.
 
 Before generating access token, [create Azure DevOps project.](https://docs.microsoft.com/en-us/azure/devops/organizations/projects/create-project?view=azure-devops&tabs=preview-page)
 
-![delegateItem](./media/devOpsConnector/delegateItem.png)
+![delegateItem](./media/devOpsConnector/delegateItemMenu.png)
 
 ## Obtaining the Azure DevOps token
 
