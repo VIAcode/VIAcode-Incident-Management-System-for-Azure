@@ -45,13 +45,13 @@ Verify that your account user type is not Guest in the chosen tenant.
 ## Deploy from Azure Marketplace
 
 - [Navigate](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/viacode_consulting-1089577.viacode-itsm-z) to Microsoft Azure Marketplace and find "VIAcode Incident Management System for Azure" offer.
-![Azure Market Place](./media/azureMarketPlace.png)
+![Azure Market Place](./media/azureMarketPlaceVIMS.png)
 
 - Press "Get it now" button.
 - Select "VIAcode Incident Management System for Azure" software plan and press "Continue".
 
 You will be taken to Azure Portal to complete installation:
-![Azure Portal](./media/azurePortalOfferProfile.png)
+![Azure Portal](./media/azurePortalOfferProfileVIMS.png)
 
 - Make sure "VIAcode Incident Management System for Azure" software plan is selected.
 - Press "Create".
@@ -66,12 +66,7 @@ After you have selected "VIAcode Incident Management System for Azure" software 
 
 ## Basics
 
-### Attention!!!
-Alerts on Services located in mrg group can be monitored only by support admins, eg. Those that belong to group:  VIAcode Incident Management Support? So you can’t create Alert rule on it. 
-Groups mrg and vims should not contain alert rules.
-You can rename group mrg to comply with your main group.
-
-![Basics](./media/basics.png)
+![Basics](./media/basicsSettings.png)
 
 - Choose a subscription to deploy the management application.
 - Create a new Resource Group.
@@ -83,7 +78,7 @@ You can rename group mrg to comply with your main group.
 
 To enable Azure AD Integration you have to specify Azure AD Application Registration ID and Secret. To create a new App registration see [Steps to create a new App registration in Azure AD](#steps-to-create-a-new-app-registration-in-azure-ad).
 
-![Azure AD Integration](./media/azureADIntegration.png)
+![Azure AD Integration](./media/azureADIntegrationEnabled.png)
 
 - Either "Enable" Azure AD integration or leave it "Disabled".
 - Set Azure AD Application Registration ID.
@@ -108,25 +103,18 @@ For more information see [Quickstart: Register an application with the Microsoft
 
 When deployment finishes (it usually takes up to 15 minutes to complete) you will have to configure redirect URI to enable Azure Active Directory integration.
 
-**Step 1**
-In the left navigation pane of the Azure portal, select "Azure Active Directory" or write "Azure Active Directory" in the search bar at the top, then select "App registrations".
+**Step 1** In the left-hand navigation pane, select the "Azure Active Directory" service, then select "App registrations" and "[Name of the App registration you used to install VIAcode Incident Management System for Azure]."
 
-![Redirect URIs link](./media/azureADAppRegistration.png)
 
-**Step 2**
-Click on "New registration".
+**Step 2** Click on "Redirect URIs" link.
 
-![Redirect URIs link](./media/azureADNewRegistration.png)
+![Redirect URIs link](./media/clickOnRedirectURIsLink.png)
 
 **Step 3**
 Configure Redirect URI.
 
-- Name - "VIMS".
-- Supported account types - choose the one that your organization needs (default first type).
-- Type - Web.
-- Redirect URI (optional) - `https://[App Service Address]/auth/microsoft_office365/callback`.
-
-![Redirect URIs link](./media/registerAnApplicationExample.png)
+- TYPE - Web.
+- REDIRECT URI - https://[App Service Address]/auth/microsoft_office365/callback.
 
 Note: The [App Service Address] can be copied from Parameters and Outputs of the installed managed application.
 
@@ -148,13 +136,13 @@ In order to configure alert state synchronization please provide VIAcode Inciden
 
 - Click on the installed managed application.
 - Select 'Application Permissions (preview)' blade.
-![App permissions blade](./media/managedAppPermissions-1.png)
+![App permissions blade](./media/managedAppPermissions1.png)
 - Click "Add."
-![Add](./media/managedAppPermissions-2.png)
+![Add](./media/managedAppPermissions2.png)
   - Select 'Monitoring Contributor' role.
   - Select your subscription.
   - "OK."
-![OK](./media/managedAppPermissions-3.png)
+![OK](./media/managedAppPermissions3.png)
 
 If you have multiple subscriptions, add a role for each of them.
 
@@ -258,7 +246,7 @@ To Sign in using Office 365 account after you installed VIAcode Incident Managem
 
 - Select Security - Third-party Applications and enable checkbox Authentication via Office 365, then fill App ID and App Secret according to created application.
 
-![Configure Office365](./media/authOffice365Config.png)
+![Configure Office365](./media/authMicrosoftOffice365Config.png)
 
 ## Technical details
 
@@ -331,4 +319,40 @@ Configure App registration authentication.
 Go to Authentication blade.
 Switch the radio button under 'Supported account types' to Multitenant:
 
-![Configure Redirect URI](./media/multitenantConfiguration.png)
+![Configure Redirect URI](./media/multitenantConfigurationVIMS.png)
+
+## Configuration of Azure Monitor connector for VIAcode IMS
+
+Find [Azure Monitor connector for VIAcode IMS](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/viacode_consulting-1089577.vims-azuremonitor?ocid=GTMRewards_WhatsNewBlog_vims-azuremonitor_Vol57) on Azure Marketplace and click "Get it now".
+
+## Basics
+
+![Basics](./media/premiumBasics.png)
+
+- Choose a subscription to deploy the managed application.
+- Create a new Resource Group.
+- Select a region.
+- Provide a name for your application's managed resource group.
+- Press "Next : Settings >" button.
+
+## Settings
+
+![Settings](./media/premiumSettings.png)
+
+- Specify id of the subscription where VIAcode Incident Management System for Azure to which you want to connect selected subscription is deployed to.
+- Specify name of a managed resource group of VIAcode Incident Management System for Azure.
+- Specify name of a connector function app of VIAcode Incident Management System for Azure.
+You can find it in output of a corresponding managed application under name connectorName:
+![Connector name](./media/connectorName.png)  
+- Press "Next : Review + create >" button.
+
+## Review and create
+
+![Review + create](./media/premiumReviewPlusCreate.png)
+
+- Agree to the terms and conditions.
+- Press "Create" button.
+
+## Known issues
+### Tickets are not created based on Azure Monitor Alerts
+  - Review the AppInsight logs for FunctionApp, there could be an exception: "*Exception while executing function: AlertProcessor The type initializer for 'VIMSConnector.KeyVault' threw an exception. One or more errors occurred.(Operation returned an invalid status code 'Forbidden') Operation returned an invalid status code*". Try to restart Function App with name "vims-api-[uid]".
