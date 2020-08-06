@@ -10,6 +10,7 @@
   - [Review and create](#review-and-create)
 
 - [Obtaining the Azure DevOps token](#obtaining-the-azure-devops-token)
+  - [Create Azure DevOps project](#create-azure-devops-project)
 
 - [VIMS organization settings](#vims-organization-settings)
 
@@ -25,7 +26,7 @@ You must install Azure DevOps connector in the same Azure subscriptions as
 
 ## Deploy from Azure Marketplace
 
--Navigate to [Microsoft Azure Marketplace](https://azuremarketplace.microsoft.com/) and find ["Azure DevOps connector for VIAcode IMS"](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/viacode_consulting-1089577.vims-azuredevops-preview?tab=Overview&flightCodes=073c61f2-6359-4b50-9e49-76f04063d00c) offer.
+-Navigate to [Microsoft Azure Marketplace](https://azuremarketplace.microsoft.com/) and find ["Azure DevOps connector for VIAcode IMS"](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/viacode_consulting-1089577.vims-azuredevops?tab=Overview) offer.
 - Press "Create".
 
 ![Azure Marketplace](./media/devOpsConnector/marketOffer.png)
@@ -49,14 +50,14 @@ After you have selected appropriate software plan you need to configure the depl
 - Choose a subscription to deploy the management application (You must install Azure DevOps connector for VIAcode IMS in the same Azure subscription as VIAcode Incident Management System).
 - Create a new Resource Group.
 - Select a region.
-- Provide a name for your application's managed resource group.
+- Provide a name for your application's managed resource group. Note: you can specify name of management resource group according your naming convention.
 - Press "Next : Settings >" button.
 
 ### Settings
 
 To enable Azure DevOps Connector for VIAcode IMS you have to specify VIMS Azure web app URL and VIMS admin credentials.
 
-- To get a web app URL please navigate to "VIAcode-Incident-Management-System-for-Azure" managed application and under "Parameters and Otputs" blade copy output for "portalUrl" parameter.
+- To get a web app URL please navigate to "VIAcode-Incident-Management-System-for-Azure-DevOps" managed application and under "Parameters and Otputs" blade copy output for "portalUrl" parameter.
 
 ![ParametersAndOutput](./media/devOpsConnector/paramOutput.png)
 
@@ -77,6 +78,15 @@ After successful devops connector installation a new system user "Azure DevOps C
 If installation of Azure DevOps Connector for VIMS is successfull, a new ticket related to this even will be created on VIMS:
 
 ![ConnectorSuccessNotification](./media/devOpsConnector/connectorSuccessNotification.png)
+
+To delegate a ticket, select the "Delegate" menu item in the upper right corner of the ticket drop-down menu.
+But remember, before the delegation you need to create an Azure DevOps project.
+
+![delegateItem](./media/devOpsConnector/delegateItemMenu.png)
+
+### Create Azure DevOps project ####
+
+Before generating access token, [create Azure DevOps project.](https://docs.microsoft.com/en-us/azure/devops/organizations/projects/create-project?view=azure-devops&tabs=preview-page)
 
 ## Obtaining the Azure DevOps token
 
@@ -111,9 +121,9 @@ Login to VIMS with administrator credentials to configure Azure DevOps settings 
 
 Please complete the following "Azure DevOps" properties:
 
-- Azure DevOps Organization
-- Azure DevOps Project
-- Azure DevOps Area
+- Azure DevOps Organization (e.g. "VIACode")
+- Azure DevOps Project (e.g. "TestProject")
+- Azure DevOps Area (e.g. "TestProject")
 - Azure DevOps Token - see [Obtaining the Azure DevOps token](#obtaining-the-azure-devops-token)
 - Azure DevOps Token (confirm)
 
