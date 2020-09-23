@@ -11,7 +11,7 @@
     - Azure Security Center alerts
     - Azure Security Center recommendations
     - Azure Advisor recommendations
-    - Budget alerts
+    - Cost alerts (budget alerts)
 - Linking of VIAcode Incident Management System tickets and:
     - The same Azure Monitor alert rule's alerts with the same affected resource
     - Azure Security Center alerts with the same alert name and affected resource
