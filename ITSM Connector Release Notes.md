@@ -4,7 +4,7 @@
 - [VIAcode ITSM connector for Azure initial release](#viacode-itsm-connector-for-azure-initial-release)  
 <!-- TOC END -->
 
-## VIAcode ITSM connector for Azure initial release v0.1
+## VIAcode ITSM connector for Azure initial release v0.1.x
 
 - Creation of tickets with articles in VIAcode Incident Management System for:
     - Azure Monitor alerts
