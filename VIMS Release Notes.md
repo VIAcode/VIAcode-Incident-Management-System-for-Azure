@@ -1,11 +1,19 @@
 # VIAcode Incident Management System for Azure Release Notes
 
 <!-- TOC -->
+- [VIAcode Incident Management System for Azure 1.5.x](#viacode-incident-management-system-for-azure-15x)
 - [VIAcode Incident Management System for Azure 1.4.0](#viacode-incident-management-system-for-azure-140)
 - [VIAcode Incident Management System for Azure 1.3.1](#viacode-incident-management-system-for-azure-131)
 - [VIAcode Incident Management System for Azure 1.2.5](#viacode-incident-management-system-for-azure-125)
 - [VIAcode Incident Management System for Azure initial release](#viacode-incident-management-system-for-azure-initial-release)  
 <!-- TOC END -->
+
+## VIAcode Incident Management System for Azure 1.5.x
+
+### Major features
+- Azure Monitor Connector functionality is moved to dedicated Mannaged App "ITMS Connector for Azure"
+- "Change Tracking" feature is moved to dedicated Mannaged App "ITMS Connector for Azure"
+- Added New "default" overviews for "Agent" role
 
 ## VIAcode Incident Management System for Azure 1.4.0
 
