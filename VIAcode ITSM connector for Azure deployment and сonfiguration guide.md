@@ -96,9 +96,9 @@ In order to configure alert state synchronization please provide VIAcode ITSM co
 
 ## Technical details
 
-### Supported alert types
+### Supported signal types
 
-VIAcode ITSM connector for Azure can process the following Azure alert types:
+VIAcode ITSM connector for Azure can process the following Azure signal types:
 
 - Metric Alerts
 
@@ -121,3 +121,5 @@ VIAcode ITSM connector for Azure can process the following Azure alert types:
 - Security Center Alerts
 
 - Cost alerts: budget alerts
+
+- Recommendations
