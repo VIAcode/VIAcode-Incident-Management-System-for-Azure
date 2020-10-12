@@ -90,7 +90,7 @@ In order to configure alert state synchronization please provide VIAcode ITSM co
 - Click "Add."
 ![Add](./media/managedAppPermissions2.png)
   - Select 'Contributor' role.
-  - Select your subscription.
+  - Check that Connector's subscription is selected.
   - "OK."
 ![OK](./media/managedAppPermissions3.png)
 
