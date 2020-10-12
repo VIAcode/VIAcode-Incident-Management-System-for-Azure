@@ -120,4 +120,4 @@ VIAcode ITSM connector for Azure can process the following Azure alert types:
   
 - Security Center Alerts
 
-- Budget alerts (Cost alerts)
+- Cost alerts: budget alerts
