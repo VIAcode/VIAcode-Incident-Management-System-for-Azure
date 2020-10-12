@@ -88,13 +88,13 @@ In order to configure alert state synchronization please provide VIAcode ITSM co
 
 - Click on the installed managed application.
 - Select 'Application Permissions (preview)' blade.
-![App permissions blade](./media/managedAppPermissionsConnector.png)
+![App permissions blade](./media/managedAppPermissions1.png)
 - Click "Add."
-![Add](./media/managedAppPermissionsConnector.png)
+![Add](./media/managedAppPermissions2.png)
   - Select 'Contributor' role.
   - Select your subscription.
   - "OK."
-![OK](./media/managedAppPermissionsConnector.png)
+![OK](./media/managedAppPermissions3.png)
 
 ## Technical details
 
