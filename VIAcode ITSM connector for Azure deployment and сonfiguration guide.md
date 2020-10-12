@@ -46,13 +46,11 @@ The total cost of running VIAcode ITSM connector for Azure is a combination of t
 
 ## Configuration of VIAcode ITSM connector for Azure
 
-After you have selected "VIAcode ITSM connector for Azure" software plan you need to configure it.
-
 ## Basics
 
 ![Basics](./media/basicsSettingsConnector.png)
 
-- Choose a subscription to deploy the management application.
+- Choose a subscription to deploy the managed application.
 - Create a new Resource Group.
 - Select a region.
 - Provide a name for your application's managed resource group.

@@ -56,7 +56,7 @@ After you have selected "VIAcode Incident Management System for Azure" software 
 
 ![Basics](./media/basicsSettingsVIMS.png)
 
-- Choose a subscription to deploy the management application.
+- Choose a subscription to deploy the managed application.
 - Create a new Resource Group.
 - Select a region.
 - Provide a name for your application's managed resource group.
