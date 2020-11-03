@@ -110,8 +110,10 @@ Installation of VIAcode ITSM for Azure requires 2 resource groups:
 Go to Resource Group where the Managed Application installed (application named "VIAcode-ITSM-connector-for-Azure").
 
 **Step 2:**
-Select this Application and confirm the deletion by typing "Yes" on the sidebar, then click "Delete".
+Select this Application and click "Delete" button, confirm the deletion by typing "Yes" on the sidebar, then click "Delete".
 Deletion the Managed Application will consequently delete the second resource group and all of its content.
+
+![Delete_itsm-z](./media/Delete_itsm-z_confirmation.png)
 
 **Step 3:** (optional)
 If the First Resource Group is empty - only Managed Application was stored there - you should also delete this Resource Group as well.
