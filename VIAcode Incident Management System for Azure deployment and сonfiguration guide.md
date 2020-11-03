@@ -282,4 +282,5 @@ Select this Application and confirm the deletion by typing "Yes" on the sidebar,
 Deletion the Managed Application will consequently delete the second resource group and all of its content.
 
 **Step 3** (optional)
+
 If the First Resource Group is empty - only Managed Application was stored there - you should also delete this Resource Group as well.
