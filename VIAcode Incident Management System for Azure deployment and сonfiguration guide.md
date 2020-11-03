@@ -277,10 +277,10 @@ Installation of VIAcode Incident Management Sysytem for Azure requires 2 resourc
 Go to Resource Group where the Managed Application installed (application named "VIAcode-Incident-Management-System-for-Azure").
 
 **Step 2**
-Select this Application and confirm the deletion by typing "Yes" on the sidebar, then click "Delete".
-
+Select this Application and click "Delete" button, confirm the deletion by typing "Yes" on the sidebar, then click "Delete".
 Deletion the Managed Application will consequently delete the second resource group and all of its content.
 
-**Step 3** (optional)
+![Delete Confirmation](.media/Delete_VIMS_confirmation.png)
 
+**Step 3** (optional)
 If the First Resource Group is empty - only Managed Application was stored there - you should also delete this Resource Group as well.
