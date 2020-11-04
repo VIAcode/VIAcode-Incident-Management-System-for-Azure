@@ -17,6 +17,10 @@
 
 - [Additional information](#additional-information)
   - [Steps to create a new App registration in Azure AD](#steps-to-create-a-new-app-registration-in-azure-ad)
+
+- [Uninstallation of VIAcode Incident Management System for Azure](#uninstallation-of-viacode-incident-management-system-for-azure)
+  - [Deletion Notes](#deletion-notes)
+  - [Steps to Remove Application and Managed Resource Group](#steps-to-remove-application-and-managed-resource-group)
 <!-- TOC END -->
 
 ## Before you begin
@@ -260,3 +264,23 @@ Go to Authentication blade.
 Switch the radio button under 'Supported account types' to Multitenant:
 
 ![Configure Redirect URI](./media/multitenantConfigurationVIMS.png)
+
+## Uninstallation of VIAcode Incident Management System for Azure
+
+#### Deletion Notes
+Installation of VIAcode Incident Management Sysytem for Azure requires 2 resource groups:
+ - The First one for the application itself (Managed Application location).
+ - The Second is for the managed resources that the application requires (e.g. "mrg-viacode-itsm-z-<id>").
+
+## Steps to Remove Application and Managed Resource Group
+**Step 1**
+Go to Resource Group where the Managed Application installed (application named "VIAcode-Incident-Management-System-for-Azure").
+
+**Step 2**
+Select this Application and click "Delete" button, confirm the deletion by typing "Yes" on the sidebar, then click "Delete".
+Deletion the Managed Application will consequently delete the second resource group and all of its content.
+
+![Delete Confirmation](.media/Delete_VIMS_confirmation.png)
+
+**Step 3** (optional)
+If the First Resource Group is empty - only Managed Application was stored there - you should also delete this Resource Group as well.
