@@ -11,6 +11,9 @@
   - [Alert state backward synchronization](#alert-state-backward-synchronization)
     - [Overview](#overview)
     - [How to setup](#how-to-setup)
+- [Uninstallation of VIAcode ITSM connector for Azure](#uninstallation-of-viacode-itsm-connector-for-azure)
+  - [Deletion Notes](#deletion-notes)
+  - [Steps to Remove Application and Managed Resource Group](#steps-to-remove-application-and-managed-resource-group)  
   
 - [Technical details](#technical-details)
   - [Supported alert types](#supported-alert-types)
@@ -93,6 +96,27 @@ In order to configure alert state synchronization please provide VIAcode ITSM co
   - Check that Connector's subscription is selected.
   - "OK."
 ![OK](./media/managedAppPermissions3.png)
+
+## Uninstallation of viacode ITSM connector for azure
+
+### Deletion notes
+Installation of VIAcode ITSM for Azure requires 2 resource groups:
+
+- The First one for the application itself (Managed Application location).
+- The Second is for the managed resources that the application requires (e.g. "mrg-viacode-itsm-z-<id>").
+
+### Steps to Remove Application and Managed Resource Group
+**Step 1:**
+Go to Resource Group where the Managed Application installed (application named "VIAcode-ITSM-connector-for-Azure").
+
+**Step 2:**
+Select this Application and click "Delete" button, confirm the deletion by typing "Yes" on the sidebar, then click "Delete".
+Deletion the Managed Application will consequently delete the second resource group and all of its content.
+
+![Delete_itsm-z](./media/Delete_itsm-z_confirmation.png)
+
+**Step 3:** (optional)
+If the First Resource Group is empty - only Managed Application was stored there - you should also delete this Resource Group as well.
 
 ## Technical details
 
