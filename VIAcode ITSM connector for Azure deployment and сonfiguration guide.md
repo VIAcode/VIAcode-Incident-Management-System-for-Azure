@@ -113,7 +113,7 @@ Go to Resource Group where the Managed Application installed (application named 
 Select this Application and click "Delete" button, confirm the deletion by typing "Yes" on the sidebar, then click "Delete".
 Deletion the Managed Application will consequently delete the second resource group and all of its content.
 
-![Delete_itsm-z](./media/Delete_itsm-z_confirmation.png)
+![Delete_itsm-z](./media/Delete_itsm-z_confirmation.PNG)
 
 **Step 3:** (optional)
 If the First Resource Group is empty - only Managed Application was stored there - you should also delete this Resource Group as well.
