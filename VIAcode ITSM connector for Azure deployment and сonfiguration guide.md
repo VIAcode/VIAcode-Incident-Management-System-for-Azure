@@ -62,12 +62,16 @@ The total cost of running VIAcode ITSM connector for Azure is a combination of t
 ## Settings
 
 You have to specify VIAcode Incident Management System hostname (FQDN) and administrator user credentials.
+ITSM Connector will automatically create new VIMS user. All tickets are created on behalf of this user.
+To create user we need to know Administrators credentials, Organisation Name and Role for new user.
 
 ![Azure AD Integration](./media/connectorSettings.png)
 
 - Set VIAcode Incident Management System hostname.
-- Set admin user login.
-- Set admin user password.
+- Set admin user login ("admin" by default).
+- Set admin user password ("admin" by default).
+- Set Organisation name ("Customer" by default).
+- Set Role ("Connector" by default).
 - Press "Next : Review + create >" button.
 
 ## Review and create
