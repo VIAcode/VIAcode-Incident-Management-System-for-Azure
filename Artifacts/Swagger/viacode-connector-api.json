@@ -1,0 +1,100 @@
+{
+  "swagger": "1.0",
+  "info": {
+    "title": "VIAcode ITSM connector for Azure API",
+    "version": "2018-09-01-preview",
+    "description": "VIAcode’s ITSM Connector provides a simple, streamlined integration between common ITSM (ticketing) systems and Microsoft’s Azure resources and tools ensuring improved visibility and productivity relating to Azure cloud operations and management."
+  },
+  "schemes": [
+    "https"
+  ],
+  "securityDefinitions": {
+    "apiKeyHeader": {
+      "type": "apiKey",
+      "name": "Ocp-Apim-Subscription-Key",
+      "in": "header"
+    },
+    "apiKeyQuery": {
+      "type": "apiKey",
+      "name": "subscription-key",
+      "in": "query"
+    }
+  },
+  "security": [
+    {
+      "apiKeyHeader": []
+    },
+    {
+      "apiKeyQuery": []
+    }
+  ],
+  "paths": {
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/public/processExistingSignals": {
+      "post": {
+        "operationId": "post-processExistingSignals",
+        "summary": "ProcessExistingSignals",
+        "parameters": [
+          {
+            "$ref": "#/parameters/SubscriptionIdParameter"
+          },
+          {
+            "$ref": "#/parameters/ResourceGroupNameParameter"
+          },
+          {
+            "name": "parameters",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProcessExistingSignalsParameters"
+            },
+            "description": "The parameters required call Process Existing Signals."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Empty HTTP 200 status code",
+            "schema": {}
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ProcessExistingSignalsParameters": {
+      "properties": {
+        "securityCenterAlerts": {
+          "readOnly": true,
+          "type": "boolean",
+          "description": "Security Center Alerts for VIAcode’s ITSM Connector"
+        },
+        "azureAdvisorRecommendations": {
+          "readOnly": true,
+          "type": "boolean",
+          "description": "Azure Advisor Recommendations for VIAcode’s ITSM Connector"
+        }
+      },
+      "description": "Process Existing Signals Description.",
+      "x-ms-azure-resource": true
+    }
+  },
+  "tags": [],
+  "parameters": {
+    "SubscriptionIdParameter": {
+      "name": "subscriptionId",
+      "in": "path",
+      "required": true,
+      "type": "string",
+      "description": "Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call."
+    },
+    "ResourceGroupNameParameter": {
+      "name": "resourceGroupName",
+      "in": "path",
+      "required": true,
+      "type": "string",
+      "description": "The name of the resource group. The name is case insensitive.",
+      "pattern": "^[-\\w\\._\\(\\)]+$",
+      "minLength": 1,
+      "maxLength": 90
+    }
+  }
+}
