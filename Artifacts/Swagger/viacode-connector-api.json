@@ -1,5 +1,5 @@
 {
-  "swagger": "1.0",
+  "swagger": "2.0",
   "info": {
     "title": "VIAcode ITSM connector for Azure API",
     "version": "2018-09-01-preview",
