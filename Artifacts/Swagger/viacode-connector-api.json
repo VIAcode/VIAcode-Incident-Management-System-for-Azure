@@ -29,7 +29,7 @@
     }
   ],
   "paths": {
-    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/public/processExistingSignals": {
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/public/syncSignals": {
       "post": {
         "operationId": "post-processExistingSignals",
         "summary": "ProcessExistingSignals",
