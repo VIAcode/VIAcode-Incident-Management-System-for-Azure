@@ -39,6 +39,15 @@
           },
           {
             "$ref": "#/parameters/ResourceGroupNameParameter"
+          },
+          {
+            "name": "parameters",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProcessExistingSignalsParameters"
+            },
+            "description": "The parameters required call Process Existing Signals."
           }
         ],
         "responses": {
@@ -48,6 +57,23 @@
           }
         }
       }
+    }
+  },
+  "definitions": {
+    "ProcessExistingSignalsParameters": {
+      "properties": {
+        "securityCenterAlerts": {
+          "readOnly": true,
+          "type": "boolean",
+          "description": "Security Center Alerts for VIAcode’s ITSM Connector"
+        },
+        "azureAdvisorRecommendations": {
+          "readOnly": true,
+          "type": "boolean",
+          "description": "Azure Advisor Recommendations for VIAcode’s ITSM Connector"
+        }
+      },
+      "description": "Process Existing Signals Description."
     }
   },
   "tags": [],
