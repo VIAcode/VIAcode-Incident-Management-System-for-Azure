@@ -65,25 +65,11 @@
         "securityCenterAlerts": {
           "readOnly": true,
           "type": "string",
-          "enum": [
-            "False",
-            "True"
-          ],
-          "x-ms-enum": {
-            "name": "SecurityCenterAlerts"
-          },
           "description": "Security Center Alerts for VIAcode’s ITSM Connector"
         },
         "azureAdvisorRecommendations": {
           "readOnly": true,
           "type": "string",
-          "enum": [
-            "False",
-            "True"
-          ],
-          "x-ms-enum": {
-            "name": "SecurityCenterRecommendations"
-          },
           "description": "Azure Advisor Recommendations for VIAcode’s ITSM Connector"
         }
       },
