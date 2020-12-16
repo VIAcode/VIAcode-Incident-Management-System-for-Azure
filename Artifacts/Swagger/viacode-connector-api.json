@@ -66,8 +66,8 @@
           "readOnly": true,
           "type": "string",
           "enum": [
-            "false",
-            "true"
+            "False",
+            "True"
           ],
           "x-ms-enum": {
             "name": "SecurityCenterAlerts"
@@ -78,8 +78,8 @@
           "readOnly": true,
           "type": "string",
           "enum": [
-            "false",
-            "true"
+            "False",
+            "True"
           ],
           "x-ms-enum": {
             "name": "SecurityCenterRecommendations"
