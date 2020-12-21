@@ -118,12 +118,12 @@
     },
     "ProcessedAlertRule": {
       "required": [
-        "regexp"
+        "RegularExpression"
       ],
       "properties": {
         "RegularExpression": {
           "type": "string",
-          "description": "The RegExp Schema"
+          "description": "The RegularExpression Schema"
         }
       }
     }
