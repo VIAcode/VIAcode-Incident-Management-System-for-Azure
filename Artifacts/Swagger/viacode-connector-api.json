@@ -109,24 +109,67 @@
         "value": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ProcessedAlertRule"
+            "$ref": "#/definitions/ProcessedAlertRuleResource"
           },
           "description": "Some Description Here."
         }
       },
       "description": "Some Description Here."
     },
-    "ProcessedAlertRule": {
-      "required": [
-        "RegularExpression"
-      ],
+    "ProcessedAlertRuleResource": {
       "properties": {
-        "RegularExpression": {
-          "type": "string",
-          "description": "The RegularExpression Schema"
-        }
+        "location":{
+	  "type":"string",
+	  "description":"The Location of the parent resource"
+        },
+        "properties" :{
+	  "type": "object",
+	  "description":"The definition of a created rule",
+	  "properties": {
+            "RegularExpression": {
+              "type": "string",
+              "description": "The RegularExpression Schema"
+            }
+	  }
+	}
       }
-    }
+    },
+    "Resource": {
+          "properties": {
+              "id": {
+                  "readOnly": true,
+                  "type": "string",
+                  "description": "Resource Id"
+              },
+              "name": {
+                  "readOnly": true,
+                  "type": "string",
+                  "description": "Resource name"
+              },
+              "type": {
+                  "readOnly": true,
+                  "type": "string",
+                  "description": "Resource type"
+              },
+              "location": {
+                  "type": "string",
+                  "description": "Resource location"
+              },
+              "tags": {
+                  "type": "object",
+                  "additionalProperties": {
+                      "type": "string"
+                  },
+                  "description": "Resource tags"
+              }
+          },
+          "required": [
+              "location"
+          ],
+          "description": "The resource definition.",
+          "x-ms-azure-resource": true
+      }
+  }
   },
   "tags": [],
   "parameters": {
