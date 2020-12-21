@@ -57,7 +57,35 @@
           }
         }
       }
-    }
+    },
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/public/processedAlerts": {
+      "get": {
+        "operationId": "get-processedalerts",
+        "summary": "ProcessedAlerts",
+        "parameters": [
+          {
+            "$ref": "#/parameters/SubscriptionIdParameter"
+          },
+          {
+            "$ref": "#/parameters/ResourceGroupNameParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Update Description here",
+            "schema": {
+              "$ref": "#/definitions/ProcessedAlertList"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
   },
   "definitions": {
     "ProcessExistingSignalsParameters": {
@@ -75,6 +103,29 @@
       },
       "description": "Process Existing Signals Description.",
       "x-ms-azure-resource": true
+    },
+    "ProcessedAlertList": {
+      "properties": {
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ProcessedAlert"
+          },
+          "description": "Some Description Here."
+        }
+      },
+      "description": "Some Description Here."
+    },
+    "ProcessedAlert": {
+      "required": [
+        "regexp"
+      ],
+      "properties": {
+        "regexp": {
+          "type": "string",
+          "description": "The RegExp Schema"
+        }
+      }
     }
   },
   "tags": [],
