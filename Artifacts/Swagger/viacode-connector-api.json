@@ -152,6 +152,7 @@
                   {
                   "name": "parameters",
                   "in": "body",
+                  "required": true,
                   "schema": {
                   "$ref": "#/definitions/ProcessedAlertRuleResource"
                   },
@@ -426,9 +427,6 @@
                   "description": "Resource tags"
               }
           },
-          "required": [
-              "location"
-          ],
           "description": "The resource definition.",
           "x-ms-azure-resource": true
       }
