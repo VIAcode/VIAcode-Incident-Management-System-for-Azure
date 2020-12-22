@@ -282,6 +282,25 @@
       "description": "Process Existing Signals Description.",
       "x-ms-azure-resource": true
     },
+    "CodeMessageError": {
+      "properties": {
+        "error": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string",
+              "description": "The error type."
+            },
+            "message": {
+              "type": "string",
+              "description": "The error message."
+            }
+          },
+          "description": "The error details for a failed request."
+        }
+      },
+      "description": "The error body contract."
+    },
     "ProcessedAlertRuleResource": {
       "properties": {
         "location":{
