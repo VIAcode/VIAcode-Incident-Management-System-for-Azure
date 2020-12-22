@@ -360,6 +360,13 @@
       "pattern": "^[-\\w\\._\\(\\)]+$",
       "minLength": 1,
       "maxLength": 90
+    },
+    "ApiVersionParameter": {
+      "name": "api-version",
+      "in": "query",
+      "required": true,
+      "type": "string",
+      "description": "Client Api Version."
     }
   }
 }
