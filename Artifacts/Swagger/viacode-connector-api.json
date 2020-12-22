@@ -108,6 +108,84 @@
                   "application/json"
               ]
           },
+	  "patch": {
+              "tags": [
+                  "ProcessedAlertRule"
+              ],
+              "operationId": "ProcessedAlertRules_PATCH",
+              "description": "Updates a processed alert rule resource",
+              "parameters": [
+                  {
+                  "$ref": "#/parameters/SubscriptionIdParameter"
+                  },
+                  {
+                      "name": "resourceGroupName",
+                      "in": "path",
+                      "required": true,
+                      "type": "string",
+                      "description": "The name of the resource group. The name is case insensitive.",
+                      "pattern": "^[-\\w\\._\\(\\)]+$",
+                      "minLength": 1,
+                      "maxLength": 90
+                  },
+                  {
+                    "name": "customrpname",
+                    "in": "path",
+                    "required": true,
+                    "type": "string",
+                    "description": "The name of the customrp.",
+                    "minLength": 3,
+                    "maxLength": 64
+                },
+                {
+                    "name": "rulename",
+                    "in": "path",
+                    "required": true,
+                    "type": "string",
+                    "description": "The name of the rule.",
+                    "minLength": 3,
+                    "maxLength": 64
+                },
+                  {
+                  "$ref": "#/parameters/ApiVersionParameter"
+                  },
+                  {
+                  "name": "parameters",
+                  "in": "body",
+                  "required": true,
+                  "schema": {
+                  "$ref": "#/definitions/ProcessedAlertRuleResource"
+                  },
+                  "description": "The rule resource to create"
+                  }
+              ],
+              "responses": {
+                  "201": {
+                      "description": "Created response definition. Resource has been created",
+                      "schema": {
+                          "$ref": "#/definitions/ProcessedAlertRuleResource"
+                      }
+                  },
+                  "200": {
+                      "description": "OK response definition. Resource already exists and has not been changed",
+                      "schema": {
+                          "$ref": "#/definitions/ProcessedAlertRuleResource"
+                      }
+                  },
+                  "default": {
+                      "schema": {
+                          "$ref": "#/definitions/CodeMessageError"
+                      },
+                      "description": "Error response definition."
+                  }
+              },
+              "produces": [
+                  "application/json"
+              ],
+              "consumes": [
+                  "application/json"
+              ]
+          },
           "delete": {
             "tags": [
               "ProcessedAlertRule"
@@ -234,7 +312,35 @@
                   "application/json"
               ]
           }
-    }
+    },
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/public/processedAlertRules": {
+      "get": {
+        "operationId": "get-processedalertrules",
+        "summary": "ProcessedAlertRules",
+        "parameters": [
+          {
+            "$ref": "#/parameters/SubscriptionIdParameter"
+          },
+          {
+            "$ref": "#/parameters/ResourceGroupNameParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Update Description here",
+            "schema": {
+              "$ref": "#/definitions/ProcessedAlertRuleList"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
   },
   "definitions": {
     "CodeMessageError": {
@@ -255,6 +361,18 @@
         }
       },
       "description": "The error body contract."
+    },
+    "ProcessedAlertRuleList": {
+      "properties": {
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ProcessedAlertRuleResource"
+          },
+          "description": "Some Description Here."
+        }
+      },
+      "description": "Some Description Here."
     },
     "ProcessedAlertRuleResource": {
       "properties": {
@@ -324,6 +442,16 @@
       "required": true,
       "type": "string",
       "description": "Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call."
+    },
+    "ResourceGroupNameParameter": {
+      "name": "resourceGroupName",
+      "in": "path",
+      "required": true,
+      "type": "string",
+      "description": "The name of the resource group. The name is case insensitive.",
+      "pattern": "^[-\\w\\._\\(\\)]+$",
+      "minLength": 1,
+      "maxLength": 90
     },
     "ApiVersionParameter": {
       "name": "api-version",
