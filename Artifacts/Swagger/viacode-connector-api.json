@@ -85,7 +85,7 @@
           "application/json"
         ]
       }
-    },
+    }
   },
   "definitions": {
     "ProcessExistingSignalsParameters": {
