@@ -152,7 +152,6 @@
                   {
                   "name": "parameters",
                   "in": "body",
-                  "required": true,
                   "schema": {
                   "$ref": "#/definitions/ProcessedAlertRuleResource"
                   },
@@ -340,7 +339,7 @@
           "application/json"
         ]
       }
-    },
+    }
   },
   "definitions": {
     "CodeMessageError": {
