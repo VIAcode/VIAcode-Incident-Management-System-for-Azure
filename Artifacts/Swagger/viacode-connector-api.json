@@ -454,7 +454,7 @@
       ],
       "description": "A manifest file that defines the custom resource provider resources."
     },
-    "Resource": {
+    "InputResource": {
           "properties": {
               "name": {
                   "readOnly": true,
