@@ -90,9 +90,7 @@
                   },
                   "200": {
                       "description": "OK response definition. Resource already exists and has not been changed",
-                      "schema": {
-                          "$ref": "#/definitions/ProcessedAlertRuleResource"
-                      }
+                      "schema": {}
                   },
                   "default": {
                       "schema": {
