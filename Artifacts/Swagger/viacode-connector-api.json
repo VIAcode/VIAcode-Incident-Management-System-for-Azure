@@ -400,6 +400,11 @@
     },
     "Resource": {
           "properties": {
+              "id": {
+                  "readOnly": true,
+                  "type": "string",
+                  "description": "Resource Id"
+              },
               "name": {
                   "readOnly": true,
                   "type": "string",
@@ -422,7 +427,8 @@
                   "description": "Resource tags"
               }
           },
-          "description": "The resource definition."
+          "description": "The resource definition.",
+          "x-ms-azure-resource": true
       }
   },
   "tags": [],
