@@ -402,6 +402,10 @@
             "RegularExpression": {
               "type": "string",
               "description": "The RegularExpression Schema"
+            },
+            "Comment": {
+              "type": "string",
+              "description": "The Comment Schema"
             }
 	  }
 	}
@@ -444,56 +448,6 @@
           },
           "description": "The resource definition.",
           "x-ms-azure-resource": true
-      },
-    "ProcessedAlertRuleInputResource": {
-      "properties": {
-        "location":{
-	  "type":"string",
-	  "description":"The Location of the parent resource"
-        },
-        "properties" :{
-	  "type": "object",
-	  "description":"The definition of a created rule",
-	  "properties": {
-            "RegularExpression": {
-              "type": "string",
-              "description": "The RegularExpression Schema"
-            }
-	  }
-	}
-      },
-      "allOf": [
-        {
-          "$ref": "#/definitions/InputResource"
-        }
-      ],
-      "description": "A manifest file that defines the custom resource provider resources."
-    },
-    "InputResource": {
-          "properties": {
-              "name": {
-                  "readOnly": true,
-                  "type": "string",
-                  "description": "Resource name"
-              },
-              "type": {
-                  "readOnly": true,
-                  "type": "string",
-                  "description": "Resource type"
-              },
-              "location": {
-                  "type": "string",
-                  "description": "Resource location"
-              },
-              "tags": {
-                  "type": "object",
-                  "additionalProperties": {
-                      "type": "string"
-                  },
-                  "description": "Resource tags"
-              }
-          },
-          "description": "The resource definition."
       }
   },
   "tags": [],
