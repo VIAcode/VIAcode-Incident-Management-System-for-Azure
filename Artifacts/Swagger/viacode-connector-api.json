@@ -76,7 +76,7 @@
                   "in": "body",
                   "required": true,
                   "schema": {
-                  "$ref": "#/definitions/ProcessedAlertRuleInputResource"
+                  "$ref": "#/definitions/ProcessedAlertRuleResource"
                   },
                   "description": "The rule resource to create"
                   }
@@ -90,7 +90,9 @@
                   },
                   "200": {
                       "description": "OK response definition. Resource already exists and has not been changed",
-                      "schema": {}
+                      "schema": {
+                          "$ref": "#/definitions/ProcessedAlertRuleResource"
+                      }
                   },
                   "default": {
                       "schema": {
@@ -374,6 +376,21 @@
     },
     "ProcessedAlertRuleResource": {
       "properties": {
+        "id": {
+	  "readOnly": true,
+	  "type": "string",
+	  "description": "Resource Id"
+        },
+        "name": {
+	  "readOnly": true,
+	  "type": "string",
+	  "description": "Resource name"
+        },
+        "type": {
+	  "readOnly": true,
+	  "type": "string",
+	  "description": "Resource type"
+        },
         "location":{
 	  "type":"string",
 	  "description":"The Location of the parent resource"
