@@ -154,7 +154,7 @@
                   "in": "body",
                   "required": true,
                   "schema": {
-                  "$ref": "#/definitions/ProcessedAlertRuleResource"
+                  "$ref": "#/definitions/ProcessedAlertsRuleResource"
                   },
                   "description": "The rule resource to create"
                   }
@@ -367,7 +367,7 @@
         "value": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ProcessedAlertRuleResource"
+            "$ref": "#/definitions/ProcessedAlertsRuleResource"
           },
           "description": "Some Description Here."
         }
