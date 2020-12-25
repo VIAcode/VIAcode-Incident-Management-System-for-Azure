@@ -29,13 +29,13 @@
     }
   ],
   "paths": {
-    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceproviders/{customrpname}/processedAlertRules/{rulename}": {
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceproviders/{customrpname}/processedAzureMonitorAlertsRules/{rulename}": {
           "put": {
               "tags": [
-                  "ProcessedAlertRule"
+                  "ProcessedAzureMonitorAlertsRule"
               ],
-              "operationId": "ProcessedAlertRules_PUT",
-              "description": "Creates or updates a processed alert rule resource",
+              "operationId": "ProcessedAzureMonitorAlertsRules_PUT",
+              "description": "Creates or updates an \"Azure Monitor alerts\" Rule resource",
               "parameters": [
                   {
                   "$ref": "#/parameters/SubscriptionIdParameter"
@@ -76,7 +76,7 @@
                   "in": "body",
                   "required": true,
                   "schema": {
-                  "$ref": "#/definitions/ProcessedAlertRuleResource"
+                  "$ref": "#/definitions/ProcessedAlertsRuleResource"
                   },
                   "description": "The rule resource to create"
                   }
@@ -85,13 +85,13 @@
                   "201": {
                       "description": "Created response definition. Resource has been created",
                       "schema": {
-                          "$ref": "#/definitions/ProcessedAlertRuleResource"
+                          "$ref": "#/definitions/ProcessedAlertsRuleResource"
                       }
                   },
                   "200": {
                       "description": "OK response definition. Resource already exists and has not been changed",
                       "schema": {
-                          "$ref": "#/definitions/ProcessedAlertRuleResource"
+                          "$ref": "#/definitions/ProcessedAlertsRuleResource"
                       }
                   },
                   "default": {
@@ -110,10 +110,10 @@
           },
 	  "patch": {
               "tags": [
-                  "ProcessedAlertRule"
+                  "ProcessedAzureMonitorAlertsRule"
               ],
-              "operationId": "ProcessedAlertRules_PATCH",
-              "description": "Updates a processed alert rule resource",
+              "operationId": "ProcessedAzureMonitorAlertsRules_PATCH",
+              "description": "Updates an \"Azure Monitor alerts\" Rule resource",
               "parameters": [
                   {
                   "$ref": "#/parameters/SubscriptionIdParameter"
@@ -163,13 +163,13 @@
                   "201": {
                       "description": "Created response definition. Resource has been created",
                       "schema": {
-                          "$ref": "#/definitions/ProcessedAlertRuleResource"
+                          "$ref": "#/definitions/ProcessedAlertsRuleResource"
                       }
                   },
                   "200": {
                       "description": "OK response definition. Resource already exists and has not been changed",
                       "schema": {
-                          "$ref": "#/definitions/ProcessedAlertRuleResource"
+                          "$ref": "#/definitions/ProcessedAlertsRuleResource"
                       }
                   },
                   "default": {
@@ -188,9 +188,9 @@
           },
           "delete": {
             "tags": [
-              "ProcessedAlertRule"
+              "ProcessedAzureMonitorAlertsRule"
           ],
-          "operationId": "ProcessedAlertRules_DELETE",
+          "operationId": "ProcessedAzureMonitorAlertsRules_DELETE",
           "description": "Deletes a rule resource",
               "parameters": [
                   {
@@ -251,9 +251,9 @@
           },
           "get": {
             "tags": [
-                "ProcessedAlertRule"
+                "ProcessedAzureMonitorAlertsRule"
             ],
-            "operationId": "ProcessedAlertRules_GET",
+            "operationId": "ProcessedAzureMonitorAlertsRules_GET",
             "description": "Gets a rule resource",
               "parameters": [
                   {
@@ -295,7 +295,7 @@
                   "200": {
                       "description": "OK response definition.",
                       "schema": {
-                          "$ref": "#/definitions/ProcessedAlertRuleResource"
+                          "$ref": "#/definitions/ProcessedAlertsRuleResource"
                       }
                   },
                   "default": {
@@ -313,10 +313,10 @@
               ]
           }
     },
-    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/public/processedAlertRules": {
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/public/processedAzureMonitorAlertsRules": {
       "get": {
-        "operationId": "get-processedalertrules",
-        "summary": "ProcessedAlertRules",
+        "operationId": "get-processedazuremonitoralertsrules",
+        "summary": "ProcessedAzureMonitorAlertsRules",
         "parameters": [
           {
             "$ref": "#/parameters/SubscriptionIdParameter"
@@ -329,7 +329,7 @@
           "200": {
             "description": "Update Description here",
             "schema": {
-              "$ref": "#/definitions/ProcessedAlertRuleList"
+              "$ref": "#/definitions/ProcessedAlertsRuleList"
             }
           }
         },
@@ -362,7 +362,7 @@
       },
       "description": "The error body contract."
     },
-    "ProcessedAlertRuleList": {
+    "ProcessedAlertsRuleList": {
       "properties": {
         "value": {
           "type": "array",
@@ -374,7 +374,7 @@
       },
       "description": "Some Description Here."
     },
-    "ProcessedAlertRuleResource": {
+    "ProcessedAlertsRuleResource": {
       "properties": {
         "id": {
 	  "readOnly": true,
