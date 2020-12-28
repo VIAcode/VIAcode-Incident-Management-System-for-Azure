@@ -29,12 +29,12 @@
     }
   ],
   "paths": {
-    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceproviders/{customrpname}/processedAzureMonitorAlertsRules/{rulename}": {
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceproviders/{customrpname}/AzureMonitorAlertsProcessingRules/{rulename}": {
           "put": {
               "tags": [
-                  "ProcessedAzureMonitorAlertsRule"
+                  "AzureMonitorAlertsProcessingRule"
               ],
-              "operationId": "ProcessedAzureMonitorAlertsRules_PUT",
+              "operationId": "AzureMonitorAlertsProcessingRules_PUT",
               "description": "Creates or updates an \"Azure Monitor alerts\" Rule resource",
               "parameters": [
                   {
@@ -110,9 +110,9 @@
           },
 	  "patch": {
               "tags": [
-                  "ProcessedAzureMonitorAlertsRule"
+                  "AzureMonitorAlertsProcessingRule"
               ],
-              "operationId": "ProcessedAzureMonitorAlertsRules_PATCH",
+              "operationId": "AzureMonitorAlertsProcessingRules_PATCH",
               "description": "Updates an \"Azure Monitor alerts\" Rule resource",
               "parameters": [
                   {
@@ -188,9 +188,9 @@
           },
           "delete": {
             "tags": [
-              "ProcessedAzureMonitorAlertsRule"
+              "AzureMonitorAlertsProcessingRule"
           ],
-          "operationId": "ProcessedAzureMonitorAlertsRules_DELETE",
+          "operationId": "AzureMonitorAlertsProcessingRules_DELETE",
           "description": "Deletes a rule resource",
               "parameters": [
                   {
@@ -251,9 +251,9 @@
           },
           "get": {
             "tags": [
-                "ProcessedAzureMonitorAlertsRule"
+                "AzureMonitorAlertsProcessingRule"
             ],
-            "operationId": "ProcessedAzureMonitorAlertsRules_GET",
+            "operationId": "AzureMonitorAlertsProcessingRules_GET",
             "description": "Gets a rule resource",
               "parameters": [
                   {
@@ -313,10 +313,10 @@
               ]
           }
     },
-    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/public/processedAzureMonitorAlertsRules": {
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/public/AzureMonitorAlertsProcessingRules": {
       "get": {
-        "operationId": "get-processedazuremonitoralertsrules",
-        "summary": "ProcessedAzureMonitorAlertsRules",
+        "operationId": "get-azuremonitoralertsprocessingrules",
+        "summary": "AzureMonitorAlertsProcessingRules",
         "parameters": [
           {
             "$ref": "#/parameters/SubscriptionIdParameter"
