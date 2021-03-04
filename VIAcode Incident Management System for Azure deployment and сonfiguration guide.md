@@ -301,7 +301,7 @@ For more information see [Quickstart: Register an application with the Microsoft
 ### Deletion Notes
 Installation of VIAcode Incident Management Sysytem for Azure requires 2 resource groups:
  - The First one for the application itself (Managed Application location).
- - The Second is for the managed resources that the application requires (e.g. "mrg-viacode-itsm-z-```<id>``").
+ - The Second is for the managed resources that the application requires (e.g. "mrg-viacode-itsm-z-``id``).
 
 ####  Steps to Remove Application and Managed Resource Group
 **Step 1**
