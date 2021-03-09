@@ -12,7 +12,7 @@
   - [Email configuration](#email-configuration)
     - [Notification sender](#Notification-sender)
     - [Outbound notification](#Outbound-notification)
-    - [Microsoft 365 channel configuration](Microsoft-365-channel-configuration)
+    - [Microsoft 365 channel configuration](#Microsoft-365-channel-configuration)
     - [Email notification notes](#Email-notification-notes)
 - [Enable Azure AD Integration with Office 365 after installation](#Enable-Azure-AD-Integration-with-Office-365-after-installation)
   - [Enable https in Settings](#Enable-https-in-Settings)
@@ -68,13 +68,20 @@ After you have selected "VIAcode Incident Management System for Azure" software 
 
 ## Settings
 
-- "Enable" Azure AD integration or leave it "Disabled".
-To enable Azure AD Integration you have to specify Azure AD Application Registration ID and Secret.  How create a new App registration see [Create a new App registration in Azure AD](#Create-a-new-App-registration-in-Azure-AD).
-- For "Enabled" scenario set Azure AD Application Registration ID and  Secret.
 - For "Disabled" scenario continue installation with default settings. 
+
 - Press "Next : Review + create >" button.
 
-![Azure AD Integration](./media/azureADIntegrationEnabled.png)
+  ![Azure AD Integration Disabled](./media/ADIntegrationDisabled.png)
+
+  
+
+- For "Enabled" scenario set Azure AD Application Registration ID and  Secret. 
+
+  To enable Azure AD Integration you have to specify Azure AD Application Registration ID and Secret.  How create a new App registration see [Create a new App registration in Azure AD](#Create-a-new-App-registration-in-Azure-AD).
+-  Press "Next : Review + create >" button.
+
+![Azure AD Integration](./media/ADIntegrationEnabled.png)
 
 ## Review and create
 
@@ -104,7 +111,8 @@ Note: By default VIMS administrator has admin/admin credentials. Please, do not 
 ## Redirect URI for Azure AD Integration
 
 Read this section if you installed VIMS with AAD Integration "Enabled" option. 
-After VIMS installation you will have to configure redirect URI to enable Azure Active Directory integration.
+
+In this mode you have possibility to login using Office 365 account. After VIMS installation you will have to configure redirect URI to enable Azure Active Directory integration.
 
 **Step 1** In the left-hand navigation pane, select the "Azure Active Directory" service, then select "App registrations" and "Name of the App registration" you used to install VIAcode Incident Management System for Azure.
 
