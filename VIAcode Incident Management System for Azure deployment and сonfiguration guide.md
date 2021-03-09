@@ -3,25 +3,25 @@
 - [Before you begin](#before-you-begin)
   - [Deploy from Azure Marketplace](#deploy-from-azure-marketplace)
     - [Pricing](#pricing)
-
 - [Configuration of VIAcode Incident Management System for Azure](#configuration-of-viacode-incident-management-system-for-azure)
   - [Basics](#basics)
   - [Settings](#settings)
-    - [Purpose of an App registration](#purpose-of-an-app-registration)
   - [Review and create](#review-and-create)
-  - [Redirect URI for Azure AD Integration](#redirect-uri-for-azure-ad-integration)
   - [First Sign in](#first-sign-in)
-    - [Email configuration](#email-configuration)
-    - [Notes](#notes)
-    - [Enable Azure AD Integration after installation](#enable-azure-ad-integration-after-installation)
-
-- [Additional information](#additional-information)
-  - [Steps to create a new App registration in Azure AD](#steps-to-create-a-new-app-registration-in-azure-ad)
-
+  - [Redirect URI for Azure AD Integration](#redirect-uri-for-azure-ad-integration)
+  - [Email configuration](#email-configuration)
+    - [Notification sender](#Notification-sender)
+    - [Outbound notification](#Outbound-notification)
+    - [Microsoft 365 channel configuration](#Microsoft-365-channel-configuration)
+    - [Email notification notes](#Email-notification-notes)
+- [Enable Azure AD Integration with Office 365 after installation](#Enable-Azure-AD-Integration-with-Office-365-after-installation)
+  - [Enable https in Settings](#Enable-https-in-Settings)
+  - [Create a new App registration in Azure AD](#Create-a-new-App-registration-in-Azure-AD)
+  - [Enable Office 365 Authentication](#Enable-Office-365-Authentication)
 - [Uninstallation of VIAcode Incident Management System for Azure](#uninstallation-of-viacode-incident-management-system-for-azure)
   - [Deletion Notes](#deletion-notes)
   - [Steps to Remove Application and Managed Resource Group](#steps-to-remove-application-and-managed-resource-group)
-<!-- TOC END -->
+  <!-- TOC END -->
 
 ## Before you begin
 
@@ -68,21 +68,20 @@ After you have selected "VIAcode Incident Management System for Azure" software 
 
 ## Settings
 
-To enable Azure AD Integration you have to specify Azure AD Application Registration ID and Secret. To create a new App registration see [Steps to create a new App registration in Azure AD](#steps-to-create-a-new-app-registration-in-azure-ad).
+- For "Disabled" scenario continue installation with default settings. 
 
-![Azure AD Integration](./media/azureADIntegrationEnabled.png)
-
-- Either "Enable" Azure AD integration or leave it "Disabled".
-- Set Azure AD Application Registration ID.
-- Set Secret.
 - Press "Next : Review + create >" button.
 
-### Purpose of an App registration
+  ![Azure AD Integration Disabled](./media/ADIntegrationDisabled.png)
 
-It is used to integrate VIAcode Incident Management System for Azure with Azure AD and Office 365.
-Using Azure App, we can generate the token to authenticate the application.
-When Azure App is created we can get the Application (client) ID and Secret.
-For more information see [Quickstart: Register an application with the Microsoft identity platform.](https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app)
+  
+
+- For "Enabled" scenario set Azure AD Application Registration ID and  Secret. 
+
+  To enable Azure AD Integration you have to specify Azure AD Application Registration ID and Secret.  How create a new App registration see [Create a new App registration in Azure AD](#Create-a-new-App-registration-in-Azure-AD).
+-  Press "Next : Review + create >" button.
+
+![Azure AD Integration](./media/ADIntegrationEnabled.png)
 
 ## Review and create
 
@@ -91,11 +90,31 @@ For more information see [Quickstart: Register an application with the Microsoft
 - Agree to the terms and conditions.
 - Press "Create" button.
 
+## First Sign in
+
+- Open VIAcode Incident Management System for Azure dashboard and click on the link to get to the system.
+
+![First Sign in](./media/firstSignIn.png)
+
+### Login to VIMS
+
+Read this section if you installed VIMS with AAD Integration "Disabled" option. 
+
+- USERNAME / EMAIL - admin.
+- Password - admin.
+- "Sign in".
+
+Note: By default VIMS administrator has admin/admin credentials. Please, do not forget to change them after your first Sign in.
+
+![Sign in using credentials](./media/signInUsingCredentials.png)
+
 ## Redirect URI for Azure AD Integration
 
-When deployment finishes (it usually takes up to 15 minutes to complete) you will have to configure redirect URI to enable Azure Active Directory integration.
+Read this section if you installed VIMS with AAD Integration "Enabled" option. 
 
-**Step 1** In the left-hand navigation pane, select the "Azure Active Directory" service, then select "App registrations" and "[Name of the App registration you used to install VIAcode Incident Management System for Azure]."
+In this mode you have possibility to login using Office 365 account. After VIMS installation you will have to configure redirect URI to enable Azure Active Directory integration.
+
+**Step 1** In the left-hand navigation pane, select the "Azure Active Directory" service, then select "App registrations" and "Name of the App registration" you used to install VIAcode Incident Management System for Azure.
 
 
 **Step 2** Click on "Redirect URIs" link.
@@ -106,9 +125,9 @@ When deployment finishes (it usually takes up to 15 minutes to complete) you wil
 Configure Redirect URI.
 
 - TYPE - Web.
-- REDIRECT URI - https://[App Service Address]/auth/microsoft_office365/callback.
+- REDIRECT URI - https://your-domain.com/auth/microsoft_office365/callback.
 
-Note: The [App Service Address] can be copied from Parameters and Outputs of the installed managed application.
+Note: The  ``your-domain.com``can be copied from Parameters and Outputs of the installed managed application.
 
 ![Configure Redirect URI](./media/configureRedirectURI.png)
 
@@ -116,33 +135,23 @@ Final string looks like `https:/vims-nktbyzg56jxak.azurewebsites.net/auth/micros
 
 - Click on "Register."
 
-## First Sign in
+## Email configuration
+When you Log in to VIAcode Incident Management System for Azure as administrator please configure email notification. 
+Next steps will show how configure email notification for account. 
 
-![First Sign in](./media/firstSignIn.png)
+### Notification sender 
+Define notification sender email address. 
+Note that Microsoft 365 account needs to have Exchange license to be able send and receive messages. 
 
-- Open VIAcode Incident Management System for Azure dashboard and click on the link to get to the system.
-
-![Sign in using credentials](./media/signInUsingCredentials.png)
-
-- USERNAME / EMAIL - admin.
-- Password - admin.
-- "Sign in".
-
-Note: By default VIMS administrator has admin/admin credentials. Please, do not forget to change them after your first Sign in.
-
-### Email configuration
-
-When you Log in to VIAcode Incident Management System for Azure as administrator please configure email notification.
-
-![Notification Sender](./media/notificationSender.png)
-
-- Click "Cogwheel" in the left bottom corner.
+- Click "Gear" at the left bottom corner.
 - Click "Email" in Channels section.
 - Click "Settings".
-- Enter sender name and email in angle brackets in Notification Sender section like it is shown in the screenshot.
+- Enter sender name and email in angle brackets in "Notification Sender" section like it is shown in the screenshot below.
 - Click "Submit".
+![Notification Sender](./media/notificationSender.png)
 
-![Email Notification](./media/emailNotification.png)
+### Outbound notification
+Configure Outbound notification on  issues that were raised by external sources. For example,  incidents and recommendations from [ITSM Connector for Azure]( https://azuremarketplace.microsoft.com/en-us/marketplace/apps/viacode_consulting-1089577.viacode-itsm-connector-for-azure?tab=Overview).
 
 - Click "Accounts".
 - Click "Edit" in Email Notification section.
@@ -153,39 +162,50 @@ When you Log in to VIAcode Incident Management System for Azure as administrator
 - Default port for SMTP is 587.
 - Click "Continue" button.
 
-![New email Accounts and Experts](./media/newEmailAccountsAndExperts.png)
+![EmailNotificationOutbound](./media/emailNotifOutboundsmtp.png)
 
-- Click "New" button in Email Accounts section.
-- Fill Organization & Department Name.
-- Fill Email with the account you will you use for email notification.
-- Select "Incidents" in Destination Group.
-- Click "Experts" link.
+### Microsoft 365 channel configuration
+It is possible receive incidents raised by customers using direct email messages to the 'Notification sender's' email address. Each email message to this account will create new ticket in VIMS. 
+Below described configuration flow for Microsoft 365 channel. 
 
-![Email Inbound](./media/emailInbound.png)
+#### Enable https in Settings
+- Open VIMS admin panel
+- Select "Gear" at the left bottom corner
+- Go to  "Settings-System-Base-HTTP type"
+- Select "https"
+- Click "Submit"
 
-- Select "IMAP" Type.
-- Fill Host with `outlook.office365.com` for office 365 accounts.
-- Fill User with the account you will you use for email notification.
-- Fill Password.
-- Default port for IMAP is 993.
-- Click "Continue" button.
+![Enablehttps](./media/EnableHttps.png)
 
-![Email Outbound](./media/emailOutbound.png)
+#### Copy Callback URL in Microsoft 365 
 
-- Check settings.
-- Default port for SMTP is 587.
-- Click "Continue" button.
+- Open VIMS admin panel
 
-Now, when email configuration is complete, make sure Incoming Group has email configured.
+- Go to  "Channels-Microsoft 365- Accounts- Connect Microsoft 365 App"
 
-![Edit Incoming Group](./media/editIncomingGroup.png)
+- Copy "Your callback URL" field 
 
-- Click "Cogwheel" in the left bottom corner.
-- Click "Groups".
-- Click "Incoming".
-- Click "Email" and select the Notification Sender you have configured.
+- It will have the following format:`` https://your-domain.com/api/v1/external_credentials/microsoft365/callback``
 
-#### Notes
+  ![CallbackURL](./media/callbackURL.png)
+
+#### Create Application in AAD
+
+Create application in Azure Active Directory of notification email account's tenant. For example, for viacode.com email account we need create application in AAD for viacode.com tenant. 
+
+Follow application configuration process described in [Zammad documentation](https://admin-docs.zammad.org/en/latest/channels/microsoft365/accounts/register-app.html#step-by-step). 
+
+#### Connect Microsoft 365 app with VIMS
+
+-  Follow steps  [how connect to O365 account in Zammad documentation](https://admin-docs.zammad.org/en/latest/channels/microsoft365/accounts/account-setup.html#add-a-new-account ). 
+- Click "Add account" to authenticate in Azure 
+- Select "Incidents" as a Destination Group
+
+![ConfigMSOffice365](./media/configO365.png)
+
+Congratulations! Now all incoming messages will be converted into incidents in your ticketing system.
+
+### Email notification notes
 
 Email configuration is required for enabling following functionality:
 
@@ -206,23 +226,27 @@ In general, VIAcode Incident Management System for Azure best practice is to cre
 
 For current email set up documentation see [e-mail](https://zammad-admin-documentation.readthedocs.io/en/latest/channels-email.html).
 
-### Enable Azure AD Integration after installation
 
-To Sign in using Office 365 account after you installed VIAcode Incident Management System for Azure with AD Integration disabled follow these steps:
+## Enable Azure AD Integration with Office 365 after installation
+This section allows enable authentication to VIMS using Office 365 email account or, in other words, enable Azure AD Integration.  
 
-- Enable HTTPS in System - Base and Make sure Fully Qualified Domain Name is identical to your real URL.
+### Enable https in Settings
 
-![Check HTTPS enabled](./media/httpsConfigEnabled.png)
+- Open VIMS admin panel
+- Go to  "Settings-System-Base-HTTP type"
+- Select "https"
+- Click "Submit"
 
-- Select Security - Third-party Applications and enable checkbox Authentication via Office 365, then fill App ID and App Secret according to created application.
+![Enablehttps](./media/EnableHttps.png)
 
-![Configure Office365](./media/authMicrosoftOffice365Config.png)
 
-## Additional information
+### Create a new App registration in Azure AD
 
-## Steps to create a new App registration in Azure AD
+App registrations is used to integrate VIAcode Incident Management System for Azure with Azure AD and Office 365. Using Azure App, we can generate the token to authenticate the application. When Azure App is created we can get the Application (client) ID and Secret.
 
-Follow the below-listed steps to register the application.
+Follow the below-listed steps to register the application. 
+
+Please note, to enable Office 365 authentication you cannot use ClientID and Secret of application that was created for   Microsoft 365 email channel notification.  You need create different application with different name and settings. 
 
 **Step 1**
 Log in to the Azure Portal using your Azure account.
@@ -235,9 +259,12 @@ In the left-hand navigation pane, select the "Azure Active Directory" service, a
 When the Register an application page appears, enter your application's registration information:
 
 - Name: Enter a meaningful application name that will be displayed to users of the app. (VIAcode Incident Management System for Azure.)
-- Supported account types: Select which accounts you would like your application to support. (Accounts in any organizational directory (Any Azure AD directory - Multitenant) and personal Microsoft accounts (e.g. Skype, Xbox)).
-- Redirect URI (optional): Leave it for now. It should be specified later when the managed application is installed.
-- "Register."
+
+- Supported account types: Select which accounts you would like your application to support.
+
+  Suggested: *Accounts in any organizational directory (Any Azure AD directory - Multitenant) and personal Microsoft accounts (e.g. Skype, Xbox))*.
+
+- "Register"
 
 **Step 4**
 In the menu blade select "Certificates & secrets" > "New client secret."
@@ -258,21 +285,33 @@ Use it as Azure AD Application Registration ID in Create VIAcode Incident Manage
 ![copy Application (client) ID](./media/copyApplicationClientID.png)
 
 **Step 8**
-Configure App registration authentication.
 
-Go to Authentication blade.
-Switch the radio button under 'Supported account types' to Multitenant:
+- After application created go to "Authentication" section of app on left panel
+- Switch the radio button under 'Supported account types' to Multitenant. 
+- Redirect URI(optional) Web. Specify your domain name. Is should have the following format: ``https://your-domain.com/auth/microsoft_office365/callback`` .
+- Front-channel logout URL. Specify your domain name. should have following format: ``https://your-domain.com/logout``
 
 ![Configure Redirect URI](./media/multitenantConfigurationVIMS.png)
 
+For more information see [Quickstart: Register an application with the Microsoft identity platform.](https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app)
+
+### Enable Office 365 Authentication
+
+- Open VIMS admin panel
+- Go to  "Settings-Security-Third-party Applications"
+- Scroll down to "Authentication via Office 365" and enable toggle
+- Fill App ID and App Secret you used to create application in Azure
+
+![Configure Office365](./media/authMicrosoftOffice365Config.png)
+
 ## Uninstallation of VIAcode Incident Management System for Azure
 
-#### Deletion Notes
+### Deletion Notes
 Installation of VIAcode Incident Management Sysytem for Azure requires 2 resource groups:
  - The First one for the application itself (Managed Application location).
- - The Second is for the managed resources that the application requires (e.g. "mrg-viacode-itsm-z-<id>").
+ - The Second is for the managed resources that the application requires (e.g. "mrg-viacode-itsm-z-``id``).
 
-## Steps to Remove Application and Managed Resource Group
+####  Steps to Remove Application and Managed Resource Group
 **Step 1**
 Go to Resource Group where the Managed Application installed (application named "VIAcode-Incident-Management-System-for-Azure").
 
@@ -280,7 +319,8 @@ Go to Resource Group where the Managed Application installed (application named 
 Select this Application and click "Delete" button, confirm the deletion by typing "Yes" on the sidebar, then click "Delete".
 Deletion the Managed Application will consequently delete the second resource group and all of its content.
 
-![Delete Confirmation](.media/Delete_VIMS_confirmation.PNG)
+![Delete Confirmation](./media/DeleteVIMSConfirmation.png)
 
 **Step 3** (optional)
 If the First Resource Group is empty - only Managed Application was stored there - you should also delete this Resource Group as well.
+
